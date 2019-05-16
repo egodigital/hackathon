@@ -23,7 +23,7 @@
         "vue",
         "vuetify",
         "demo"
-      ],
+    ],
     "author": "e.GO Digital GmbH, Aachen, Germany",
     "license": "GPL-3.0",
     "dependencies": {
