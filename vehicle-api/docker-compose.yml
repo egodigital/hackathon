@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:3.6
+    ports:
+      - 27017:27017
+    restart: always
+    volumes:
+      - /data/db
+  backend:
+    command: sh -c "apk add git && npm install && npm run dev & cd webapp && npm install && npm rebuild node-sass && npm run dev"
+    depends_on:
+      - mongo
+    env_file: .env
+    image: node:dubnium-alpine
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "9229:9229"
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app

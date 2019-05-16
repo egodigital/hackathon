@@ -1,0 +1,993 @@
+<!--
+
+  This file is part of the vehicle-api distribution (https://github.com/egodigital/hackathon/vehicle-api).
+  Copyright (c) e.GO Digital GmbH, Aachen, Germany
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, version 3.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<template>
+  <div :class="classes">
+    <v-alert
+      :value="false === isApiKeyValid"
+      type="error"
+      class="display-1 text-xs-center"
+    >Your API key seems to be invalid!</v-alert>
+
+    <v-container v-show="!!apiKey" fluid grid-list-md>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <v-text-field
+            label="Search"
+            solo
+            v-model="textSearch"
+            placeholder="Highlight signals by using keywords, separated by comma(s) ..."
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6 md8>
+          <v-layout row wrap>
+            <v-flex xs12 sm6>
+              <table>
+                <tr :class="matchSearch('battery_charging') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'battery_charging')">{{ $t('battery_charging') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.battery_charging"
+                      true-value="yes"
+                      false-value="no"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('battery_charging_current') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'battery_charging_current')"
+                    >{{ $t('battery_charging_current') }}</a>
+                  </td>
+                  <td>{{ signals.battery_charging_current }} amp</td>
+                </tr>
+                <tr :class="matchSearch('battery_health') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'battery_health')">{{ $t('battery_health') }}</a>
+                  </td>
+                  <td>
+                    <v-progress-linear
+                      class="elevation-3"
+                      color="primary"
+                      height="20"
+                      :value="signals.battery_health"
+                    >{{ signals.battery_health }}%</v-progress-linear>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('battery_loading_capacity') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'battery_loading_capacity')"
+                    >{{ $t('battery_loading_capacity') }}</a>
+                  </td>
+                  <td>{{ signals.battery_loading_capacity }} kW</td>
+                </tr>
+                <tr :class="matchSearch('battery_state_of_charge') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'battery_state_of_charge')"
+                    >{{ $t('battery_state_of_charge') }}</a>
+                  </td>
+                  <td>
+                    <v-progress-linear
+                      class="elevation-3"
+                      color="primary"
+                      height="20"
+                      :value="signals.battery_state_of_charge"
+                    >{{ signals.battery_state_of_charge }}%</v-progress-linear>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('brake_fluid_level') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'brake_fluid_level')"
+                    >{{ $t('brake_fluid_level') }}</a>
+                  </td>
+                  <td>
+                    <v-progress-linear
+                      class="elevation-3"
+                      color="primary"
+                      height="20"
+                      :value="signals.brake_fluid_level"
+                    >{{ signals.brake_fluid_level }}%</v-progress-linear>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('calculated_remaining_distance') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'calculated_remaining_distance')"
+                    >{{ $t('calculated_remaining_distance') }}</a>
+                  </td>
+                  <td>{{ signals.calculated_remaining_distance }} km</td>
+                </tr>
+                <tr :class="matchSearch('central_locking_system') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'central_locking_system')"
+                    >{{ $t('central_locking_system') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.central_locking_system"
+                      true-value="open"
+                      false-value="close"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('distance_to_object_back') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'distance_to_object_back')"
+                    >{{ $t('distance_to_object_back') }}</a>
+                  </td>
+                  <td>{{ signals.distance_to_object_back }} cm</td>
+                </tr>
+                <tr :class="matchSearch('distance_to_object_bottom') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'distance_to_object_bottom')"
+                    >{{ $t('distance_to_object_bottom') }}</a>
+                  </td>
+                  <td>{{ signals.distance_to_object_bottom }} cm</td>
+                </tr>
+                <tr :class="matchSearch('distance_to_object_front') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'distance_to_object_front')"
+                    >{{ $t('distance_to_object_front') }}</a>
+                  </td>
+                  <td>{{ signals.distance_to_object_front }} cm</td>
+                </tr>
+                <tr :class="matchSearch('distance_to_object_left') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'distance_to_object_left')"
+                    >{{ $t('distance_to_object_left') }}</a>
+                  </td>
+                  <td>{{ signals.distance_to_object_left }} cm</td>
+                </tr>
+                <tr :class="matchSearch('distance_to_object_right') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'distance_to_object_right')"
+                    >{{ $t('distance_to_object_right') }}</a>
+                  </td>
+                  <td>{{ signals.distance_to_object_right }} cm</td>
+                </tr>
+                <tr :class="matchSearch('distance_trip') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'distance_trip')">{{ $t('distance_trip') }}</a>
+                  </td>
+                  <td>{{ signals.distance_trip }} cm</td>
+                </tr>
+                <tr :class="matchSearch('door_disc_front_left') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'door_disc_front_left')"
+                    >{{ $t('door_disc_front_left') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.door_disc_front_left"
+                      true-value="open"
+                      false-value="close"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('door_disc_front_right') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'door_disc_front_right')"
+                    >{{ $t('door_disc_front_right') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.door_disc_front_right"
+                      true-value="open"
+                      false-value="close"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('door_front_left') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'door_front_left')">{{ $t('door_front_left') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.door_front_left"
+                      true-value="open"
+                      false-value="close"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('door_front_right') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'door_front_right')">{{ $t('door_front_right') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.door_front_right"
+                      true-value="open"
+                      false-value="close"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('drive_mode') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'drive_mode')">{{ $t('drive_mode') }}</a>
+                  </td>
+                  <td>{{ signals.drive_mode }}</td>
+                </tr>
+                <tr :class="matchSearch('flash') ? 'hightlighted' : ''">
+                  <td>{{ $t('flash') }}</td>
+                  <td>
+                    <v-switch
+                      v-model="signals.door_front_right"
+                      true-value="open"
+                      false-value="close"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('heated_seats') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'heated_seats')">{{ $t('heated_seats') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.door_front_right"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('high_beam') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'high_beam')">{{ $t('high_beam') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.door_front_right"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('mileage') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'mileage')">{{ $t('mileage') }}</a>
+                  </td>
+                  <td>{{ signals.mileage }}</td>
+                </tr>
+                <tr :class="matchSearch('motor_control_lamp') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'motor_control_lamp')"
+                    >{{ $t('motor_control_lamp') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.motor_control_lamp"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+              </table>
+            </v-flex>
+
+            <v-flex xs12 sm6>
+              <table>
+                <tr :class="matchSearch('person_count') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'person_count')">{{ $t('person_count') }}</a>
+                  </td>
+                  <td>
+                    <v-progress-linear
+                      class="elevation-3"
+                      color="primary"
+                      height="20"
+                      :value="signals.person_count / 5 * 100"
+                    >{{ signals.person_count }}/5</v-progress-linear>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('power_consumption') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'power_consumption')"
+                    >{{ $t('power_consumption') }}</a>
+                  </td>
+                  <td>
+                    <v-progress-linear
+                      class="elevation-3"
+                      color="primary"
+                      height="20"
+                      :value="signals.power_consumption / 40 * 100"
+                    >{{ signals.power_consumption }}/40</v-progress-linear>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('pulse_sensor_steering_wheel') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'pulse_sensor_steering_wheel')"
+                    >{{ $t('pulse_sensor_steering_wheel') }}</a>
+                  </td>
+                  <td>{{ signals.pulse_sensor_steering_wheel }}</td>
+                </tr>
+                <tr :class="matchSearch('rain_sensor') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'rain_sensor')">{{ $t('rain_sensor') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.rain_sensor"
+                      true-value="rain"
+                      false-value="no_rain"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('rear_running_lights') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'rear_running_lights')"
+                    >{{ $t('rear_running_lights') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.rear_running_lights"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('side_lights') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'side_lights')">{{ $t('side_lights') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.side_lights"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('speed') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'speed')">{{ $t('speed') }}</a>
+                  </td>
+                  <td>{{ signals.speed }}</td>
+                </tr>
+                <tr :class="matchSearch('stop_lights') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'stop_lights')">{{ $t('stop_lights') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.stop_lights"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('temperature_inside') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'temperature_inside')"
+                    >{{ $t('temperature_inside') }}</a>
+                  </td>
+                  <td>{{ signals.temperature_inside }}°C</td>
+                </tr>
+                <tr :class="matchSearch('temperature_outside') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'temperature_outside')"
+                    >{{ $t('temperature_outside') }}</a>
+                  </td>
+                  <td>{{ signals.temperature_outside }}°C</td>
+                </tr>
+                <tr :class="matchSearch('tire_pressure_back_left') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'tire_pressure_back_left')"
+                    >{{ $t('tire_pressure_back_left') }}</a>
+                  </td>
+                  <td>{{ signals.tire_pressure_back_left }} bar</td>
+                </tr>
+                <tr :class="matchSearch('tire_pressure_back_right') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'tire_pressure_back_right')"
+                    >{{ $t('tire_pressure_back_right') }}</a>
+                  </td>
+                  <td>{{ signals.tire_pressure_back_right }} bar</td>
+                </tr>
+                <tr :class="matchSearch('tire_pressure_front_left') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'tire_pressure_front_left')"
+                    >{{ $t('tire_pressure_front_left') }}</a>
+                  </td>
+                  <td>{{ signals.tire_pressure_front_left }} bar</td>
+                </tr>
+                <tr :class="matchSearch('tire_pressure_front_right') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'tire_pressure_front_right')"
+                    >{{ $t('tire_pressure_front_right') }}</a>
+                  </td>
+                  <td>{{ signals.tire_pressure_front_right }} bar</td>
+                </tr>
+                <tr :class="matchSearch('trunk') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'trunk')">{{ $t('trunk') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.trunk"
+                      true-value="open"
+                      false-value="closed"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('turn_signal_left') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'turn_signal_left')">{{ $t('turn_signal_left') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.turn_signal_left"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('turn_signal_right') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'turn_signal_right')"
+                    >{{ $t('turn_signal_right') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.turn_signal_right"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('warning_blinker') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'warning_blinker')">{{ $t('warning_blinker') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.warning_blinker"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('weight') ? 'hightlighted' : ''">
+                  <td>
+                    <a @click="showPopover($event, 'weight')">{{ $t('weight') }}</a>
+                  </td>
+                  <td>{{ signals.weight }}</td>
+                </tr>
+                <tr :class="matchSearch('windshield_wipers') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'windshield_wipers')"
+                    >{{ $t('windshield_wipers') }}</a>
+                  </td>
+                  <td>
+                    <v-switch
+                      v-model="signals.windshield_wipers"
+                      true-value="on"
+                      false-value="off"
+                      readonly
+                      hide-details
+                    ></v-switch>
+                  </td>
+                </tr>
+                <tr :class="matchSearch('wiping_water_level') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'wiping_water_level')"
+                    >{{ $t('wiping_water_level') }}</a>
+                  </td>
+                  <td>
+                    <v-progress-linear
+                      class="elevation-3"
+                      color="primary"
+                      height="20"
+                      :value="signals.wiping_water_level"
+                    >{{ signals.wiping_water_level }}%</v-progress-linear>
+                  </td>
+                </tr>
+              </table>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-img
+            class="infotainment-preview"
+            :src="infotainment"
+            v-if="String(infotainmentContentType).toLowerCase().trim().startsWith('image/')"
+          />
+          <video
+            class="infotainment-preview"
+            :src="infotainment"
+            autoplay
+            controls
+            loop
+            v-if="String(infotainmentContentType).toLowerCase().trim().startsWith('video/')"
+          >Your browser does not support the video tag.</video>
+
+          <table>
+            <tr :class="matchSearch('infotainment') ? 'hightlighted' : ''">
+              <td>
+                <a @click="showPopover($event, 'infotainment')">{{ $t('infotainment') }}</a>
+              </td>
+              <td>
+                <v-switch
+                  v-model="signals.infotainment"
+                  true-value="on"
+                  false-value="off"
+                  readonly
+                  hide-details
+                ></v-switch>
+              </td>
+            </tr>
+            <tr :class="matchSearch('infotainment_volume') ? 'hightlighted' : ''">
+              <td>
+                <a
+                  @click="showPopover($event, 'infotainment_volume')"
+                >{{ $t('infotainment_volume') }}</a>
+              </td>
+              <td>
+                <v-progress-linear
+                  class="elevation-3"
+                  color="primary"
+                  height="20"
+                  :value="signals.infotainment_volume / 10 * 100"
+                >{{ signals.infotainment_volume }}/10</v-progress-linear>
+              </td>
+            </tr>
+          </table>
+          <l-map :zoom="zoom" :center="center" class="elevation-3">
+            <l-tile-layer
+              url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+              attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
+            ></l-tile-layer>
+            <l-marker
+              v-for="(marker, index) in markers"
+              :key="index"
+              :visible="true"
+              :draggable="false"
+              :lat-lng.sync="marker.position"
+              :icon="marker.icon"
+            ></l-marker>
+          </l-map>
+          <table>
+            <tr :class="matchSearch('location') ? 'hightlighted' : ''">
+              <td>
+                <a @click="showPopover($event, 'location')">{{ $t('location') }}</a>
+              </td>
+              <td>{{ signals.location }}</td>
+            </tr>
+          </table>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+    <v-container v-show="!apiKey" fluid fill-height grid-list-md text-xs-center>
+      <v-layout row wrap align-center>
+        <v-flex class="display-1">
+          First set
+          <strong>Your API key</strong> in the input field on the right side of the upper menu ...
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+    <v-menu v-model="popover.show" :position-x="popover.x" :position-y="popover.y">
+      <v-card>
+        <v-card-text>
+          {{ popover.desc }}
+          <v-divider></v-divider>values:
+          <br>
+          {{ popover.values }}
+        </v-card-text>
+      </v-card>
+    </v-menu>
+  </div>
+</template>
+
+<script>
+import classNames from "classnames";
+import { mapState } from "vuex";
+import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import { setTimeout } from "timers";
+
+const Leaflet = eval("L");
+
+export default {
+  name: "page-home",
+  components: { LMap, LTileLayer, LMarker },
+  data() {
+    return {
+      textSearch: null,
+      signals: {},
+      infotainment: null,
+      infotainmentContentType: null,
+      isApiKeyValid: null,
+      isLoadingInfotainment: false,
+      isLoadingSignals: false,
+      lastKnownLocation: null,
+      showIframe: false,
+      popover: {
+        show: false,
+        desc: null,
+        values: null
+      },
+      zoom: 15,
+      center: Leaflet.latLng(50.782117, 6.047171),
+      markers: [
+        {
+          position: Leaflet.latLng(50.782117, 6.047171),
+          icon: Leaflet.icon({
+            iconUrl: require("../assets/Map-Marker-PNG-Pic.png"),
+
+            iconSize: [25, 40], // size of the icon
+            iconAnchor: [12, 38] // point of the icon which will correspond to marker's location
+          })
+        }
+      ]
+    };
+  },
+  watch: {
+    apiKey(value) {
+      this.isApiKeyValid = null;
+
+      if (value) {
+        this.refresh(false);
+      }
+    },
+    location(value) {
+      if (value) {
+        let updateMarkers = false;
+
+        const CENTER = this.center;
+        if (CENTER) {
+          const NEW_LAT_LNG = Leaflet.latLng(value);
+
+          updateMarkers =
+            CENTER.lat !== NEW_LAT_LNG.lat || CENTER.lng !== NEW_LAT_LNG.lng;
+        } else {
+          updateMarkers = true;
+        }
+
+        if (updateMarkers) {
+          this.center = Leaflet.latLng(value);
+          this.markers.pop();
+          this.markers.push({
+            position: Leaflet.latLng(value),
+            icon: Leaflet.icon({
+              iconUrl: require("../assets/Map-Marker-PNG-Pic.png"),
+
+              iconSize: [25, 40], // size of the icon
+              iconAnchor: [12, 38] // point of the icon which will correspond to marker's location
+            })
+          });
+        }
+      } else {
+        if (!this.center) {
+          return;
+        }
+
+        this.center = value;
+        this.markers.pop();
+      }
+    }
+  },
+  methods: {
+    refresh(useCache) {
+      this.checkIfValidApiKey();
+      this.getSignals(useCache);
+      this.getInfotainment(useCache);
+
+      setTimeout(() => {
+        this.refresh(true);
+      }, 2000);
+    },
+    showPopover(e, item) {
+      e.preventDefault();
+      setTimeout(() => {
+        this.popover.show = true;
+        this.popover.title = item.replace("_", " ");
+        this.popover.desc = this.$t(`${item}_desc`);
+        this.popover.values = this.$t(`${item}_values`);
+        this.popover.x = e.clientX;
+        this.popover.y = e.clientY;
+      }, 50);
+    },
+    checkIfValidApiKey() {
+      if (!this.apiKey) return;
+
+      if (null !== this.isApiKeyValid) {
+        return;
+      }
+
+      let config = {
+        headers: {
+          "X-Api-Key": this.apiKey
+        }
+      };
+      this.axios
+        .get("/v1/vehicle", config)
+        .then(response => {
+          this.isApiKeyValid = 200 === response.status;
+        })
+        .catch(err => {
+          this.isApiKeyValid = false;
+
+          console.error("ERROR while getting '/v1/vehicle(1)': " + err);
+        });
+    },
+    getSignals(useCache) {
+      if (!this.apiKey) return;
+
+      if (this.isLoadingSignals) {
+        return;
+      }
+      this.isLoadingSignals = true;
+
+      let config = {
+        headers: {
+          "X-Api-Key": this.apiKey
+        }
+      };
+      this.axios
+        .get("/v1/vehicle/signals?cache=" + (useCache ? "1" : "0"), config)
+        .then(response => {
+          this.isLoadingSignals = false;
+
+          if (200 !== response.status) {
+            console.warn(
+              `Unexpected response code when getting '/v1/vehicle/signals(1)': ${
+                response.status
+              }`
+            );
+            return;
+          }
+
+          this.signals = response.data;
+          this.showIframe = true;
+        })
+        .catch(err => {
+          this.isLoadingSignals = false;
+
+          if (err.response) {
+            if (304 === err.response.status) {
+              return; // cached
+            }
+          }
+
+          console.error("ERROR while getting '/v1/vehicle/signals(1)': " + err);
+        });
+    },
+    getInfotainment(useCache) {
+      if (!this.apiKey) return;
+
+      if (this.isLoadingInfotainment) {
+        return;
+      }
+      this.isLoadingInfotainment = true;
+
+      let config = {
+        headers: {
+          "X-Api-Key": this.apiKey
+        },
+        responseType: "arraybuffer"
+      };
+      this.axios
+        .get("/v1/vehicle/infotainment?cache=" + (useCache ? "1" : "0"), config)
+        .then(response => {
+          this.isLoadingInfotainment = false;
+
+          if (200 !== response.status) {
+            console.warn(
+              `Unexpected response code when getting '/v1/vehicle/infotainment(1)': ${
+                response.status
+              }`
+            );
+            return;
+          }
+
+          let contentType = response.headers["content-type"];
+          let data = `data:${contentType};base64,${new Buffer(
+            response.data,
+            "binary"
+          ).toString("base64")}`;
+
+          if (this.infotainment !== data) {
+            this.infotainmentContentType = contentType;
+            this.infotainment = data;
+          }
+        })
+        .catch(err => {
+          this.isLoadingInfotainment = false;
+
+          if (err.response) {
+            if (304 === err.response.status) {
+              return; // cached
+            }
+          }
+
+          console.error(
+            "ERROR while getting '/v1/vehicle/infotainment(1)': " + err
+          );
+        });
+    },
+    matchSearch(id) {
+      const ID_FOR_SEARCH = id
+        .toLowerCase()
+        .replace("_", " ")
+        .trim();
+      const SEARCH = this.textSearch;
+
+      if (SEARCH) {
+        return SEARCH.toLowerCase()
+          .replace(";", ",") // only use , separators
+          .trim()
+          .split(",") // extract words
+          .map(s => s.trim())
+          .filter(s => "" !== s)
+          .some(
+            // at least one word should match
+            s => ID_FOR_SEARCH.indexOf(s) !== -1
+          );
+      }
+
+      return false;
+    }
+  },
+  computed: {
+    classes() {
+      return classNames(this.$options.name);
+    },
+    location() {
+      let lat = 50.782117;
+      let lon = 6.047171;
+      if (this.signals.location) {
+        [lat, lon] = this.signals.location.split(",");
+        lat = Number(lat);
+        lon = Number(lon);
+      }
+      return [lat, lon];
+    },
+    ...mapState(["apiKey"])
+  },
+  beforeMount() {
+    this.refresh(false);
+  }
+};
+</script>
+
+<style scoped lang="scss">
+@import "~leaflet/dist/leaflet.css";
+@import "../styles/variables";
+@import "../styles/functions";
+
+.page-home {
+  table {
+    //width: 100%;
+    border-collapse: collapse;
+
+    tr {
+      border-top: 1px solid #eee;
+
+      &.hightlighted {
+        background-color: rgba($primary-one, $lighter-3);
+      }
+
+      td {
+        width: 50%;
+        height: 30px;
+        padding: 2px 8px;
+        vertical-align: middle;
+
+        a {
+          color: black;
+
+          &:hover {
+            cursor: help;
+          }
+        }
+      }
+    }
+  }
+
+  .v-input {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  /deep/ .v-progress-linear {
+    margin: 0;
+
+    .v-progress-linear__content {
+      color: $white;
+      padding: 0 5px;
+    }
+  }
+
+  img {
+    width: 100%;
+  }
+
+  .infotainment-preview {
+    width: 600px;
+    max-width: 100%;
+  }
+
+  .vue2leaflet-map {
+    height: 300px;
+    width: 600px;
+    max-width: 100%;
+  }
+}
+</style>

@@ -1,0 +1,50 @@
+/**
+ * This file is part of the vehicle-api distribution (https://github.com/egodigital/hackathon/vehicle-api).
+ * Copyright (c) e.GO Digital GmbH, Aachen, Germany
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// Basics
+$white:                         #fff;
+$black:                         #000;
+
+$lighter-1:                     0.7;
+$lighter-2:                     0.5;
+$lighter-3:                     0.3;
+
+$primary-one:                   #009fe3;
+$primary-two:                   #000000;
+$secondary-one:                 #006298;
+$secondary-two:                 #00857d;
+$secondary-three:               #e87722;
+$secondary-four:                #eaaa00;
+$background-one:                #e5f5fc;
+$background-two:                #d0d0d0;
+
+$destinction:                   #ba0c2f;
+
+// App
+$footer-background:             #373a3c;
+
+:export {
+    primaryOne: $primary-one;
+    primaryTwo: $primary-two;
+    secondaryOne: $secondary-one;
+    secondaryTwo: $secondary-two;
+    secondaryThree: $secondary-three;
+    secondaryFour: $secondary-four;
+    backgroundOne: $background-one;
+    backgroundTwo: $background-two;
+    destinction: $destinction;
+}
