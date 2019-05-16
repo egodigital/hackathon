@@ -81,6 +81,15 @@ export class Controller extends ApiControllerBase {
         const USE_CACHE = '1' === egoose.toStringSafe(req.query.cache)
             .trim();
 
+        const IS_INFOTAINMENT_OFF = 'on' !== egoose.normalizeString(
+            await this._getVehicleSignal(req, 'infotainment')
+        );
+        if (IS_INFOTAINMENT_OFF) {
+            return res.header('Content-type', DEFAULT_SCREEN_MIME).send(
+                await this._loadResource('infotainment_off.png')
+            );
+        }
+
         const { contentType, screen } = await this._getImageScreen(req.vehicle.doc);
 
         return res.header('Content-type', contentType).send(

@@ -53,6 +53,14 @@ export interface Vehicle {
 }
 
 
+/**
+ * The (storage) key for storing all (vehicle) signals.
+ */
+export const KEY_SIGNALS = 'signals';
+/**
+ * A symbol, which indicates if something has not been found.
+ */
+export const NOT_FOUND = Symbol('NOT_FOUND');
 const VEHICLE_CACHE_STORAGE: {
     [vehicleId: string]: { [key: string]: any }
 } = {};
@@ -178,6 +186,29 @@ export abstract class ApiControllerBase extends ControllerBase {
         return await jimp.read(
             image
         );
+    }
+
+    /**
+     * Returns a vehicle signal.
+     *
+     * @param {ApiRequest} req The API request.
+     * @param {string} name The name of the signal.
+     *
+     * @return {Promise<TValue>} The promise with the value.
+     */
+    public async _getVehicleSignal<TValue = any>(req: ApiRequest, name: string): Promise<TValue> {
+        name = egoose.normalizeString(name);
+
+        const ALL_SIGNALS: any = await req.vehicle
+            .cache.get(KEY_SIGNALS, NOT_FOUND);
+        if (_.isSymbol(ALL_SIGNALS)) {
+            // not in cache
+
+            return await req.vehicle
+                .signals._get(name);
+        }
+
+        return ALL_SIGNALS[name];
     }
 
     /** @inheritdoc */

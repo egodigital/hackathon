@@ -21,11 +21,7 @@ import * as express from 'express';
 import * as vehicles from '../../../../vehicles';
 import { Response } from 'express';
 import { DELETE, GET, PATCH } from '@egodigital/express-controllers';
-import { ApiControllerBase, ApiRequest } from '../_share';
-
-
-const KEY_SIGNALS = 'signals';
-const NOT_FOUND = Symbol('NOT_FOUND');
+import { ApiControllerBase, ApiRequest, KEY_SIGNALS, NOT_FOUND } from '../_share';
 
 
 /**
