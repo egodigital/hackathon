@@ -1,0 +1,2 @@
+GET http://localhost/api/admin/vehicles
+X-Api-Key: ego

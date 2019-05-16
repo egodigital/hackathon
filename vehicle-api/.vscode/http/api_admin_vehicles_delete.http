@@ -1,0 +1,2 @@
+DELETE http://localhost/api/admin/vehicles/05091979-2309-1979-0509-197923091979
+X-Api-Key: ego

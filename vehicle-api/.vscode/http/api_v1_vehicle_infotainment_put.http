@@ -1,0 +1,5 @@
+PUT http://localhost/api/v1/vehicle/infotainment?x=300&y=600
+X-Api-Key: 05091979-2309-1979-0509-197923091979
+Content-Type: application/octet-stream
+
+< /Users/marcelkloubert/Downloads/41436235.png
