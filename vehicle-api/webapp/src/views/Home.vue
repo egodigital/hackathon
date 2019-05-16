@@ -324,8 +324,8 @@
                       class="elevation-3"
                       color="primary"
                       height="20"
-                      :value="signals.person_count / 5 * 100"
-                    >{{ signals.person_count }}/5</v-progress-linear>
+                      :value="signals.person_count / 4 * 100"
+                    >{{ signals.person_count }}/4</v-progress-linear>
                   </td>
                 </tr>
                 <tr :class="matchSearch('power_consumption') ? 'hightlighted' : ''">
@@ -570,6 +570,7 @@
               v-if="String(infotainmentContentType).toLowerCase().trim().startsWith('image/')"
             />
             <video
+              id="ego-infotainment-video-preview"
               class="infotainment-preview"
               :src="infotainment"
               autoplay
@@ -818,6 +819,10 @@ export default {
 
           this.signals = response.data;
           this.showIframe = true;
+
+          if (response.data) {
+            this.setInfotainmentVolume(response.data.infotainment_volume);
+          }
         })
         .catch(err => {
           this.isLoadingSignals = false;
@@ -905,6 +910,21 @@ export default {
       }
 
       return false;
+    },
+    setInfotainmentVolume(signalValue) {
+      if (isNaN(signalValue)) {
+        return;
+      }
+
+      const ELEMENT = document.getElementById('ego-infotainment-video-preview');
+      if (!ELEMENT) {
+        return;
+      }
+
+      const ELEMENT_VALUE = signalValue / 10.0;
+      if (ELEMENT.volume !== ELEMENT_VALUE) {
+        ELEMENT.volume = ELEMENT_VALUE;
+      }
     }
   },
   computed: {
@@ -986,7 +1006,7 @@ export default {
     padding-top: 60%;
     width: 600px;
     max-width: 100%;
-    background-image: url("../assets/Infotainmentsystem_maske.png");
+    background-image: url("../assets/Infotainmentsystem_mask.png");
     background-size: contain;
 
     .infotainment-preview {

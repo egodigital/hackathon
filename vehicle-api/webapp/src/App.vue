@@ -51,7 +51,6 @@ export default {
       this.setApiKey(localStorage.apiKey);
     }
     if (localStorage.darkMode && localStorage.darkMode == "true") {
-      console.log("TEST");
       this.toggleDarkMode();
     }
   }
