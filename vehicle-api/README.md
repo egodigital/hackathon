@@ -43,7 +43,7 @@ X-Api-Key: <ADMIN_API_KEY>
 HTTP/1.1 200 OK
 X-Powered-By: Vehicle API by e.GO
 Access-Control-Allow-Origin: *
-Access-Control-Allow-Headers: *,Content-Type,Authorization
+Access-Control-Allow-Headers: *,Content-Type,X-Api-Key
 Access-Control-Allow-Methods: *,GET,POST,PUT,DELETE,PATCH
 X-Tm-Mk: 1979-09-05 23:09
 Last-Modified: Thu, 09 May 2019 17:46:16 GMT
@@ -75,7 +75,7 @@ X-Api-Key: <ADMIN_API_KEY>
 HTTP/1.1 200 OK
 X-Powered-By: Vehicle API by e.GO
 Access-Control-Allow-Origin: *
-Access-Control-Allow-Headers: *,Content-Type,Authorization
+Access-Control-Allow-Headers: *,Content-Type,X-Api-Key
 Access-Control-Allow-Methods: *,GET,POST,PUT,DELETE,PATCH
 X-Tm-Mk: 1979-09-05 23:09
 Last-Modified: Thu, 09 May 2019 17:47:41 GMT
@@ -110,7 +110,7 @@ X-Api-Key: <ADMIN_API_KEY>
 HTTP/1.1 204 No Content
 X-Powered-By: Vehicle API by e.GO
 Access-Control-Allow-Origin: *
-Access-Control-Allow-Headers: *,Content-Type,Authorization
+Access-Control-Allow-Headers: *,Content-Type,X-Api-Key
 Access-Control-Allow-Methods: *,GET,POST,PUT,DELETE,PATCH
 X-Tm-Mk: 1979-09-05 23:09
 Last-Modified: Thu, 09 May 2019 17:50:47 GMT
