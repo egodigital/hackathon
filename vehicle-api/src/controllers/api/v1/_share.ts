@@ -217,14 +217,25 @@ export abstract class ApiControllerBase extends ControllerBase {
             // auth request
             async (req: Request, res: express.Response, next: express.NextFunction) => {
                 try {
-                    const X_API_KEY = egoose.normalizeString(
+                    // first check if explicitly defined
+                    // in HTTP header
+                    let apiKey = egoose.normalizeString(
                         req.headers['x-api-key']
                     );
-                    if ('' !== X_API_KEY) {
+                    if ('' === apiKey) {
+                        // now try environment variable
+                        // API_KEY
+
+                        apiKey = egoose.normalizeString(
+                            process.env.API_KEY
+                        );
+                    }
+
+                    if ('' !== apiKey) {
                         const VEHICLE_DOC = await this._withDatabase(async (db) => {
                             return await db.Vehicles
                                 .findOne({
-                                    'uuid': X_API_KEY,
+                                    'uuid': apiKey,
                                 }).exec();
                         });
 

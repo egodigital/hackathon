@@ -31,6 +31,10 @@ interface ScreenData {
 
 
 const DEFAULT_SCREEN_MIME = 'image/png';
+const DEFAULT_SCREEN_SIZE = {
+    height: 726,
+    width: 1439,
+};
 
 
 /**
@@ -324,7 +328,7 @@ export class Controller extends ApiControllerBase {
         }
 
         const IMAGE = await jimp.read(BODY);
-        SCREEN.resize(800, 400)
+        SCREEN.resize(DEFAULT_SCREEN_SIZE.width, DEFAULT_SCREEN_SIZE.height)
             .composite(IMAGE, x, y);
 
         const IMAGE_DATA = await this._updateScreenImage(SCREEN, req.vehicle.doc);
@@ -535,8 +539,14 @@ export class Controller extends ApiControllerBase {
     }
 
     private async _updateScreenImage(screen: jimp, vehicle: database.VehiclesDocument): Promise<Buffer> {
-        if (800 !== screen.getWidth() || 400 !== screen.getHeight()) {
-            screen.resize(800, 400);
+        if (
+            DEFAULT_SCREEN_SIZE.width !== screen.getWidth() ||
+            DEFAULT_SCREEN_SIZE.height !== screen.getHeight()
+        ) {
+            screen.resize(
+                DEFAULT_SCREEN_SIZE.width,
+                DEFAULT_SCREEN_SIZE.height,
+            );
         }
 
         const IMAGE_DATA = await screen.getBufferAsync(DEFAULT_SCREEN_MIME);
