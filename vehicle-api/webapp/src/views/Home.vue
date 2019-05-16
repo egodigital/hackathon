@@ -563,19 +563,21 @@
           </v-layout>
         </v-flex>
         <v-flex xs12 sm6 md4>
-          <v-img
-            class="infotainment-preview"
-            :src="infotainment"
-            v-if="String(infotainmentContentType).toLowerCase().trim().startsWith('image/')"
-          />
-          <video
-            class="infotainment-preview"
-            :src="infotainment"
-            autoplay
-            controls
-            loop
-            v-if="String(infotainmentContentType).toLowerCase().trim().startsWith('video/')"
-          >Your browser does not support the video tag.</video>
+          <div class="infotainment-wrapper">
+            <v-img
+              class="infotainment-preview"
+              :src="infotainment"
+              v-if="String(infotainmentContentType).toLowerCase().trim().startsWith('image/')"
+            />
+            <video
+              class="infotainment-preview"
+              :src="infotainment"
+              autoplay
+              controls
+              loop
+              v-if="String(infotainmentContentType).toLowerCase().trim().startsWith('video/')"
+            >Your browser does not support the video tag.</video>
+          </div>
 
           <table>
             <tr :class="matchSearch('infotainment') ? 'hightlighted' : ''">
@@ -979,9 +981,22 @@ export default {
     width: 100%;
   }
 
-  .infotainment-preview {
+  .infotainment-wrapper {
+    position: relative;
+    padding-top: 60%;
     width: 600px;
     max-width: 100%;
+    background-image: url("../assets/Infotainmentsystem_maske.png");
+    background-size: contain;
+
+    .infotainment-preview {
+      position: absolute;
+      top: 11.5%;
+      left: 11.5%;
+      right: 6.8%;
+      bottom: 19.5%;
+      border-radius: 3px;
+    }
   }
 
   .vue2leaflet-map {
