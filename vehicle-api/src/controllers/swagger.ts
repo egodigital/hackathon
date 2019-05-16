@@ -55,12 +55,12 @@ export class Controller extends ControllerBase {
                     contact: {
                         name: 'e.GO Digital GmbH',
                         email: "hello@e-go-digital.com",
-                        url: 'https://hackathon.e-go-digital.com/',
+                        url: 'https://github.com/egodigital/hackathon/tree/master/vehicle-api',
                     },
                     description: "Describes all endpoints of the vehicle API.",
                     license: {
                         name: 'GPL 3.0',
-                        url: 'https://en.wikipedia.org/wiki/GNU_General_Public_License',
+                        url: 'https://github.com/egodigital/hackathon/blob/master/vehicle-api/LICENSE',
                     },
                     title: PACKAGE_JSON.displayName,
                     version: PACKAGE_JSON.version,
@@ -70,7 +70,7 @@ export class Controller extends ControllerBase {
                     'v1': 'Version 1',
                 },
             },
-            title: 'Vehicle API',
+            title: 'Vehicle API by e.GO',
         }, this.__app);
     }
 }
