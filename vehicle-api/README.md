@@ -23,6 +23,12 @@ docker-compose up
 
 The testable Swagger documentation should be available at: http://localhost/swagger
 
+### Demo application
+
+To access the demo application, simply open http://localhost:8080/ in your web browser.
+
+The [admin](#admin) section describes, how to create one or more test vehicles for the API and web application.
+
 ## Admin
 
 Define an admin API key in `ADMIN_API_KEY` environment variable.
