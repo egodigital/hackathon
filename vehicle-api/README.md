@@ -1,4 +1,4 @@
-# Verhicle API
+# Vehicle API
 
 ## Docker
 
@@ -8,7 +8,6 @@ Execute the following command from project's root directory:
 
 ```bash
 docker build -t vehicle-api .
-docker tag vehicle-api egodigital.azurecr.io/vehicle-api
 ```
 
 ### Run
