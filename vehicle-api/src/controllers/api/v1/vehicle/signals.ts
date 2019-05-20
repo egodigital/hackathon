@@ -111,7 +111,7 @@ export class Controller extends ApiControllerBase {
      *         name: ListOfVehicleSignalsToUpdate
      *         required: true
      *         schema:
-     *           $ref: '#/definitions/VehicleSignalList'
+     *           $ref: '#/definitions/VehicleSignalListForPatchExample'
      *         description: A list of one or more value signals to update.
      *     responses:
      *       '200':

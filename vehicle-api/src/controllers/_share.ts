@@ -154,7 +154,7 @@ import { ControllerBase as ControllerBase_ExpressControllers, RequestErrorHandle
  *     infotainment:
  *       type: string
  *       description: ''
- *       default: 'on'
+ *       default: 'off'
  *     infotainment_volume:
  *       type: number
  *       default: 8
@@ -214,10 +214,10 @@ import { ControllerBase as ControllerBase_ExpressControllers, RequestErrorHandle
  *       default: closed
  *     turn_signal_left:
  *       type: string
- *       default: 'on'
+ *       default: 'off'
  *     turn_signal_right:
  *       type: string
- *       default: 'on'
+ *       default: 'off'
  *     warning_blinker:
  *       type: string
  *       default: 'off'
@@ -232,6 +232,22 @@ import { ControllerBase as ControllerBase_ExpressControllers, RequestErrorHandle
  *       default: 100
  */
 
+/**
+ * @swaggerDefinition
+ *
+ * VehicleSignalListForPatchExample:
+ *   type: object
+ *   properties:
+ *     location:
+ *       type: string
+ *       default: '51,7'
+ *     turn_signal_left:
+ *       type: string
+ *       default: 'on'
+ *     turn_signal_right:
+ *       type: string
+ *       default: 'on'
+ */
 
 /**
  * @swaggerDefinition
