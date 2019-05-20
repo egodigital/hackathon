@@ -1,7 +1,7 @@
 {
   "name": "ego-vehicle-api",
   "displayName": "Vehicle API",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "REST API, that simulates a vehicle, like the e.GO Life.",
   "main": "dist/index.js",
   "scripts": {
@@ -24,8 +24,8 @@
   "author": "e.GO Digital GmbH, Aachen, Germany",
   "license": "GPL-3.0",
   "dependencies": {
-    "@egodigital/egoose": "^6.3.0",
-    "@egodigital/express-controllers": "^1.2.0",
+    "@egodigital/egoose": "^6.4.0",
+    "@egodigital/express-controllers": "^2.0.0",
     "express": "^4.17.0",
     "fs-extra": "^7.0.1",
     "jimp": "^0.6.4",
