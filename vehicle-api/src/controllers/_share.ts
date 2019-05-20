@@ -85,17 +85,151 @@ import { ControllerBase as ControllerBase_ExpressControllers, RequestErrorHandle
  * VehicleSignalList:
  *   type: object
  *   properties:
+ *     brake_fluid_level:
+ *       type: number
+ *       default: 100
+ *     battery_charging:
+ *       type: string
+ *       default: 'no'
+ *     battery_charging_current:
+ *       type: number
+ *       default: 16
+ *     battery_health:
+ *       type: number
+ *       default: 100
+ *     battery_loading_capacity:
+ *       type: number
+ *       default: 11
+ *     battery_state_of_charge:
+ *       type: number
+ *       default: 100
+ *     calculated_remaining_distance:
+ *       type: number
+ *       default: 150
+ *     central_locking_system:
+ *       type: string
+ *       default: closed
+ *     distance_to_object_back:
+ *       type: number
+ *       default: -1
+ *     distance_to_object_bottom:
+ *       type: number
+ *       default: 20
+ *     distance_to_object_front:
+ *       type: number
+ *       default: -1
+ *     distance_to_object_left:
+ *       type: number
+ *       default: -1
+ *     distance_to_object_right:
+ *       type: number
+ *       default: -1
+ *     distance_trip:
+ *       type: number
+ *       default: 0
+ *     door_disc_front_left:
+ *       type: string
+ *       default: closed
+ *     door_disc_front_right:
+ *       type: string
+ *       default: closed
+ *     door_front_left:
+ *       type: string
+ *       default: closed
+ *     door_front_right:
+ *       type: string
+ *       default: closed
+ *     drive_mode:
+ *       type: string
+ *       default: eco
+ *     flash:
+ *       type: string
+ *       default: 'off'
+ *     heated_seats:
+ *       type: string
+ *       default: 'off'
+ *     high_beam:
+ *       type: string
+ *       default: 'off'
+ *     infotainment:
+ *       type: string
+ *       description: ''
+ *       default: 'on'
+ *     infotainment_volume:
+ *       type: number
+ *       default: 8
+ *     location:
+ *       type: string
+ *       default: '51,7'
+ *     mileage:
+ *       type: number
+ *       default: 0
+ *     motor_control_lamp:
+ *       type: string
+ *       default: 'off'
+ *     person_count:
+ *       type: number
+ *       default: 0
+ *     pulse_sensor_steering_wheel:
+ *       type: number
+ *       default: -1
+ *     power_consumption:
+ *       type: number
+ *       default: 0
+ *     rain_sensor:
+ *       type: string
+ *       default: no_rain
+ *     rear_running_lights:
+ *       type: string
+ *       default: 'off'
+ *     side_lights:
+ *       type: string
+ *       default: 'off'
+ *     speed:
+ *       type: number
+ *       default: 0
+ *     stop_lights:
+ *       type: string
+ *       default: 'off'
+ *     temperature_inside:
+ *       type: number
+ *       default: 20
+ *     temperature_outside:
+ *       type: number
+ *       default: 10
+ *     tire_pressure_back_left:
+ *       type: number
+ *       default: 3
+ *     tire_pressure_back_right:
+ *       type: number
+ *       default: 3
+ *     tire_pressure_front_left:
+ *       type: number
+ *       default: 3
+ *     tire_pressure_front_right:
+ *       type: number
+ *       default: 3
+ *     trunk:
+ *       type: string
+ *       default: closed
  *     turn_signal_left:
  *       type: string
- *       enum:
- *         - off
- *         - on
- *       description: The value of the turn signal (left).
- *       example: 'on'
+ *       default: 'on'
  *     turn_signal_right:
  *       type: string
- *       description: The value of the turn signal (right).
- *       example: 'on'
+ *       default: 'on'
+ *     warning_blinker:
+ *       type: string
+ *       default: 'off'
+ *     weight:
+ *       type: number
+ *       default: 1200
+ *     windshield_wipers:
+ *       type: string
+ *       default: 'off'
+ *     wiping_water_level:
+ *       type: number
+ *       default: 100
  */
 
 
