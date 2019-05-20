@@ -170,6 +170,7 @@ export class Controller extends ApiControllerBase {
      *       - image/jpeg
      *       - image/png
      *       - image/tiff
+     *       - text/plain
      *       - video/mp4
      *       - video/mpeg
      *       - video/ogg
@@ -190,7 +191,7 @@ export class Controller extends ApiControllerBase {
      *       '200':
      *         description: Operation was successful.
      *       '400':
-     *         description: Data type must be image or video.
+     *         description: Data type must be image or video or a HTTP URL.
      *       '401':
      *         description: Wrong API key
      *       '500':
@@ -198,16 +199,44 @@ export class Controller extends ApiControllerBase {
      */
     @POST('/')
     public async set_vehicle_infotainment(req: ApiRequest, res: Response) {
-        let newScreen = await egoose.readAll(req);
-        if (!newScreen.length) {
-            newScreen = null;
-        }
-
         let screenMime = egoose.normalizeString(
             req.headers['content-type']
         );
         if ('' === screenMime) {
             screenMime = DEFAULT_SCREEN_MIME;
+        }
+
+        let newScreen = await egoose.readAll(req);
+
+        if ('text/plain' === screenMime) {
+            const URL = newScreen.toString('utf8')
+                .trim();
+            if (URL.startsWith('https://')) {
+                const RESPONSE = await egoose.GET(
+                    URL,
+                    {
+                        timeout: 5000,
+                    }
+                );
+
+                if (200 !== RESPONSE.code) {
+                    throw new Error(`Download returned unexpected response: [${RESPONSE.code}] '${RESPONSE.status}'`);
+                }
+
+                screenMime = egoose.normalizeString(
+                    RESPONSE.headers['content-type']
+                );
+                newScreen = await RESPONSE.readBody();
+            } else {
+                // invalid URL
+
+                return res.status(400)
+                    .send();
+            }
+        }
+
+        if (!newScreen.length) {
+            newScreen = null;
         }
 
         if (

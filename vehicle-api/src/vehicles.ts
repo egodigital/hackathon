@@ -187,7 +187,8 @@ export function VehicleSignal(opts: VehicleSignalOptions): DecoratorFunction {
                     )
                 );
 
-                return VALUE;
+                return 'NaN' === egoose.toStringSafe(VALUE) ?
+                    'NaN' : VALUE;
             }
         };
 
@@ -340,7 +341,7 @@ function transformToNumber(): VehicleSignalValueTransformer {
         );
 
         return isNaN(value) ?
-            null : value;
+            Number.NaN : value;
     };
 }
 
@@ -352,23 +353,33 @@ function validateArray(...valueList: any[]): VehicleSignalValueValidator {
     };
 }
 
-function validateNumber(min?: number, max?: number): VehicleSignalValueValidator {
+function validateNumber(allowNaN: boolean, min?: number, max?: number): VehicleSignalValueValidator {
     return (value, name) => {
-        const NUMBER = parseFloat(
+        let num = parseFloat(
             egoose.toStringSafe(value).trim()
         );
-        if (isNaN(NUMBER)) {
-            return `'${name}' is not a number`;
+        if (isNaN(num)) {
+            num = Number.NaN;
+        }
+
+        if (allowNaN) {
+            if (isNaN(num)) {
+                return;
+            }
+        } else {
+            if (isNaN(num)) {
+                return `'${name}' is not a number`;
+            }
         }
 
         if (!isNaN(min)) {
-            if (min > NUMBER) {
+            if (min > num) {
                 return `The minimum value of '${name}' must be ${min}`;
             }
         }
 
         if (!isNaN(max)) {
-            if (max < NUMBER) {
+            if (max < num) {
                 return `The maximum value of '${name}' must be ${max}`;
             }
         }
@@ -411,7 +422,7 @@ function validateOnOff(): VehicleSignalValueValidator {
 }
 
 function validatePercentage(): VehicleSignalValueValidator {
-    return validateNumber(0, 100);
+    return validateNumber(false, 0, 100);
 }
 
 function validateOpenClosed(): VehicleSignalValueValidator {
@@ -524,20 +535,13 @@ export class VehicleSignalManager {
 
 
     @VehicleSignal({
-        validator: validatePercentage(),
-        transformer: transformToNumber(),
-        default: DEFAULT_PERCENTAGE,
-    })
-    public brake_fluid_level() { /* brake fluid level */ }
-
-    @VehicleSignal({
         validator: validateArray('yes', 'no'),
         default: 'no',
     })
     public battery_charging() { /* battery charging */ }
 
     @VehicleSignal({
-        validator: validateNumber(0),
+        validator: validateNumber(false, 0),
         transformer: transformToNumber(),
         default: 16,
     })
@@ -551,7 +555,7 @@ export class VehicleSignalManager {
     public battery_health() { /* battery health */ }
 
     @VehicleSignal({
-        validator: validateNumber(0),
+        validator: validateNumber(false, 0),
         transformer: transformToNumber(),
         default: 11,
     })
@@ -565,7 +569,14 @@ export class VehicleSignalManager {
     public battery_state_of_charge() { /* battery state of charge */ }
 
     @VehicleSignal({
-        validator: validateNumber(0),
+        validator: validatePercentage(),
+        transformer: transformToNumber(),
+        default: DEFAULT_PERCENTAGE,
+    })
+    public brake_fluid_level() { /* brake fluid level */ }
+
+    @VehicleSignal({
+        validator: validateNumber(false, 0),
         transformer: transformToNumber(),
         default: 150,
     })
@@ -578,42 +589,42 @@ export class VehicleSignalManager {
     public central_locking_system() { /* central locking system */ }
 
     @VehicleSignal({
-        validator: validateNumber(-1),
+        validator: validateNumber(true, 0),
         transformer: transformToNumber(),
-        default: -1,
+        default: Number.NaN,
     })
     public distance_to_object_back() { /* distance to back object */ }
 
     @VehicleSignal({
-        validator: validateNumber(0, 30),
+        validator: validateNumber(false, 0, 30),
         transformer: transformToNumber(),
         default: 20,
     })
     public distance_to_object_bottom() { /* distance to buttom object */ }
 
     @VehicleSignal({
-        validator: validateNumber(-1),
+        validator: validateNumber(true, 0),
         transformer: transformToNumber(),
-        default: -1,
+        default: Number.NaN,
     })
     public distance_to_object_front() { /* distance to front object */ }
 
     @VehicleSignal({
-        validator: validateNumber(-1),
+        validator: validateNumber(true, 0),
         transformer: transformToNumber(),
-        default: -1,
+        default: Number.NaN,
     })
     public distance_to_object_left() { /* distance to left object */ }
 
     @VehicleSignal({
-        validator: validateNumber(-1),
+        validator: validateNumber(true, 0),
         transformer: transformToNumber(),
-        default: -1,
+        default: Number.NaN,
     })
     public distance_to_object_right() { /* distance to right object */ }
 
     @VehicleSignal({
-        validator: validateNumber(0),
+        validator: validateNumber(false, 0),
         transformer: transformToNumber(),
         default: 0,
     })
@@ -674,7 +685,7 @@ export class VehicleSignalManager {
     public infotainment() { /* infotainment */ }
 
     @VehicleSignal({
-        validator: validateNumber(0, 10),
+        validator: validateNumber(false, 0, 10),
         transformer: transformToInt(),
         default: 5,
     })
@@ -687,7 +698,7 @@ export class VehicleSignalManager {
     public location() { /* geo location */ }
 
     @VehicleSignal({
-        validator: validateNumber(0),
+        validator: validateNumber(false, 0),
         transformer: transformToInt(),
         default: 0,
     })
@@ -700,21 +711,21 @@ export class VehicleSignalManager {
     public motor_control_lamp() { /* motor control lamp */ }
 
     @VehicleSignal({
-        validator: validateNumber(0, 4),
+        validator: validateNumber(false, 0, 4),
         transformer: transformToInt(),
         default: 0,
     })
     public person_count() { /* number of persons in car */ }
 
     @VehicleSignal({
-        validator: validateNumber(-1, 300),
+        validator: validateNumber(true, 0, 300),
         transformer: transformToNumber(),
-        default: -1,
+        default: Number.NaN,
     })
     public pulse_sensor_steering_wheel() { /* pulse sensor steering wheel */ }
 
     @VehicleSignal({
-        validator: validateNumber(0, 40),
+        validator: validateNumber(false, 0, 40),
         transformer: transformToNumber(),
         default: 0,
     })
@@ -739,7 +750,7 @@ export class VehicleSignalManager {
     public side_lights() { /* sidelights */ }
 
     @VehicleSignal({
-        validator: validateNumber(0, 200),
+        validator: validateNumber(false, 0, 200),
         transformer: transformToInt(),
         default: 0,
     })
@@ -752,42 +763,42 @@ export class VehicleSignalManager {
     public stop_lights() { /* stop lights */ }
 
     @VehicleSignal({
-        validator: validateNumber(-100, 100),
+        validator: validateNumber(false, -100, 100),
         transformer: transformToInt(),
         default: 20,
     })
     public temperature_inside() { /* temperature inside */ }
 
     @VehicleSignal({
-        validator: validateNumber(-100, 100),
+        validator: validateNumber(false, -100, 100),
         transformer: transformToInt(),
         default: 10,
     })
     public temperature_outside() { /* temperature outside */ }
 
     @VehicleSignal({
-        validator: validateNumber(0, 5),
+        validator: validateNumber(false, 0, 5),
         transformer: transformToNumber(),
         default: 3,
     })
     public tire_pressure_back_left() { /* tire pressure (back left) */ }
 
     @VehicleSignal({
-        validator: validateNumber(0, 5),
+        validator: validateNumber(false, 0, 5),
         transformer: transformToNumber(),
         default: 3,
     })
     public tire_pressure_back_right() { /* tire pressure (back right) */ }
 
     @VehicleSignal({
-        validator: validateNumber(0, 5),
+        validator: validateNumber(false, 0, 5),
         transformer: transformToNumber(),
         default: 3,
     })
     public tire_pressure_front_left() { /* tire pressure (front left) */ }
 
     @VehicleSignal({
-        validator: validateNumber(0, 5),
+        validator: validateNumber(false, 0, 5),
         transformer: transformToNumber(),
         default: 3,
     })
@@ -818,7 +829,7 @@ export class VehicleSignalManager {
     public warning_blinker() { /* warning blinker */ }
 
     @VehicleSignal({
-        validator: validateNumber(1200),
+        validator: validateNumber(false, 1200),
         transformer: transformToInt(),
         default: 1200,
     })
