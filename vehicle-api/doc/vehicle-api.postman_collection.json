@@ -1,0 +1,770 @@
+{
+	"info": {
+		"_postman_id": "80d99f76-1db2-43b7-b062-d244ab34c799",
+		"name": "vehicle-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST /api/admin/vehicles",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "ego"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/admin/vehicles/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"admin",
+						"vehicles",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/admin/vehicles",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Api-Key",
+						"value": "ego",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/admin/vehicles/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"admin",
+						"vehicles",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/v1/vehicle",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/v1/vehicle/events",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/events",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/v1/vehicle/infotainment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/infotainment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"infotainment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/v1/vehicle/infotainment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "text/plain",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "https://zippy.gfycat.com/CavernousWellwornArgali.gif"
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/infotainment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"infotainment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/vehicle/infotainment",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/infotainment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"infotainment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/vehicle/logs/signals",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/logs/signals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"logs",
+						"signals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/v1/vehicle/logs/signals",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/logs/signals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"logs",
+						"signals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/vehicle/events",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/events",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/vehicle/signals",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/signals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"signals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /api/v1/vehicle/signals",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"infotainment\":\"on\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/signals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"signals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/vehicle/state",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/state",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"state"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/v1/vehicle/state",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/state",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"state"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /api/v1/vehicle/state",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tm\": 5979\n}"
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/signals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"signals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/v1/vehicle/signals",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/signals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"signals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/vehicle",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH /api/v1/vehicle",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"My awesome e.GO Life\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/admin/vehicles/{uuid}",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "ego"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/api/admin/vehicles/e99219ec-ecbb-4fe1-9eb2-d6bd77f0e8ae",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"admin",
+						"vehicles",
+						"e99219ec-ecbb-4fe1-9eb2-d6bd77f0e8ae"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
