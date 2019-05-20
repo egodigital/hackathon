@@ -268,6 +268,111 @@
 			"response": []
 		},
 		{
+			"name": "PUT /api/v1/vehicle/infotainment/text",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "text/plain",
+						"type": "text"
+					},
+					{
+						"key": "black",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "size",
+						"value": "128",
+						"type": "text"
+					},
+					{
+						"key": "x",
+						"value": "50",
+						"type": "text"
+					},
+					{
+						"key": "y",
+						"value": "20",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "test"
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/infotainment/text",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"infotainment",
+						"text"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /api/v1/vehicle/infotainment",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "image/png",
+						"type": "text"
+					},
+					{
+						"key": "x",
+						"value": "50",
+						"type": "text"
+					},
+					{
+						"key": "y",
+						"value": "20",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/vehicle/infotainment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"infotainment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GET /api/v1/vehicle/infotainment",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
