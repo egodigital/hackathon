@@ -87,151 +87,214 @@ import { ControllerBase as ControllerBase_ExpressControllers, RequestErrorHandle
  *   properties:
  *     brake_fluid_level:
  *       type: number
+ *       example: 95
  *       default: 100
  *     battery_charging:
  *       type: string
+ *       example: 'yes'
  *       default: 'no'
  *     battery_charging_current:
  *       type: number
+ *       example: 15
  *       default: 16
  *     battery_health:
  *       type: number
+ *       example: 99
  *       default: 100
  *     battery_loading_capacity:
  *       type: number
+ *       example: 10
  *       default: 11
  *     battery_state_of_charge:
  *       type: number
+ *       example: 99
  *       default: 100
  *     calculated_remaining_distance:
  *       type: number
+ *       example: 100
  *       default: 150
  *     central_locking_system:
  *       type: string
+ *       example: open
  *       default: closed
  *     distance_to_object_back:
  *       type: number
- *       default: -1
+ *       example: 10
+ *       default: 'NaN'
  *     distance_to_object_bottom:
  *       type: number
+ *       example: 20
  *       default: 20
  *     distance_to_object_front:
  *       type: number
- *       default: -1
+ *       example: 5
+ *       default: 'NaN'
  *     distance_to_object_left:
  *       type: number
- *       default: -1
+ *       example: 5
+ *       default: 'NaN'
  *     distance_to_object_right:
  *       type: number
- *       default: -1
+ *       example: 'NaN'
+ *       default: 5
  *     distance_trip:
  *       type: number
+ *       example: 59.79
  *       default: 0
  *     door_disc_front_left:
  *       type: string
+ *       example: open
  *       default: closed
  *     door_disc_front_right:
  *       type: string
+ *       example: open
  *       default: closed
  *     door_front_left:
  *       type: string
+ *       example: open
  *       default: closed
  *     door_front_right:
  *       type: string
+ *       example: open
  *       default: closed
  *     drive_mode:
  *       type: string
+ *       example: sport
  *       default: eco
  *     flash:
  *       type: string
+ *       example: 'on'
  *       default: 'off'
  *     heated_seats:
  *       type: string
+ *       example: 'on'
  *       default: 'off'
  *     high_beam:
  *       type: string
+ *       example: 'on'
  *       default: 'off'
  *     infotainment:
  *       type: string
- *       description: ''
- *       default: 'on'
+ *       example: 'on'
+ *       default: 'off'
  *     infotainment_volume:
  *       type: number
- *       default: 8
+ *       example: 8
+ *       default: 5
  *     location:
  *       type: string
- *       default: '51,7'
+ *       example: '51,7'
+ *       default: '50.782117,6.047171'
  *     mileage:
  *       type: number
+ *       example: 5979
  *       default: 0
  *     motor_control_lamp:
  *       type: string
+ *       example: 'on'
  *       default: 'off'
  *     person_count:
  *       type: number
+ *       example: 3
  *       default: 0
  *     pulse_sensor_steering_wheel:
  *       type: number
- *       default: -1
+ *       example: 100
+ *       default: 'NaN'
  *     power_consumption:
  *       type: number
+ *       example: 30
  *       default: 0
  *     rain_sensor:
  *       type: string
+ *       example: rain
  *       default: no_rain
  *     rear_running_lights:
  *       type: string
+ *       example: 'on'
  *       default: 'off'
  *     side_lights:
  *       type: string
+ *       exampple: 'on'
  *       default: 'off'
  *     speed:
  *       type: number
+ *       speed: 59
  *       default: 0
  *     stop_lights:
  *       type: string
+ *       example: 'on'
  *       default: 'off'
  *     temperature_inside:
  *       type: number
+ *       example: 15
  *       default: 20
  *     temperature_outside:
  *       type: number
+ *       example: 25
  *       default: 10
  *     tire_pressure_back_left:
  *       type: number
+ *       example: 2
  *       default: 3
  *     tire_pressure_back_right:
  *       type: number
+ *       example: 2
  *       default: 3
  *     tire_pressure_front_left:
  *       type: number
+ *       example: 2
  *       default: 3
  *     tire_pressure_front_right:
  *       type: number
+ *       example: 2
  *       default: 3
  *     trunk:
  *       type: string
+ *       example: open
  *       default: closed
  *     turn_signal_left:
  *       type: string
- *       default: 'on'
+ *       example: 'on'
+ *       default: 'off'
  *     turn_signal_right:
  *       type: string
- *       default: 'on'
+ *       example: 'on'
+ *       default: 'off'
  *     warning_blinker:
  *       type: string
+ *       example: 'on'
  *       default: 'off'
  *     weight:
  *       type: number
+ *       example: 2000
  *       default: 1200
  *     windshield_wipers:
  *       type: string
+ *       example: 'on'
  *       default: 'off'
  *     wiping_water_level:
  *       type: number
+ *       example: 66.6
  *       default: 100
  */
 
+/**
+ * @swaggerDefinition
+ *
+ * VehicleSignalListForPatchExample:
+ *   type: object
+ *   properties:
+ *     location:
+ *       type: string
+ *       example: '51,7'
+ *     turn_signal_left:
+ *       type: string
+ *       example: 'on'
+ *     turn_signal_right:
+ *       type: string
+ *       example: 'on'
+ */
 
 /**
  * @swaggerDefinition

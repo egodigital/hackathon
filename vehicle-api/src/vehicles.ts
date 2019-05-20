@@ -407,9 +407,17 @@ function validateGeoCoordinates(): VehicleSignalValueValidator {
                 return 'Latitude value must be a valid float value in english number format';
             }
 
+            if (LAT < -90 || LAT > 90) {
+                return 'Latitude value must be between -90 and 90';
+            }
+
             const LNG = parseFloat(PARTS[1].trim());
             if (isNaN(LNG)) {
                 return 'Longitude value must be a valid float value in english number format';
+            }
+
+            if (LNG < -180 || LNG > 180) {
+                return 'Longitude value must be between -180 and 180';
             }
         } catch (e) {
             return 'Could not parse value: ' + egoose.toStringSafe(e);
@@ -829,7 +837,7 @@ export class VehicleSignalManager {
     public warning_blinker() { /* warning blinker */ }
 
     @VehicleSignal({
-        validator: validateNumber(false, 1200),
+        validator: validateNumber(false, 1200, 3500),
         transformer: transformToInt(),
         default: 1200,
     })

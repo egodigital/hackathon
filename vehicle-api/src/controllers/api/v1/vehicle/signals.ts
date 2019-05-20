@@ -111,13 +111,13 @@ export class Controller extends ApiControllerBase {
      *         name: ListOfVehicleSignalsToUpdate
      *         required: true
      *         schema:
-     *           $ref: '#/definitions/VehicleSignalList'
+     *           $ref: '#/definitions/VehicleSignalListForPatchExample'
      *         description: A list of one or more value signals to update.
      *     responses:
      *       '200':
      *         description: Operation was successful.
-     *         type: array
-     *         items:
+     *         type: object
+     *         schema:
      *           $ref: '#/definitions/VehicleSignalList'
      *       '401':
      *         description: Wrong API key
@@ -133,23 +133,33 @@ export class Controller extends ApiControllerBase {
     public async set_vehicle_signals(req: ApiRequest, res: Response) {
         const VALUES: vehicles.VehicleSignalValueList = req.body;
 
+        let allSignals: vehicles.VehicleSignalValueList;
         try {
             for (const NAME in VALUES) {
-                await req.vehicle.signals._set(
+                const SIGNAL_SET = await req.vehicle.signals._set(
                     NAME, VALUES[NAME]
                 );
+
+                if (!SIGNAL_SET) {
+                    return res.status(406)
+                        .header('Content-type', 'text/plain')
+                        .send(`PATCH FAILED: Signal '${NAME}' does not exist!`);
+                }
             }
         } catch (e) {
             return res.status(406)
-                .send(egoose.toStringSafe(e));
+                .header('Content-type', 'text/plain')
+                .send('ERROR: ' + egoose.toStringSafe(e));
+        } finally {
+            // update cache
+
+            allSignals = await req.vehicle.signals._getAll();
+            await req.vehicle
+                .cache.set(KEY_SIGNALS, allSignals);
         }
 
-        const ALL_SIGNALS = await req.vehicle.signals._getAll();
-        await req.vehicle
-            .cache.set(KEY_SIGNALS, ALL_SIGNALS);
-
         return res.json(
-            ALL_SIGNALS
+            allSignals
         );
     }
 
