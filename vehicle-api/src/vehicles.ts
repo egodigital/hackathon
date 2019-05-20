@@ -837,7 +837,7 @@ export class VehicleSignalManager {
     public warning_blinker() { /* warning blinker */ }
 
     @VehicleSignal({
-        validator: validateNumber(false, 1200),
+        validator: validateNumber(false, 1200, 3500),
         transformer: transformToInt(),
         default: 1200,
     })
