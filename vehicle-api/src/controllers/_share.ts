@@ -215,7 +215,7 @@ import { ControllerBase as ControllerBase_ExpressControllers, RequestErrorHandle
  *       example: 'on'
  *       default: 'off'
  *     heated_seats:
- *       $ref: '#/definitions/OnStatus'
+ *       $ref: '#/definitions/OnOffStatus'
  *       example: 'on'
  *       default: 'off'
  *     high_beam:
