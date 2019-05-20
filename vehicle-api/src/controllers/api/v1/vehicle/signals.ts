@@ -116,8 +116,8 @@ export class Controller extends ApiControllerBase {
      *     responses:
      *       '200':
      *         description: Operation was successful.
-     *         type: array
-     *         items:
+     *         type: object
+     *         schema:
      *           $ref: '#/definitions/VehicleSignalList'
      *       '401':
      *         description: Wrong API key
