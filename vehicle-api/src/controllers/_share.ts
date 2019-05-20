@@ -287,13 +287,13 @@ import { ControllerBase as ControllerBase_ExpressControllers, RequestErrorHandle
  *   properties:
  *     location:
  *       type: string
- *       default: '51,7'
+ *       example: '51,7'
  *     turn_signal_left:
  *       type: string
- *       default: 'on'
+ *       example: 'on'
  *     turn_signal_right:
  *       type: string
- *       default: 'on'
+ *       example: 'on'
  */
 
 /**
