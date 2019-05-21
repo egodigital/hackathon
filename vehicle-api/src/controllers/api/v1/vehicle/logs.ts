@@ -116,7 +116,7 @@ export class Controller extends ApiControllerBase {
             filter = new RegExp(req.query.filter, 'i');
         }
 
-        const SORT_ASC = 'ASC' === egoose.normalizeString(req.query.sort);
+        const SORT_ASC = 'asc' === egoose.normalizeString(req.query.sort);
 
         return await this._withDatabase(async (db) => {
             const FILTER: any = {
