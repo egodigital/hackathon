@@ -18,9 +18,11 @@ Execute the following command from project root:
 docker-compose up
 ```
 
-### Swagger
+### Documentation
 
-The testable Swagger documentation should be available at: http://localhost/swagger
+* [Postman](https://www.getpostman.com/): [doc/vehicle-api.postman_collection.json](./doc/vehicle-api.postman_collection.json)
+* [REST Client for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=humao.rest-client): [.vscode/http](./.vscode/http)
+* [Swagger](https://swagger.io/): http://localhost/swagger
 
 ### Demo application
 

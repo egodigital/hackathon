@@ -3,6 +3,6 @@ X-Api-Key: 05091979-2309-1979-0509-197923091979
 Content-Type: application/json
 
 {
-  "turn_signal_left": "on",
-  "turn_signal_right": "on"
+  "infotainment": "on",
+  "location": "50.775599,6.132337"
 }
