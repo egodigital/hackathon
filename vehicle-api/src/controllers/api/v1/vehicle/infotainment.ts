@@ -44,6 +44,20 @@ const DEFAULT_SCREEN_SIZE = {
  */
 export class Controller extends ApiControllerBase {
     /**
+     * Gets the maximum size in bytes for an infotainment image or video (file).
+     */
+    public get _maxFileSize(): number {
+        const MAX_INFOTAINMENT_FILESIZE = parseInt(
+            egoose.toStringSafe(
+                process.env.MAX_INFOTAINMENT_FILESIZE
+            ).trim()
+        );
+
+        return isNaN(MAX_INFOTAINMENT_FILESIZE) ?
+            16777216 : MAX_INFOTAINMENT_FILESIZE;
+    }
+
+    /**
      * @swaggerPath
      *
      * /api/v1/vehicle/infotainment:
@@ -206,7 +220,7 @@ export class Controller extends ApiControllerBase {
             screenMime = DEFAULT_SCREEN_MIME;
         }
 
-        let newScreen = await egoose.readAll(req);
+        let newScreen = await this._readMax(req, this._maxFileSize);
 
         if ('text/plain' === screenMime) {
             const URL = newScreen.toString('utf8')
@@ -226,7 +240,9 @@ export class Controller extends ApiControllerBase {
                 screenMime = egoose.normalizeString(
                     RESPONSE.headers['content-type']
                 );
-                newScreen = await RESPONSE.readBody();
+                newScreen = await this._readMax(
+                    RESPONSE.response, this._maxFileSize
+                );
             } else {
                 // invalid URL
 
@@ -334,7 +350,7 @@ export class Controller extends ApiControllerBase {
                 .send();
         }
 
-        const BODY = await egoose.readAll(req);
+        const BODY = await this._readMax(req, this._maxFileSize);
 
         const SCREEN = await this._getInfotainmentScreen(
             req.vehicle.doc
@@ -451,7 +467,7 @@ export class Controller extends ApiControllerBase {
                 .send();
         }
 
-        const TEXT = (await egoose.readAll(req))
+        const TEXT = (await this._readMax(req, this._maxFileSize))
             .toString('utf8');
 
         let x = parseInt(

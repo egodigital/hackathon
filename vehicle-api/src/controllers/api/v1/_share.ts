@@ -21,6 +21,7 @@ import * as egoose from '@egodigital/egoose';
 import * as express from 'express';
 import * as jimp from 'jimp';
 import * as vehicles from '../../../vehicles';
+import { Readable } from 'stream';
 import { ControllerBase, Request } from '../../_share';
 
 
@@ -209,6 +210,87 @@ export abstract class ApiControllerBase extends ControllerBase {
         }
 
         return ALL_SIGNALS[name];
+    }
+
+    /**
+     * Reads a stream with a maximum size.
+     *
+     * @param {Readable} stream The input stream.
+     * @param {number} maxSize The maximum size, in bytes.
+     */
+    public _readMax(stream: Readable, maxSize: number): Promise<Buffer> {
+        return new Promise<Buffer>((resolve, reject) => {
+            let buff: Buffer;
+
+            let dataListener: (chunk: Buffer | string) => void;
+            let endListener: () => void;
+            let errorListener: (err: any) => void;
+
+            let completedInvoked = false;
+            const COMPLETED = (err: any) => {
+                if (completedInvoked) {
+                    return;
+                }
+                completedInvoked = true;
+
+                egoose.tryRemoveListener(stream, 'data', dataListener);
+                egoose.tryRemoveListener(stream, 'end', endListener);
+                egoose.tryRemoveListener(stream, 'error', errorListener);
+
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(buff);
+                }
+            };
+
+            try {
+                errorListener = (err: any) => {
+                    if (err) {
+                        COMPLETED(err);
+                    }
+                };
+
+                dataListener = (chunk: Buffer | string) => {
+                    try {
+                        if (_.isNil(chunk) || !chunk.length) {
+                            return;
+                        }
+
+                        if (!Buffer.isBuffer(chunk)) {
+                            chunk = Buffer.from(
+                                egoose.toStringSafe(chunk), 'utf8'
+                            );
+                        }
+
+                        if (buff.length + chunk.length > maxSize) {
+                            throw new Error(`Maximum size of ${maxSize} reached!`);
+                        }
+
+                        buff = Buffer.concat([buff, chunk]);
+                    } catch (e) {
+                        COMPLETED(e);
+                    }
+                };
+
+                endListener = () => {
+                    COMPLETED(null);
+                };
+
+                try {
+                    stream.once('error', errorListener);
+
+                    buff = Buffer.alloc(0);
+
+                    stream.once('end', endListener);
+                    stream.on('data', dataListener);
+                } catch (e) {
+                    COMPLETED(e);
+                }
+            } catch (e) {
+                COMPLETED(e);
+            }
+        });
     }
 
     /** @inheritdoc */

@@ -18,6 +18,22 @@ Execute the following command from project root:
 docker-compose up
 ```
 
+#### Environment variables
+
+Before you run, you can set the following variables in your [.env](./.env) file, if needed.
+
+| Name | Description | Example |
+|------|-------------|---------|
+| `ADMIN_API_KEY` | The key for the admin API. | `ego` |
+| `LOCAL_DEVELOPMENT` | Indicates, if backend should be run in development mode or not. | `true` |
+| `MAX_INFOTAINMENT_FILESIZE` | The maximum file size in bytes, for an infotainment image or video. | `16777216` |
+| `MONGO_DB` | The name of the database inside the [MongoDB](https://www.mongodb.com/) server. | `vehicle_api` |
+| `MONGO_HOST` | The host address or IP of the [MongoDB](https://www.mongodb.com/) database server. | `mongo` |
+| `MONGO_OPTIONS` | Additional options for connecting to the [MongoDB](https://www.mongodb.com/) database server. | `?useNewUrlParser=true` |
+| `MONGO_PASSWORD` | Password for the [MongoDB](https://www.mongodb.com/) database. | `m05091979` |
+| `MONGO_PORT` | The TCP port of the [MongoDB](https://www.mongodb.com/) database server. | `27017` |
+| `MONGO_USER` | Username for the [MongoDB](https://www.mongodb.com/) database. | `tanja` |
+
 ### Documentation
 
 * [Postman](https://www.getpostman.com/): [doc/vehicle-api.postman_collection.json](./doc/vehicle-api.postman_collection.json)
