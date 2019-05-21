@@ -1,52 +1,12 @@
 {
 	"info": {
-		"_postman_id": "80d99f76-1db2-43b7-b062-d244ab34c799",
+		"_postman_id": "2ca74cb7-e0b2-4653-b040-50ea23932bf2",
 		"name": "vehicle-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "/api/admin/vehicles",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "X-Api-Key",
-						"type": "text",
-						"value": "ego"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost/api/admin/vehicles/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"path": [
-						"api",
-						"admin",
-						"vehicles",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/admin/vehicles",
+			"name": "POST /api/admin/vehicles",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -59,7 +19,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "ego"
+						"value": "{{admin-api-key}}"
 					}
 				],
 				"body": {
@@ -67,10 +27,47 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/admin/vehicles/",
-					"protocol": "http",
+					"raw": "{{url}}/api/admin/vehicles",
 					"host": [
-						"localhost"
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"vehicles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/admin/vehicles",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Api-Key",
+						"value": "{{admin-api-key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/admin/vehicles/",
+					"host": [
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -83,7 +80,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/admin/vehicles/{uuid}",
+			"name": "DELETE /api/admin/vehicles/{uuid}",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -96,7 +93,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "ego"
+						"value": "{{admin-api-key}}"
 					}
 				],
 				"body": {
@@ -104,23 +101,22 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/admin/vehicles/e99219ec-ecbb-4fe1-9eb2-d6bd77f0e8ae",
-					"protocol": "http",
+					"raw": "{{url}}/api/admin/vehicles/<VEHICLE-ID>",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
 						"admin",
 						"vehicles",
-						"e99219ec-ecbb-4fe1-9eb2-d6bd77f0e8ae"
+						"<VEHICLE-ID>"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "/api/v1",
+			"name": "GET /api/v1",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -136,7 +132,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -144,10 +140,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -158,7 +153,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle",
+			"name": "GET /api/v1/vehicle",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -174,7 +169,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -182,10 +177,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -197,7 +191,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle",
+			"name": "PATCH /api/v1/vehicle",
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -210,7 +204,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -218,10 +212,9 @@
 					"raw": "{\n  \"name\": \"My awesome e.GO Life\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -233,7 +226,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle",
+			"name": "DELETE /api/v1/vehicle",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -246,7 +239,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -254,10 +247,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -269,7 +261,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/events",
+			"name": "GET /api/v1/vehicle/events",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -285,7 +277,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -293,10 +285,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/events",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/events",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -309,7 +300,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/events",
+			"name": "DELETE /api/v1/vehicle/events",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -322,7 +313,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -330,10 +321,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/events",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/events",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -346,7 +336,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/infotainment",
+			"name": "GET /api/v1/vehicle/infotainment",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -362,7 +352,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -370,10 +360,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/infotainment",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/infotainment",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -386,20 +375,20 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/infotainment",
+			"name": "POST /api/v1/vehicle/infotainment",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					},
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"type": "text",
-						"value": "text/plain"
+						"value": "text/plain",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -407,10 +396,9 @@
 					"raw": "https://zippy.gfycat.com/CavernousWellwornArgali.gif"
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/infotainment",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/infotainment",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -423,30 +411,30 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/infotainment",
+			"name": "PUT /api/v1/vehicle/infotainment",
 			"request": {
 				"method": "PUT",
 				"header": [
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					},
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"type": "text",
-						"value": "image/png"
+						"value": "image/png",
+						"type": "text"
 					},
 					{
 						"key": "x",
-						"type": "text",
-						"value": "50"
+						"value": "50",
+						"type": "text"
 					},
 					{
 						"key": "y",
-						"type": "text",
-						"value": "20"
+						"value": "20",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -454,10 +442,9 @@
 					"file": {}
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/infotainment",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/infotainment",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -470,77 +457,40 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/infotainment",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "X-Api-Key",
-						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost/api/v1/vehicle/infotainment",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"path": [
-						"api",
-						"v1",
-						"vehicle",
-						"infotainment"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/v1/vehicle/infotainment/text",
+			"name": "PUT /api/v1/vehicle/infotainment/text",
 			"request": {
 				"method": "PUT",
 				"header": [
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					},
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"type": "text",
-						"value": "text/plain"
+						"value": "text/plain",
+						"type": "text"
 					},
 					{
 						"key": "black",
-						"type": "text",
-						"value": "1"
+						"value": "1",
+						"type": "text"
 					},
 					{
 						"key": "size",
-						"type": "text",
-						"value": "128"
+						"value": "128",
+						"type": "text"
 					},
 					{
 						"key": "x",
-						"type": "text",
-						"value": "50"
+						"value": "50",
+						"type": "text"
 					},
 					{
 						"key": "y",
-						"type": "text",
-						"value": "20"
+						"value": "20",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -548,10 +498,9 @@
 					"raw": "test"
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/infotainment/text",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/infotainment/text",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -565,7 +514,43 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/signals",
+			"name": "DELETE /api/v1/vehicle/infotainment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "{{api-key}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/vehicle/infotainment",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"infotainment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/vehicle/signals",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -581,7 +566,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -589,10 +574,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/signals",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/signals",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -605,7 +589,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/signals",
+			"name": "PATCH /api/v1/vehicle/signals",
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -618,7 +602,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -626,10 +610,9 @@
 					"raw": "{\n\t\"infotainment\":\"on\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/signals",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/signals",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -642,7 +625,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/signals",
+			"name": "DELETE /api/v1/vehicle/signals",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -655,7 +638,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -663,10 +646,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/signals",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/signals",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -679,7 +661,44 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/logs/signals",
+			"name": "DELETE /api/v1/vehicle/logs/signals",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "{{api-key}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/vehicle/logs/signals",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"logs",
+						"signals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/vehicle/logs/signals",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -695,7 +714,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -703,10 +722,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/logs/signals",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/logs/signals",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -720,45 +738,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/logs/signals",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "X-Api-Key",
-						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost/api/v1/vehicle/logs/signals",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"path": [
-						"api",
-						"v1",
-						"vehicle",
-						"logs",
-						"signals"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/v1/vehicle/state",
+			"name": "GET /api/v1/vehicle/state",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -774,7 +754,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -782,10 +762,9 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/state",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/state",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
@@ -798,44 +777,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/v1/vehicle/state",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "X-Api-Key",
-						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost/api/v1/vehicle/state",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"path": [
-						"api",
-						"v1",
-						"vehicle",
-						"state"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/v1/vehicle/state",
+			"name": "PATCH /api/v1/vehicle/state",
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -848,7 +790,7 @@
 					{
 						"key": "X-Api-Key",
 						"type": "text",
-						"value": "3f4d10db-a2af-443a-ae2f-86a889c401f2"
+						"value": "{{api-key}}"
 					}
 				],
 				"body": {
@@ -856,16 +798,51 @@
 					"raw": "{\n    \"tm\": 5979\n}"
 				},
 				"url": {
-					"raw": "http://localhost/api/v1/vehicle/signals",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/vehicle/signals",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
 					"path": [
 						"api",
 						"v1",
 						"vehicle",
 						"signals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/v1/vehicle/state",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "{{api-key}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/vehicle/state",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"vehicle",
+						"state"
 					]
 				}
 			},
