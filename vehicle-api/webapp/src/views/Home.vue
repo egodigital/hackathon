@@ -180,7 +180,7 @@
                   <td>
                     <a @click="showPopover($event, 'distance_trip')">{{ $t('distance_trip') }}</a>
                   </td>
-                  <td>{{ signals.distance_trip }} cm</td>
+                  <td>{{ signals.distance_trip }} km</td>
                 </tr>
                 <tr :class="matchSearch('door_disc_front_left') ? 'hightlighted' : ''">
                   <td>
@@ -252,9 +252,9 @@
                   <td>{{ $t('flash') }}</td>
                   <td>
                     <v-switch
-                      v-model="signals.door_front_right"
-                      true-value="open"
-                      false-value="close"
+                      v-model="signals.flash"
+                      true-value="on"
+                      false-value="off"
                       readonly
                       hide-details
                     ></v-switch>
@@ -916,7 +916,7 @@ export default {
         return;
       }
 
-      const ELEMENT = document.getElementById('ego-infotainment-video-preview');
+      const ELEMENT = document.getElementById("ego-infotainment-video-preview");
       if (!ELEMENT) {
         return;
       }
