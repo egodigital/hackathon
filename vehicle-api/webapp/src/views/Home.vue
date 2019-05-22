@@ -48,8 +48,8 @@
                       v-model="signals.battery_charging"
                       true-value="yes"
                       false-value="no"
-                      readonly
                       hide-details
+                      @click.stop="writeSignal({'battery_charging': signals.battery_charging === 'no' ? 'yes': 'no'})"
                     ></v-switch>
                   </td>
                 </tr>
@@ -130,8 +130,8 @@
                     <v-switch
                       v-model="signals.central_locking_system"
                       true-value="open"
-                      false-value="close"
-                      readonly
+                      false-value="closed"
+                      @click.stop="writeSignal({'central_locking_system': signals.central_locking_system === 'open' ? 'closed': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -193,7 +193,7 @@
                       v-model="signals.door_disc_front_left"
                       true-value="open"
                       false-value="close"
-                      readonly
+                      @click.stop="writeSignal({'door_disc_front_left': signals.door_disc_front_left === 'open' ? 'close': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -209,7 +209,7 @@
                       v-model="signals.door_disc_front_right"
                       true-value="open"
                       false-value="close"
-                      readonly
+                      @click.stop="writeSignal({'door_disc_front_right': signals.door_disc_front_right === 'open' ? 'close': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -223,7 +223,7 @@
                       v-model="signals.door_front_left"
                       true-value="open"
                       false-value="close"
-                      readonly
+                      @click.stop="writeSignal({'door_front_left': signals.door_front_left === 'open' ? 'close': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -237,7 +237,7 @@
                       v-model="signals.door_front_right"
                       true-value="open"
                       false-value="close"
-                      readonly
+                      @click.stop="writeSignal({'door_front_right': signals.door_front_right === 'open' ? 'close': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -255,7 +255,7 @@
                       v-model="signals.flash"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'flash': signals.flash === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -266,10 +266,10 @@
                   </td>
                   <td>
                     <v-switch
-                      v-model="signals.door_front_right"
+                      v-model="signals.heated_seats"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'heated_seats': signals.heated_seats === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -280,10 +280,10 @@
                   </td>
                   <td>
                     <v-switch
-                      v-model="signals.door_front_right"
+                      v-model="signals.high_beam"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'high_beam': signals.high_beam === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -305,7 +305,7 @@
                       v-model="signals.motor_control_lamp"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'motor_control_lamp': signals.motor_control_lamp === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -360,7 +360,7 @@
                       v-model="signals.rain_sensor"
                       true-value="rain"
                       false-value="no_rain"
-                      readonly
+                      @click.stop="writeSignal({'rain_sensor': signals.rain_sensor === 'no_rain' ? 'rain': 'no_rain'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -376,7 +376,7 @@
                       v-model="signals.rear_running_lights"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'rear_running_lights': signals.rear_running_lights === 'on' ? 'off': 'on'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -390,7 +390,7 @@
                       v-model="signals.side_lights"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'side_lights': signals.side_lights === 'on' ? 'off': 'on'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -410,7 +410,7 @@
                       v-model="signals.stop_lights"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'stop_lights': signals.stop_lights === 'on' ? 'off': 'on'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -472,7 +472,7 @@
                       v-model="signals.trunk"
                       true-value="open"
                       false-value="closed"
-                      readonly
+                      @click.stop="writeSignal({'trunk': signals.trunk === 'open' ? 'closed': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -486,7 +486,7 @@
                       v-model="signals.turn_signal_left"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'turn_signal_left': signals.turn_signal_left === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -502,7 +502,7 @@
                       v-model="signals.turn_signal_right"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'turn_signal_right': signals.turn_signal_right === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -516,7 +516,7 @@
                       v-model="signals.warning_blinker"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'warning_blinker': signals.warning_blinker === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -538,7 +538,7 @@
                       v-model="signals.windshield_wipers"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'windshield_wipers': signals.windshield_wipers === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -590,7 +590,7 @@
                   v-model="signals.infotainment"
                   true-value="on"
                   false-value="off"
-                  readonly
+                  @click.stop="writeSignal({'infotainment': signals.infotainment === 'off' ? 'on': 'off'})"
                   hide-details
                 ></v-switch>
               </td>
@@ -925,6 +925,26 @@ export default {
       if (ELEMENT.volume !== ELEMENT_VALUE) {
         ELEMENT.volume = ELEMENT_VALUE;
       }
+    },
+
+    writeSignal(newValues) {
+      console.log("change: " + JSON.stringify(newValues));
+      let config = {
+        headers: {
+          "X-Api-Key": this.apiKey
+        }
+      };
+      this.axios
+        .patch("/v1/vehicle/signals", newValues, config)
+        .then(response => {})
+        .catch(err => {
+          console.error(
+            "ERROR while setting '/v1/vehicle/signals' (" +
+              JSON.stringify(newValues) +
+              "): " +
+              err
+          );
+        });
     }
   },
   computed: {
