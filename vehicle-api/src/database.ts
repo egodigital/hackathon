@@ -67,6 +67,10 @@ export interface VehiclesDocument extends mongoose.Document {
      */
     state?: any;
     /**
+     * The name of the team.
+     */
+    team?: string;
+    /**
      * The UUID of the vehicle.
      */
     uuid: string;
@@ -280,12 +284,18 @@ export function initSchema() {
             required: false,
             type: mongoose.Schema.Types.Mixed,
         },
+        team: {
+            required: false,
+            type: String,
+        },
         uuid: {
             default: egoose.uuid,
             type: String,
             unique: true,
         },
     });
+    egoose.MONGO_SCHEMAS['Vehicles']
+        .index({ team: 1 });
 
     egoose.MONGO_SCHEMAS['VehicleEvents'] = new mongoose.Schema({
         creation_time: {
@@ -416,6 +426,8 @@ export function toJSONVehicle(vehicle: VehiclesDocument): any {
         'name': egoose.isEmptyString(vehicle.name) ? undefined
             : egoose.toStringSafe(vehicle.name).trim(),
         'state': vehicle.state,
+        'team': egoose.isEmptyString(vehicle.team) ? undefined
+            : egoose.toStringSafe(vehicle.team).trim(),
     };
 }
 

@@ -73,6 +73,10 @@ import { ControllerBase } from '@egodigital/express-controllers';
      *       example: 'My e.GO Life'
      *     state:
      *       description: A state value.
+     *     team:
+     *       type: string
+     *       description: The name of the team.
+     *       example: 'Team e.GO Digital'
      */
 
     /**
