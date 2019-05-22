@@ -1,7 +1,7 @@
 {
     "name": "vehicle-api-webapp",
     "description": "A demonstration web application, that shows the current state of a simulated vehicle, provided by the REST API.",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "scripts": {
         "dev": "vue-cli-service serve",
         "build": "vue-cli-service build",

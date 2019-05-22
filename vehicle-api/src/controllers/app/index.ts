@@ -31,7 +31,7 @@ export class Controller extends ControllerBase {
             this.__app.use('/app',
                 express.static(path.join(__dirname, 'app')));
         } else {
-            this.__app.use('/app',
+            this.__app.use('/',
                 express.static(path.join(__dirname, '../../../webapp/dist')));
         }
     }
