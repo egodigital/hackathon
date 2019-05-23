@@ -17,8 +17,8 @@ The delivery of the project will mainly be via Github. There you can upload your
 * Your names
 * The title of your project
 * A description of 
-  * The the project can do/is supposed to do
-  * Which problem is solves
+  * What the project can do/is supposed to do
+  * Which problem it solves
   * How you implemented this technically
   * Which data you are using
 * Also think about adding screenshots and pictures
