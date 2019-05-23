@@ -116,7 +116,7 @@
                   <td>
                     <p
                       @click="showSliderDialog(14, 24, 'battery_total_kwh_capacity', signals.battery_total_kwh_capacity, false)"
-                    >{{ signals.battery_total_kwh_capacity }} kW</p>
+                    >{{ signals.battery_total_kwh_capacity }} kWh</p>
                   </td>
                 </tr>
                 <tr :class="matchSearch('brake_fluid_level') ? 'hightlighted' : ''">
