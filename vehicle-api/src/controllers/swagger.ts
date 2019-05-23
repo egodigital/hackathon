@@ -257,7 +257,7 @@ import { ControllerBase } from '@egodigital/express-controllers';
      *       example: 100
      *       default: 'NaN'
      *       minimum: 0
-     *       maximum: 0
+     *       maximum: 300
      *     power_consumption:
      *       type: number
      *       example: 30
