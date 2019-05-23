@@ -26,6 +26,10 @@ The delivery of the project will mainly be via Github. There you can upload your
 
 **Deadline** for your results is on Friday 4pm. You will have to pitch your idea in a 3-minutes-presentation. A jury will evaluate all presentations through aspects like degree of innovation, UX/UI and simplification. Keep that in mind and become one of the qualified teams for the final pitching session. The overall winning team will be honored and is getting an attractive price. 
 
+## API
+
+The API of that Hackathon can be found [here](./vehicle-api).
+
 ## Mobility on Demand Service
 
 From 7am to 10pm we are providing our e.GO on Demand Service. If you need a ride for a nap or rest at home, just let us know. 
