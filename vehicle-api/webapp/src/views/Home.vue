@@ -231,8 +231,8 @@
                     <v-switch
                       v-model="signals.door_disc_front_left"
                       true-value="open"
-                      false-value="close"
-                      @click.stop="writeSignal({'door_disc_front_left': signals.door_disc_front_left === 'open' ? 'close': 'open'})"
+                      false-value="closes"
+                      @click.stop="writeSignal({'door_disc_front_left': signals.door_disc_front_left === 'open' ? 'closed': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -247,8 +247,8 @@
                     <v-switch
                       v-model="signals.door_disc_front_right"
                       true-value="open"
-                      false-value="close"
-                      @click.stop="writeSignal({'door_disc_front_right': signals.door_disc_front_right === 'open' ? 'close': 'open'})"
+                      false-value="closed"
+                      @click.stop="writeSignal({'door_disc_front_right': signals.door_disc_front_right === 'open' ? 'closed': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -261,8 +261,8 @@
                     <v-switch
                       v-model="signals.door_front_left"
                       true-value="open"
-                      false-value="close"
-                      @click.stop="writeSignal({'door_front_left': signals.door_front_left === 'open' ? 'close': 'open'})"
+                      false-value="closed"
+                      @click.stop="writeSignal({'door_front_left': signals.door_front_left === 'open' ? 'closed': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -275,8 +275,8 @@
                     <v-switch
                       v-model="signals.door_front_right"
                       true-value="open"
-                      false-value="close"
-                      @click.stop="writeSignal({'door_front_right': signals.door_front_right === 'open' ? 'close': 'open'})"
+                      false-value="closed"
+                      @click.stop="writeSignal({'door_front_right': signals.door_front_right === 'open' ? 'closed': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
