@@ -87,7 +87,7 @@
                   </td>
                   <td>
                     <p
-                      @click="showSliderDialog(30,120, 'battery_loading_capacity', signals.battery_loading_capacity, false)"
+                      @click="showSliderDialog(0,100, 'battery_loading_capacity', signals.battery_loading_capacity, false)"
                     >{{ signals.battery_loading_capacity }} kW</p>
                   </td>
                 </tr>
