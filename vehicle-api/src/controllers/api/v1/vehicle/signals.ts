@@ -30,19 +30,6 @@ import { ApiControllerBase, ApiRequest, KEY_SIGNALS, NOT_FOUND } from '../_share
  * Base path: '/api/v1/vehicle/signals'
  */
 export class Controller extends ApiControllerBase {
-    private async _getAllSignalsFromCache(req: ApiRequest) {
-        let allSignals: any = await req.vehicle
-            .cache.get(KEY_SIGNALS, NOT_FOUND);
-        if (_.isSymbol(allSignals)) {
-            allSignals = await req.vehicle.signals._getAll();
-
-            await req.vehicle
-                .cache.set(KEY_SIGNALS, allSignals);
-        }
-
-        return allSignals;
-    }
-
     /**
      * @swaggerPath
      *
@@ -88,7 +75,14 @@ export class Controller extends ApiControllerBase {
         const USE_CACHE = '1' === egoose.toStringSafe(req.query.cache)
             .trim();
 
-        let allSignals = await this._getAllSignalsFromCache(req);
+        let allSignals: any = await req.vehicle
+            .cache.get(KEY_SIGNALS, NOT_FOUND);
+        if (_.isSymbol(allSignals)) {
+            allSignals = await req.vehicle.signals._getAll();
+
+            await req.vehicle
+                .cache.set(KEY_SIGNALS, allSignals);
+        }
 
         return res.json(
             allSignals
@@ -120,8 +114,11 @@ export class Controller extends ApiControllerBase {
      *           $ref: '#/definitions/VehicleSignalListForPatchExample'
      *         description: A list of one or more value signals to update.
      *     responses:
-     *       '204':
+     *       '200':
      *         description: Operation was successful.
+     *         type: object
+     *         schema:
+     *           $ref: '#/definitions/VehicleSignalList'
      *       '401':
      *         description: Wrong API key
      *       '406':
@@ -136,6 +133,7 @@ export class Controller extends ApiControllerBase {
     public async set_vehicle_signals(req: ApiRequest, res: Response) {
         const VALUES: vehicles.VehicleSignalValueList = req.body;
 
+        let allSignals: vehicles.VehicleSignalValueList;
         try {
             for (const NAME in VALUES) {
                 const SIGNAL_SET = await req.vehicle.signals._set(
@@ -153,12 +151,16 @@ export class Controller extends ApiControllerBase {
                 .header('Content-type', 'text/plain')
                 .send('ERROR: ' + egoose.toStringSafe(e));
         } finally {
+            // update cache
+
+            allSignals = await req.vehicle.signals._getAll();
             await req.vehicle
-                .cache.set(KEY_SIGNALS, undefined);
+                .cache.set(KEY_SIGNALS, allSignals);
         }
 
-        return res.status(204)
-            .send();
+        return res.json(
+            allSignals
+        );
     }
 
     /**
