@@ -107,6 +107,18 @@
                     >{{ signals.battery_state_of_charge }}%</v-progress-linear>
                   </td>
                 </tr>
+                <tr :class="matchSearch('battery_total_kwh_capacity') ? 'hightlighted' : ''">
+                  <td>
+                    <a
+                      @click="showPopover($event, 'battery_total_kwh_capacity')"
+                    >{{ $t('battery_total_kwh_capacity') }}</a>
+                  </td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(14, 24, 'battery_total_kwh_capacity', signals.battery_total_kwh_capacity, false)"
+                    >{{ signals.battery_total_kwh_capacity }} kW</p>
+                  </td>
+                </tr>
                 <tr :class="matchSearch('brake_fluid_level') ? 'hightlighted' : ''">
                   <td>
                     <a

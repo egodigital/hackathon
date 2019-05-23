@@ -575,9 +575,9 @@ export class VehicleSignalManager {
         default: DEFAULT_PERCENTAGE,
     })
     public battery_state_of_charge() { /* battery state of charge */ }
-    
+
     @VehicleSignal({
-        validator: validateNumber(false, {14.5, 23.5),
+        validator: validateNumber(false, 14, 24),
         transformer: transformToNumber(),
         default: 17.5,
     })
