@@ -231,7 +231,7 @@
                     <v-switch
                       v-model="signals.door_disc_front_left"
                       true-value="open"
-                      false-value="closes"
+                      false-value="closed"
                       @click.stop="writeSignal({'door_disc_front_left': signals.door_disc_front_left === 'open' ? 'closed': 'open'})"
                       hide-details
                     ></v-switch>
