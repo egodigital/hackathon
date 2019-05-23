@@ -48,8 +48,8 @@
                       v-model="signals.battery_charging"
                       true-value="yes"
                       false-value="no"
-                      readonly
                       hide-details
+                      @click.stop="writeSignal({'battery_charging': signals.battery_charging === 'no' ? 'yes': 'no'})"
                     ></v-switch>
                   </td>
                 </tr>
@@ -59,7 +59,11 @@
                       @click="showPopover($event, 'battery_charging_current')"
                     >{{ $t('battery_charging_current') }}</a>
                   </td>
-                  <td>{{ signals.battery_charging_current }} amp</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,50, 'battery_charging_current', signals.battery_charging_current, false)"
+                    >{{ signals.battery_charging_current }} amp</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('battery_health') ? 'hightlighted' : ''">
                   <td>
@@ -71,6 +75,7 @@
                       color="primary"
                       height="20"
                       :value="signals.battery_health"
+                      @click="showSliderDialog(0,100, 'battery_health', signals.battery_health, false)"
                     >{{ signals.battery_health }}%</v-progress-linear>
                   </td>
                 </tr>
@@ -80,7 +85,11 @@
                       @click="showPopover($event, 'battery_loading_capacity')"
                     >{{ $t('battery_loading_capacity') }}</a>
                   </td>
-                  <td>{{ signals.battery_loading_capacity }} kW</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(30,120, 'battery_loading_capacity', signals.battery_loading_capacity, false)"
+                    >{{ signals.battery_loading_capacity }} kW</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('battery_state_of_charge') ? 'hightlighted' : ''">
                   <td>
@@ -94,6 +103,7 @@
                       color="primary"
                       height="20"
                       :value="signals.battery_state_of_charge"
+                      @click="showSliderDialog(0,100, 'battery_state_of_charge', signals.battery_state_of_charge, false)"
                     >{{ signals.battery_state_of_charge }}%</v-progress-linear>
                   </td>
                 </tr>
@@ -109,6 +119,7 @@
                       color="primary"
                       height="20"
                       :value="signals.brake_fluid_level"
+                      @click="showSliderDialog(0,100, 'brake_fluid_level', signals.brake_fluid_level, false)"
                     >{{ signals.brake_fluid_level }}%</v-progress-linear>
                   </td>
                 </tr>
@@ -118,7 +129,11 @@
                       @click="showPopover($event, 'calculated_remaining_distance')"
                     >{{ $t('calculated_remaining_distance') }}</a>
                   </td>
-                  <td>{{ signals.calculated_remaining_distance }} km</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,500, 'calculated_remaining_distance', signals.calculated_remaining_distance, false)"
+                    >{{ signals.calculated_remaining_distance }} km</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('central_locking_system') ? 'hightlighted' : ''">
                   <td>
@@ -130,8 +145,8 @@
                     <v-switch
                       v-model="signals.central_locking_system"
                       true-value="open"
-                      false-value="close"
-                      readonly
+                      false-value="closed"
+                      @click.stop="writeSignal({'central_locking_system': signals.central_locking_system === 'open' ? 'closed': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -142,7 +157,11 @@
                       @click="showPopover($event, 'distance_to_object_back')"
                     >{{ $t('distance_to_object_back') }}</a>
                   </td>
-                  <td>{{ signals.distance_to_object_back }} cm</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,30, 'distance_to_object_back', signals.distance_to_object_back, true, true)"
+                    >{{ signals.distance_to_object_back }} cm</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('distance_to_object_bottom') ? 'hightlighted' : ''">
                   <td>
@@ -150,7 +169,11 @@
                       @click="showPopover($event, 'distance_to_object_bottom')"
                     >{{ $t('distance_to_object_bottom') }}</a>
                   </td>
-                  <td>{{ signals.distance_to_object_bottom }} cm</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,30, 'distance_to_object_bottom', signals.distance_to_object_bottom, true)"
+                    >{{ signals.distance_to_object_bottom }} cm</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('distance_to_object_front') ? 'hightlighted' : ''">
                   <td>
@@ -158,7 +181,11 @@
                       @click="showPopover($event, 'distance_to_object_front')"
                     >{{ $t('distance_to_object_front') }}</a>
                   </td>
-                  <td>{{ signals.distance_to_object_front }} cm</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,30, 'distance_to_object_front', signals.distance_to_object_front, true, true)"
+                    >{{ signals.distance_to_object_front }} cm</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('distance_to_object_left') ? 'hightlighted' : ''">
                   <td>
@@ -166,7 +193,11 @@
                       @click="showPopover($event, 'distance_to_object_left')"
                     >{{ $t('distance_to_object_left') }}</a>
                   </td>
-                  <td>{{ signals.distance_to_object_left }} cm</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,30, 'distance_to_object_left', signals.distance_to_object_left, true, true)"
+                    >{{ signals.distance_to_object_left }} cm</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('distance_to_object_right') ? 'hightlighted' : ''">
                   <td>
@@ -174,13 +205,21 @@
                       @click="showPopover($event, 'distance_to_object_right')"
                     >{{ $t('distance_to_object_right') }}</a>
                   </td>
-                  <td>{{ signals.distance_to_object_right }} cm</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,30, 'distance_to_object_right', signals.distance_to_object_right, true, true)"
+                    >{{ signals.distance_to_object_right }} cm</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('distance_trip') ? 'hightlighted' : ''">
                   <td>
                     <a @click="showPopover($event, 'distance_trip')">{{ $t('distance_trip') }}</a>
                   </td>
-                  <td>{{ signals.distance_trip }} km</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,1500, 'distance_trip', signals.distance_trip, false)"
+                    >{{ signals.distance_trip }} km</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('door_disc_front_left') ? 'hightlighted' : ''">
                   <td>
@@ -193,7 +232,7 @@
                       v-model="signals.door_disc_front_left"
                       true-value="open"
                       false-value="close"
-                      readonly
+                      @click.stop="writeSignal({'door_disc_front_left': signals.door_disc_front_left === 'open' ? 'close': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -209,7 +248,7 @@
                       v-model="signals.door_disc_front_right"
                       true-value="open"
                       false-value="close"
-                      readonly
+                      @click.stop="writeSignal({'door_disc_front_right': signals.door_disc_front_right === 'open' ? 'close': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -223,7 +262,7 @@
                       v-model="signals.door_front_left"
                       true-value="open"
                       false-value="close"
-                      readonly
+                      @click.stop="writeSignal({'door_front_left': signals.door_front_left === 'open' ? 'close': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -237,7 +276,7 @@
                       v-model="signals.door_front_right"
                       true-value="open"
                       false-value="close"
-                      readonly
+                      @click.stop="writeSignal({'door_front_right': signals.door_front_right === 'open' ? 'close': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -255,7 +294,7 @@
                       v-model="signals.flash"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'flash': signals.flash === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -266,10 +305,10 @@
                   </td>
                   <td>
                     <v-switch
-                      v-model="signals.door_front_right"
+                      v-model="signals.heated_seats"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'heated_seats': signals.heated_seats === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -280,10 +319,10 @@
                   </td>
                   <td>
                     <v-switch
-                      v-model="signals.door_front_right"
+                      v-model="signals.high_beam"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'high_beam': signals.high_beam === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -292,7 +331,11 @@
                   <td>
                     <a @click="showPopover($event, 'mileage')">{{ $t('mileage') }}</a>
                   </td>
-                  <td>{{ signals.mileage }}</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,1000000, 'mileage', signals.mileage, false)"
+                    >{{ signals.mileage }} km</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('motor_control_lamp') ? 'hightlighted' : ''">
                   <td>
@@ -305,7 +348,7 @@
                       v-model="signals.motor_control_lamp"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'motor_control_lamp': signals.motor_control_lamp === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -325,6 +368,7 @@
                       color="primary"
                       height="20"
                       :value="signals.person_count / 4 * 100"
+                      @click="showSliderDialog(0,4, 'person_count', signals.person_count, false)"
                     >{{ signals.person_count }}/4</v-progress-linear>
                   </td>
                 </tr>
@@ -340,6 +384,7 @@
                       color="primary"
                       height="20"
                       :value="signals.power_consumption / 40 * 100"
+                      @click="showSliderDialog(0,40, 'power_consumption', signals.power_consumption, false)"
                     >{{ signals.power_consumption }}/40</v-progress-linear>
                   </td>
                 </tr>
@@ -349,7 +394,11 @@
                       @click="showPopover($event, 'pulse_sensor_steering_wheel')"
                     >{{ $t('pulse_sensor_steering_wheel') }}</a>
                   </td>
-                  <td>{{ signals.pulse_sensor_steering_wheel }}</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,300, 'pulse_sensor_steering_wheel', signals.pulse_sensor_steering_wheel, false, true)"
+                    >{{ signals.pulse_sensor_steering_wheel }}</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('rain_sensor') ? 'hightlighted' : ''">
                   <td>
@@ -360,7 +409,7 @@
                       v-model="signals.rain_sensor"
                       true-value="rain"
                       false-value="no_rain"
-                      readonly
+                      @click.stop="writeSignal({'rain_sensor': signals.rain_sensor === 'no_rain' ? 'rain': 'no_rain'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -376,7 +425,7 @@
                       v-model="signals.rear_running_lights"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'rear_running_lights': signals.rear_running_lights === 'on' ? 'off': 'on'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -390,7 +439,7 @@
                       v-model="signals.side_lights"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'side_lights': signals.side_lights === 'on' ? 'off': 'on'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -399,7 +448,11 @@
                   <td>
                     <a @click="showPopover($event, 'speed')">{{ $t('speed') }}</a>
                   </td>
-                  <td>{{ signals.speed }}</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,200, 'speed', signals.speed, false)"
+                    >{{ signals.speed }}</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('stop_lights') ? 'hightlighted' : ''">
                   <td>
@@ -410,7 +463,7 @@
                       v-model="signals.stop_lights"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'stop_lights': signals.stop_lights === 'on' ? 'off': 'on'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -421,7 +474,11 @@
                       @click="showPopover($event, 'temperature_inside')"
                     >{{ $t('temperature_inside') }}</a>
                   </td>
-                  <td>{{ signals.temperature_inside }}°C</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(-50,70, 'temperature_inside', signals.temperature_inside, false)"
+                    >{{ signals.temperature_inside }}°C</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('temperature_outside') ? 'hightlighted' : ''">
                   <td>
@@ -429,7 +486,11 @@
                       @click="showPopover($event, 'temperature_outside')"
                     >{{ $t('temperature_outside') }}</a>
                   </td>
-                  <td>{{ signals.temperature_outside }}°C</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(-50,70, 'temperature_outside', signals.temperature_outside, false)"
+                    >{{ signals.temperature_outside }}°C</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('tire_pressure_back_left') ? 'hightlighted' : ''">
                   <td>
@@ -437,7 +498,11 @@
                       @click="showPopover($event, 'tire_pressure_back_left')"
                     >{{ $t('tire_pressure_back_left') }}</a>
                   </td>
-                  <td>{{ signals.tire_pressure_back_left }} bar</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,5, 'tire_pressure_back_left', signals.tire_pressure_back_left, true)"
+                    >{{ signals.tire_pressure_back_left }} bar</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('tire_pressure_back_right') ? 'hightlighted' : ''">
                   <td>
@@ -445,7 +510,11 @@
                       @click="showPopover($event, 'tire_pressure_back_right')"
                     >{{ $t('tire_pressure_back_right') }}</a>
                   </td>
-                  <td>{{ signals.tire_pressure_back_right }} bar</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,5, 'tire_pressure_back_right', signals.tire_pressure_back_right, true)"
+                    >{{ signals.tire_pressure_back_right }} bar</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('tire_pressure_front_left') ? 'hightlighted' : ''">
                   <td>
@@ -453,7 +522,11 @@
                       @click="showPopover($event, 'tire_pressure_front_left')"
                     >{{ $t('tire_pressure_front_left') }}</a>
                   </td>
-                  <td>{{ signals.tire_pressure_front_left }} bar</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,5, 'tire_pressure_front_left', signals.tire_pressure_front_left, true)"
+                    >{{ signals.tire_pressure_front_left }} bar</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('tire_pressure_front_right') ? 'hightlighted' : ''">
                   <td>
@@ -461,7 +534,11 @@
                       @click="showPopover($event, 'tire_pressure_front_right')"
                     >{{ $t('tire_pressure_front_right') }}</a>
                   </td>
-                  <td>{{ signals.tire_pressure_front_right }} bar</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(0,5, 'tire_pressure_front_right', signals.tire_pressure_front_right, true)"
+                    >{{ signals.tire_pressure_front_right }} bar</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('trunk') ? 'hightlighted' : ''">
                   <td>
@@ -472,7 +549,7 @@
                       v-model="signals.trunk"
                       true-value="open"
                       false-value="closed"
-                      readonly
+                      @click.stop="writeSignal({'trunk': signals.trunk === 'open' ? 'closed': 'open'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -486,7 +563,7 @@
                       v-model="signals.turn_signal_left"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'turn_signal_left': signals.turn_signal_left === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -502,7 +579,7 @@
                       v-model="signals.turn_signal_right"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'turn_signal_right': signals.turn_signal_right === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -516,7 +593,7 @@
                       v-model="signals.warning_blinker"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'warning_blinker': signals.warning_blinker === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -525,7 +602,11 @@
                   <td>
                     <a @click="showPopover($event, 'weight')">{{ $t('weight') }}</a>
                   </td>
-                  <td>{{ signals.weight }}</td>
+                  <td>
+                    <p
+                      @click="showSliderDialog(1200,3500, 'weight', signals.weight, false)"
+                    >{{ signals.weight }}</p>
+                  </td>
                 </tr>
                 <tr :class="matchSearch('windshield_wipers') ? 'hightlighted' : ''">
                   <td>
@@ -538,7 +619,7 @@
                       v-model="signals.windshield_wipers"
                       true-value="on"
                       false-value="off"
-                      readonly
+                      @click.stop="writeSignal({'windshield_wipers': signals.windshield_wipers === 'off' ? 'on': 'off'})"
                       hide-details
                     ></v-switch>
                   </td>
@@ -555,6 +636,7 @@
                       color="primary"
                       height="20"
                       :value="signals.wiping_water_level"
+                      @click="showSliderDialog(0,100, 'wiping_water_level', signals.wiping_water_level, false)"
                     >{{ signals.wiping_water_level }}%</v-progress-linear>
                   </td>
                 </tr>
@@ -590,7 +672,7 @@
                   v-model="signals.infotainment"
                   true-value="on"
                   false-value="off"
-                  readonly
+                  @click.stop="writeSignal({'infotainment': signals.infotainment === 'off' ? 'on': 'off'})"
                   hide-details
                 ></v-switch>
               </td>
@@ -606,12 +688,13 @@
                   class="elevation-3"
                   color="primary"
                   height="20"
+                  @click="showSliderDialog(0,10, 'infotainment_volume', signals.infotainment_volume, false)"
                   :value="signals.infotainment_volume / 10 * 100"
                 >{{ signals.infotainment_volume }}/10</v-progress-linear>
               </td>
             </tr>
           </table>
-          <l-map :zoom="zoom" :center="center" class="elevation-3">
+          <l-map v-if="!sliderDialog" :zoom="zoom" :center="center" class="elevation-3">
             <l-tile-layer
               url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
               attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
@@ -656,6 +739,18 @@
         </v-card-text>
       </v-card>
     </v-menu>
+
+    <v-layout>
+      <v-dialog lazy width="50%" v-model="sliderDialog">
+        <v-card>
+          <SliderDialog
+            v-bind:modal="sliderDialog"
+            v-on:close-dialog="sliderDialog = false"
+            v-bind:config="sliderProps"
+          ></SliderDialog>
+        </v-card>
+      </v-dialog>
+    </v-layout>
   </div>
 </template>
 
@@ -663,13 +758,14 @@
 import classNames from "classnames";
 import { mapState } from "vuex";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
+import SliderDialog from "./../components/SliderDialog";
 import { setTimeout } from "timers";
 
 const Leaflet = eval("L");
 
 export default {
   name: "page-home",
-  components: { LMap, LTileLayer, LMarker },
+  components: { LMap, LTileLayer, LMarker, SliderDialog },
   data() {
     return {
       textSearch: null,
@@ -680,6 +776,15 @@ export default {
       isLoadingInfotainment: false,
       isLoadingSignals: false,
       lastKnownLocation: null,
+      sliderDialog: false,
+      sliderProps: {
+        min: 0,
+        max: 10,
+        signal: "example",
+        initValue: 5,
+        descAllowed: false,
+        nanAllowed: false
+      },
       showIframe: false,
       popover: {
         show: false,
@@ -925,6 +1030,41 @@ export default {
       if (ELEMENT.volume !== ELEMENT_VALUE) {
         ELEMENT.volume = ELEMENT_VALUE;
       }
+    },
+
+    writeSignal(newValues) {
+      let config = {
+        headers: {
+          "X-Api-Key": this.apiKey
+        }
+      };
+      this.axios
+        .patch("/v1/vehicle/signals", newValues, config)
+        .then(response => {})
+        .catch(err => {
+          console.error(
+            "ERROR while setting '/v1/vehicle/signals' (" +
+              JSON.stringify(newValues) +
+              "): " +
+              err
+          );
+        });
+    },
+    showSliderDialog(min, max, signal, initValue, descAllowed, nanAllowed) {
+      this.sliderProps = {
+        min: min,
+        max: max,
+        initValue: initValue,
+        signal: signal,
+        descAllowed: descAllowed,
+        apiKey: this.apiKey
+      };
+      if (nanAllowed) {
+        this.sliderProps.nanAllowed = true;
+      } else {
+        this.sliderProps.nanAllowed = false;
+      }
+      this.sliderDialog = true;
     }
   },
   computed: {
@@ -977,6 +1117,12 @@ export default {
 
           &:hover {
             cursor: help;
+          }
+        }
+
+        p {
+          &:hover {
+            cursor: pointer;
           }
         }
       }
