@@ -152,6 +152,9 @@ export class Controller extends ApiControllerBase {
             return res.status(406)
                 .header('Content-type', 'text/plain')
                 .send('ERROR: ' + egoose.toStringSafe(e));
+        } finally {
+            await req.vehicle
+                .cache.set(KEY_SIGNALS, undefined);
         }
 
         return res.status(204)
