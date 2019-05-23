@@ -575,6 +575,13 @@ export class VehicleSignalManager {
         default: DEFAULT_PERCENTAGE,
     })
     public battery_state_of_charge() { /* battery state of charge */ }
+    
+    @VehicleSignal({
+        validator: validateNumber(false, {14.5, 23.5),
+        transformer: transformToNumber(),
+        default: 17.5,
+    })
+    public battery_total_kwh_capacity() { /* capacity of the car's battery in kWh */ }
 
     @VehicleSignal({
         validator: validatePercentage(),
