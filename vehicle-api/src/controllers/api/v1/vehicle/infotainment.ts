@@ -409,8 +409,8 @@ export class Controller extends ApiControllerBase {
      *       - in: body
      *         required: true
      *         description: The text to write / insert.
-     *         type: string
-     *         format: byte
+     *         schema:
+     *           type: string
      *       - in: query
      *         name: black
      *         required: false
