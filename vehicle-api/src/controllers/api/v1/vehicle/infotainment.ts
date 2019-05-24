@@ -407,6 +407,7 @@ export class Controller extends ApiControllerBase {
      *         type: string
      *         description: The API key.
      *       - in: body
+     *         name: text
      *         required: true
      *         description: The text to write / insert.
      *         schema:
