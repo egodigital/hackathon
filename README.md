@@ -38,7 +38,7 @@ The delivery of the project will mainly be via Github. There you can upload your
 | Bug Hunter Squad | @TODO |
 | CodeStomp | @TODO |
 | Dsia | https://github.com/Plastikpizza/dsia_hackathon |
-| eHochKappa | @TODO |
+| eHochKappa | https://github.com/stillpaul/e.GO-digital-Hackathon |
 | Haths | @TODO |
 | Hugs for Bugs | @TODO |
 | iCaramba | https://github.com/Schlabbi/e.GO-Service |
