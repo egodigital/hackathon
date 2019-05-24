@@ -30,22 +30,22 @@ The delivery of the project will mainly be via Github. There you can upload your
 
 | Name | Project |
 |---|---|
-| 404 not found | @TODO |
-| aixsolution | @TODO |
-| BBQ | @TODO |
+| 404 not found | n.a. |
+| aixsolution | n.a. |
+| BBQ | n.a. |
 | Bit Lords | https://github.com/DipankarBahirvani/ego_hackathon-bitlords |
 | Bremicker&Schuhwirt | @NC |
-| Bug Hunter Squad | @TODO |
-| CodeStomp | @TODO |
+| Bug Hunter Squad | n.a. |
+| CodeStomp | n.a. |
 | Dsia | https://github.com/Plastikpizza/dsia_hackathon |
 | eHochKappa | https://github.com/stillpaul/e.GO-digital-Hackathon |
-| Haths | @TODO |
+| Haths | n.a. |
 | Hugs for Bugs | https://github.com/XiaoqiMa/egoHackathon , https://github.com/wiekern/ego_parking |
 | iCaramba | https://github.com/Schlabbi/e.GO-Service |
-| Krautcoding | @TODO |
-| MPS | @TODO |
-| Solar DB | https://github.com/thinkmobilede/e-go-infotainment |
-| Team Byte for Bait | @TODO |
+| Krautcoding | n.a. |
+| MPS | n.a. |
+| Solar DB | https://github.com/tapwork/SolarDB |
+| Team Byte for Bait | n.a. |
 | Team Digi Dudes | https://github.com/thinkmobilede/e-go-infotainment |
 
 ## API
