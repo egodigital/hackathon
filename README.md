@@ -42,7 +42,7 @@ The delivery of the project will mainly be via Github. There you can upload your
 | Haths | n.a. |
 | Hugs for Bugs | https://github.com/XiaoqiMa/egoHackathon , https://github.com/wiekern/ego_parking |
 | iCaramba | https://github.com/Schlabbi/e.GO-Service |
-| Krautcoding | n.a. |
+| Krautcoding | https://github.com/Felix928/Krautcoding |
 | MPS | n.a. |
 | Solar DB | https://github.com/tapwork/SolarDB |
 | Team Byte for Bait | n.a. |
