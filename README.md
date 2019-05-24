@@ -34,19 +34,19 @@ The delivery of the project will mainly be via Github. There you can upload your
 | aixsolution | @TODO |
 | BBQ | @TODO |
 | Bit Lords | @TODO |
-| Bremicker&Schuhwirt | @TODO |
+| Bremicker&Schuhwirt | @NC |
 | Bug Hunter Squad | @TODO |
 | CodeStomp | @TODO |
-| Dsia | @TODO |
+| Dsia | https://github.com/Plastikpizza/dsia_hackathon |
 | eHochKappa | @TODO |
 | Haths | @TODO |
 | Hugs for Bugs | @TODO |
-| iCaramba | @TODO |
+| iCaramba | https://github.com/Plastikpizza/dsia_hackathon |
 | Krautcoding | @TODO |
 | MPS | @TODO |
-| Solar DB | @TODO |
+| Solar DB | https://github.com/Plastikpizza/dsia_hackathon |
 | Team Byte for Bait | @TODO |
-| Team Digi Dudes | @TODO |
+| Team Digi Dudes | https://github.com/Plastikpizza/dsia_hackathon |
 
 ## API
 
