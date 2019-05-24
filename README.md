@@ -33,14 +33,14 @@ The delivery of the project will mainly be via Github. There you can upload your
 | 404 not found | @TODO |
 | aixsolution | @TODO |
 | BBQ | @TODO |
-| Bit Lords | @TODO |
+| Bit Lords | https://github.com/DipankarBahirvani/ego_hackathon-bitlords |
 | Bremicker&Schuhwirt | @NC |
 | Bug Hunter Squad | @TODO |
 | CodeStomp | @TODO |
 | Dsia | https://github.com/Plastikpizza/dsia_hackathon |
 | eHochKappa | https://github.com/stillpaul/e.GO-digital-Hackathon |
 | Haths | @TODO |
-| Hugs for Bugs | @TODO |
+| Hugs for Bugs | https://github.com/XiaoqiMa/egoHackathon , https://github.com/wiekern/ego_parking |
 | iCaramba | https://github.com/Schlabbi/e.GO-Service |
 | Krautcoding | @TODO |
 | MPS | @TODO |
