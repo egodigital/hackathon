@@ -41,12 +41,12 @@ The delivery of the project will mainly be via Github. There you can upload your
 | eHochKappa | @TODO |
 | Haths | @TODO |
 | Hugs for Bugs | @TODO |
-| iCaramba | https://github.com/Plastikpizza/dsia_hackathon |
+| iCaramba | https://github.com/Schlabbi/e.GO-Service |
 | Krautcoding | @TODO |
 | MPS | @TODO |
-| Solar DB | https://github.com/Plastikpizza/dsia_hackathon |
+| Solar DB | https://github.com/thinkmobilede/e-go-infotainment |
 | Team Byte for Bait | @TODO |
-| Team Digi Dudes | https://github.com/Plastikpizza/dsia_hackathon |
+| Team Digi Dudes | https://github.com/thinkmobilede/e-go-infotainment |
 
 ## API
 
