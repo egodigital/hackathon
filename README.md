@@ -26,6 +26,28 @@ The delivery of the project will mainly be via Github. There you can upload your
 
 **Deadline** for your results is on Friday 4pm. You will have to pitch your idea in a 3-minutes-presentation. A jury will evaluate all presentations through aspects like degree of innovation, UX/UI and simplification. Keep that in mind and become one of the qualified teams for the final pitching session. The overall winning team will be honored and is getting an attractive price. 
 
+## Teams
+
+| Name | Project |
+|---|---|
+| 404 not found | @TODO |
+| aixsolution | @TODO |
+| BBQ | @TODO |
+| Bit Lords | @TODO |
+| Bremicker&Schuhwirt | @TODO |
+| Bug Hunter Squad | @TODO |
+| CodeStomp | @TODO |
+| Dsia | @TODO |
+| eHochKappa | @TODO |
+| Haths | @TODO |
+| Hugs for Bugs | @TODO |
+| iCaramba | @TODO |
+| Krautcoding | @TODO |
+| MPS | @TODO |
+| Solar DB | @TODO |
+| Team Byte for Bait | @TODO |
+| Team Digi Dudes | @TODO |
+
 ## API
 
 The API of that Hackathon can be found [here](./vehicle-api).
