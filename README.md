@@ -39,7 +39,7 @@ The delivery of the project will mainly be via Github. There you can upload your
 | CodeStomp | n.a. |
 | Dsia | https://github.com/Plastikpizza/dsia_hackathon |
 | eHochKappa | https://github.com/stillpaul/e.GO-digital-Hackathon |
-| Haths | n.a. |
+| Haths | https://github.com/max65536/Hath_work |
 | Hugs for Bugs | https://github.com/XiaoqiMa/egoHackathon , https://github.com/wiekern/ego_parking |
 | iCaramba | https://github.com/Schlabbi/e.GO-Service |
 | Krautcoding | https://github.com/Felix928/Krautcoding |
@@ -57,4 +57,4 @@ The API of that Hackathon can be found [here](./vehicle-api).
 From 7am to 10pm we are providing our e.GO on Demand Service. If you need a ride for a nap or rest at home, just let us know. 
 
 <br />
-<sup>May 23rd, 2019</sup>
+<sup>May 27th, 2019</sup>
