@@ -1,6 +1,0 @@
-- /webapp/public/favicon:
-- /webapp/src/assets/Logo-eGOdigital-RGB.png:
-- /webapp/src/assets/Logo-eGOdigital-white.png:
-  e.GO Digital GmbH
-  Aachen, Germany
-  https://e-go-digital.com

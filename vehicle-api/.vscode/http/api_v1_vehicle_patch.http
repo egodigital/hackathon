@@ -1,7 +1,0 @@
-PATCH http://localhost/api/v1/vehicle
-X-Api-Key: 05091979-2309-1979-0509-197923091979
-Content-Type: application/json
-
-{
-    "name": "My super awesome e.GO Life"
-}

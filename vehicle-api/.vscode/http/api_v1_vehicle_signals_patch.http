@@ -1,8 +1,0 @@
-PATCH http://localhost/api/v1/vehicle/signals
-X-Api-Key: 05091979-2309-1979-0509-197923091979
-Content-Type: application/json
-
-{
-  "infotainment": "on",
-  "location": "50.775599,6.132337"
-}
