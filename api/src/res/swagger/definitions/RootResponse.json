@@ -1,0 +1,28 @@
+{
+    "type": "object",
+    "properties": {
+        "me": {
+            "description": "Information about the requesting client.",
+            "type": "object",
+            "properties": {
+                "ip": {
+                    "description": "The IP of the requresting client.",
+                    "type": "string",
+                    "example": "::ffff:127.0.0.1"
+                },
+                "port": {
+                    "description": "The TCP port of the requresting client.",
+                    "minimum": 0,
+                    "maximum": 65535,
+                    "type": "integer",
+                    "example": 5979
+                }
+            }
+        },
+        "now": {
+            "description": "The server's timestamp, in UTC.",
+            "type": "string",
+            "example": "1979-09-05T23:09:19.790Z"
+        }
+    }
+}

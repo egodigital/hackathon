@@ -16,34 +16,21 @@
  */
 
 import * as egoose from '@egodigital/egoose';
-import * as express from 'express';
-import { createApp } from './app';
-import { initDatabaseSchema } from './database';
-import { initLogger } from './diagnostics';
-import { initHost } from './host';
+import * as path from 'path';
 
 
-(async () => {
-    await initDatabaseSchema();
-
-    const HOST = express();
-
-    const APP = await createApp(HOST);
-
-    await initLogger(APP);
-    await initHost(APP);
-
-    let appPort = parseInt(
-        egoose.toStringSafe(process.env.APP_PORT)
-            .trim()
+/**
+ * Returns the full path of a file insice 'res' subfolder.
+ *
+ * @param {string} file The (relative) path to the file.
+ *
+ * @return {string} The full path.
+ */
+export function getResourcePath(file: string): string {
+    return path.resolve(
+        path.join(
+            __dirname, 'res',
+            egoose.toStringSafe(file),
+        )
     );
-    if (isNaN(appPort)) {
-        appPort = 80;
-    }
-
-    APP.host.listen(appPort, () => {
-        if (egoose.IS_LOCAL_DEV) {
-            console.log(`🎉🎉🎉 Host is running on port ${appPort} 🎉🎉🎉`);
-        }
-    });
-})();
+}

@@ -15,35 +15,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as egoose from '@egodigital/egoose';
-import * as express from 'express';
-import { createApp } from './app';
-import { initDatabaseSchema } from './database';
-import { initLogger } from './diagnostics';
-import { initHost } from './host';
+import { GET } from '@egodigital/express-controllers';
+import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from './_share';
 
 
-(async () => {
-    await initDatabaseSchema();
 
-    const HOST = express();
-
-    const APP = await createApp(HOST);
-
-    await initLogger(APP);
-    await initHost(APP);
-
-    let appPort = parseInt(
-        egoose.toStringSafe(process.env.APP_PORT)
-            .trim()
-    );
-    if (isNaN(appPort)) {
-        appPort = 80;
+/**
+ * Controller for /api/v2 endpoints.
+ */
+export class Controller extends APIv2ControllerBase {
+    /**
+     * [GET]  /
+     */
+    @GET()
+    public async index(req: ApiV2Request, res: ApiV2Response) {
+        return res.send('OK');
     }
-
-    APP.host.listen(appPort, () => {
-        if (egoose.IS_LOCAL_DEV) {
-            console.log(`🎉🎉🎉 Host is running on port ${appPort} 🎉🎉🎉`);
-        }
-    });
-})();
+}

@@ -15,35 +15,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as egoose from '@egodigital/egoose';
-import * as express from 'express';
-import { createApp } from './app';
-import { initDatabaseSchema } from './database';
-import { initLogger } from './diagnostics';
-import { initHost } from './host';
+import { NextFunction, RequestHandler } from 'express';
+import { ControllerBase, Request, Response } from '../../_share';
 
 
-(async () => {
-    await initDatabaseSchema();
+/**
+ * An API v2 request context.
+ */
+export interface ApiV2Request extends Request {
+}
 
-    const HOST = express();
+/**
+ * An API v2 response context.
+ */
+export interface ApiV2Response extends Response {
+}
 
-    const APP = await createApp(HOST);
 
-    await initLogger(APP);
-    await initHost(APP);
-
-    let appPort = parseInt(
-        egoose.toStringSafe(process.env.APP_PORT)
-            .trim()
-    );
-    if (isNaN(appPort)) {
-        appPort = 80;
+/**
+ * A basic controller.
+ */
+export abstract class APIv2ControllerBase extends ControllerBase {
+    /**
+     * {@inheritDoc}
+     */
+    public get __use(): RequestHandler[] {
+        return super.__use.concat([
+            async (req: ApiV2Request, res: ApiV2Response, next: NextFunction) => {
+                next();
+            }
+        ]);
     }
-
-    APP.host.listen(appPort, () => {
-        if (egoose.IS_LOCAL_DEV) {
-            console.log(`🎉🎉🎉 Host is running on port ${appPort} 🎉🎉🎉`);
-        }
-    });
-})();
+}

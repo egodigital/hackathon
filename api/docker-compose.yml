@@ -17,6 +17,7 @@ services:
     ports:
       - "80:80"
       - "8080:8080"
+      - "9229:9229"
     volumes:
       - .:/usr/src/app
     working_dir: /usr/src/app

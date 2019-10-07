@@ -15,35 +15,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as database from './database';
 import * as egoose from '@egodigital/egoose';
-import * as express from 'express';
-import { createApp } from './app';
-import { initDatabaseSchema } from './database';
-import { initLogger } from './diagnostics';
-import { initHost } from './host';
+import * as fs from 'fs-extra';
+import { Express } from 'express';
+import { AppContext } from './contracts';
 
 
-(async () => {
-    await initDatabaseSchema();
-
-    const HOST = express();
-
-    const APP = await createApp(HOST);
-
-    await initLogger(APP);
-    await initHost(APP);
-
-    let appPort = parseInt(
-        egoose.toStringSafe(process.env.APP_PORT)
-            .trim()
-    );
-    if (isNaN(appPort)) {
-        appPort = 80;
-    }
-
-    APP.host.listen(appPort, () => {
-        if (egoose.IS_LOCAL_DEV) {
-            console.log(`🎉🎉🎉 Host is running on port ${appPort} 🎉🎉🎉`);
-        }
-    });
-})();
+/**
+ * Creates a new app context.
+ *
+ * @param {Express} host The host.
+ * 
+ * @return {Promise<AppContext>} The promise with the new instance.
+ */
+export async function createApp(host: Express): Promise<AppContext> {
+    return {
+        host,
+        log: new egoose.Logger(),
+        package: JSON.parse(
+            await fs.readFile(
+                __dirname + '/../package.json',
+                'utf8'
+            )
+        ),
+        withDatabase: database.withDatabase,
+    };
+}
