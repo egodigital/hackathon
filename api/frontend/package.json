@@ -9,11 +9,13 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.8.2",
         "core-js": "^2.6.5",
+        "moment": "^2.24.0",
         "register-service-worker": "^1.6.2",
         "roboto-fontface": "*",
         "vue": "^2.6.10",
         "vue-router": "^3.0.3",
         "vuetify": "^2.0.0",
+        "vuetify-datetime-picker": "^2.1.0",
         "vuex": "^3.0.1"
     },
     "devDependencies": {

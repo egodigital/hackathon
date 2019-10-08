@@ -1,0 +1,16 @@
+// variables
+
+// custom styling
+.v-card {
+  @include elevation(4);
+}
+
+.v-card__text {
+  color: rgba(map-get($shades, 'black'), 0.87);
+}
+
+.v-card__actions {
+  .v-btn.v-size--default {
+    padding: 0 16px !important;
+  }
+}
