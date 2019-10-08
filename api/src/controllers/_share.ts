@@ -34,6 +34,28 @@ export interface Response extends ExpressResponse {
 
 
 /**
+ * Stores data for a HTTP result.
+ */
+export class HttpResult {
+    /**
+     * Initializes a new instance of that class.
+     *
+     * @param {number} code The status code.
+     */
+    public constructor(
+        public readonly code: number
+    ) { }
+
+    /**
+     * Creates an instance for '404 Not Found' result.
+     */
+    public static NotFound(): HttpResult {
+        return new HttpResult(404);
+    }
+}
+
+
+/**
  * A basic controller.
  */
 export abstract class ControllerBase extends ECControllerBase<AppContext> {

@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "The ID of the environment.",
+            "type": "string",
+            "example": "5d9c5d82734cb701240245d8"
+        },
+        "name": {
+            "description": "The name of the environment.",
+            "type": "string",
+            "example": "e.GO Campus-Boulevard 30, Aachen, Germany"
+        }
+    }
+}

@@ -22,7 +22,7 @@ import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../_share';
 
 
 /**
- * Controller for /api/v2/vehicles endpoints.
+ * Controller for /api/v2/environments endpoints.
  */
 export class Controller extends APIv2ControllerBase {
     /**
@@ -30,32 +30,25 @@ export class Controller extends APIv2ControllerBase {
      */
     @GET()
     @Swagger({
-        "summary": "Returns a list of all vehicles.",
+        "summary": "Returns a list of all environments.",
         "responses": {
             "200": {
                 "schema": {
-                    "$ref": "#/definitions/VehicleListResponse"
+                    "$ref": "#/definitions/EnvironmentListResponse"
                 }
             },
         },
     })
     public index(req: ApiV2Request, res: ApiV2Response) {
         return this.__app.withDatabase(async db => {
-            const VEHICLE_DOCS = await db.Vehicles
+            const ENVIRONMENT_DOCS = await db.Environments
                 .find({ 'team_id': req.team.id })
                 .exec();
 
-            return egoose.from(VEHICLE_DOCS).select(v => {
+            return egoose.from(ENVIRONMENT_DOCS).select(e => {
                 return {
-                    country: egoose.isEmptyString(v.country) ?
-                        'D' : egoose.toStringSafe(v.country).toUpperCase().trim(),
-                    id: v.id,
-                    license_plate: egoose.toStringSafe(v.license_plate)
-                        .toUpperCase()
-                        .trim(),
-                    manufacturer: egoose.toStringSafe(v.manufacturer)
-                        .trim(),
-                    model: egoose.toStringSafe(v.model_name)
+                    id: e.id,
+                    name: egoose.toStringSafe(e.name)
                         .trim(),
                 };
             });

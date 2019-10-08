@@ -45,7 +45,7 @@ export async function createSwaggerOptions(app: AppContext): Promise<InitControl
             },
             schemes: [egoose.IS_LOCAL_DEV ? 'http' : 'https'],
             tags: {
-                'default': 'Default',
+                'defaults': 'Defaults',
                 'vehicles': 'Vehicles',
             },
         },

@@ -1,0 +1,2 @@
+GET http://localhost/api/v2/environments
+X-Api-Key: ego

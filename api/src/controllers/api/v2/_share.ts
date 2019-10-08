@@ -23,7 +23,7 @@ import * as isStream from 'is-stream';
 import * as pluralize from 'pluralize';
 import { ResponseSerializerContext, serializeForJSON, SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { NextFunction, RequestHandler } from 'express';
-import { ControllerBase, Request, Response } from '../../_share';
+import { ControllerBase, HttpResult, Request, Response } from '../../_share';
 import { Team } from '../../../contracts';
 
 
@@ -45,13 +45,19 @@ export interface ApiV2Response extends Response {
 
 
 /**
- * A basic controller.
+ * A basic API v2 controller.
  */
 export abstract class APIv2ControllerBase extends ControllerBase {
     /**
      * {@inheritDoc}
      */
     public async __serialize(ctx: ResponseSerializerContext) {
+        if (ctx.result instanceof HttpResult) {
+            return ctx.response
+                .status(ctx.result.code)
+                .send();
+        }
+
         // buffer?
         if (Buffer.isBuffer(ctx.result)) {
             return ctx.response
@@ -91,6 +97,18 @@ export abstract class APIv2ControllerBase extends ControllerBase {
                 }
             }
         }
+
+        if (!context.definition.parameters) {
+            context.definition.parameters = [];
+        }
+        context.definition.parameters.push({
+            "in": "header",
+            "name": "X-Api-Key",
+            "description": "The API key.",
+            "required": true,
+            "example": "19790905-0000-0000-0000-000019790923",
+            "type": "string"
+        });
 
         if (!context.definition.produces) {
             context.definition.produces = [

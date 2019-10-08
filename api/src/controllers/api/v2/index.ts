@@ -31,17 +31,6 @@ export class Controller extends APIv2ControllerBase {
     @GET()
     @Swagger({
         "summary": "Returns general information.",
-        "parameters": [
-            {
-                "in": "header",
-                "name": "X-Api-Key",
-                "description": "The API key.",
-                "required": true,
-                "schema": {
-                    "$ref": "#/definitions/PostBooking"
-                }
-            }
-        ],
         "responses": {
             "200": {
                 "schema": {
