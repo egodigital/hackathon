@@ -1,28 +1,42 @@
 {
     "type": "object",
+    "required": [
+        "success"
+    ],
     "properties": {
-        "me": {
-            "description": "Information about the requesting client.",
+        "success": {
+            "description": "Indicates if operation was successful or not.",
+            "type": "boolean",
+            "example": true
+        },
+        "data": {
+            "description": "The data, if successful.",
             "type": "object",
             "properties": {
-                "ip": {
-                    "description": "The IP of the requresting client.",
-                    "type": "string",
-                    "example": "::ffff:127.0.0.1"
+                "me": {
+                    "description": "Information about the requesting client.",
+                    "type": "object",
+                    "properties": {
+                        "ip": {
+                            "description": "The IP of the requresting client.",
+                            "type": "string",
+                            "example": "::ffff:127.0.0.1"
+                        },
+                        "port": {
+                            "description": "The TCP port of the requresting client.",
+                            "minimum": 0,
+                            "maximum": 65535,
+                            "type": "integer",
+                            "example": 5979
+                        }
+                    }
                 },
-                "port": {
-                    "description": "The TCP port of the requresting client.",
-                    "minimum": 0,
-                    "maximum": 65535,
-                    "type": "integer",
-                    "example": 5979
+                "now": {
+                    "description": "The server's timestamp, in UTC.",
+                    "type": "string",
+                    "example": "1979-09-05T23:09:19.790Z"
                 }
             }
-        },
-        "now": {
-            "description": "The server's timestamp, in UTC.",
-            "type": "string",
-            "example": "1979-09-05T23:09:19.790Z"
         }
     }
 }

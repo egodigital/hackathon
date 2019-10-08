@@ -20,7 +20,8 @@ import * as database from '../../../database';
 import * as egoose from '@egodigital/egoose';
 import * as fileType from 'file-type';
 import * as isStream from 'is-stream';
-import { ResponseSerializerContext, serializeForJSON } from '@egodigital/express-controllers';
+import * as pluralize from 'pluralize';
+import { ResponseSerializerContext, serializeForJSON, SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { NextFunction, RequestHandler } from 'express';
 import { ControllerBase, Request, Response } from '../../_share';
 import { Team } from '../../../contracts';
@@ -75,6 +76,61 @@ export abstract class APIv2ControllerBase extends ControllerBase {
             });
     }
 
+    /** @inheritdoc */
+    public async __updateSwaggerPath(context: SwaggerPathDefinitionUpdaterContext) {
+        if (!context.definition.responses) {
+            context.definition.responses = {};
+        }
+
+        for (const HTTP_CODE of [200, 204]) {
+            const KEY = HTTP_CODE.toString();
+
+            if (context.definition.responses[KEY]) {
+                if (egoose.isEmptyString(context.definition.responses[KEY]['description'])) {
+                    context.definition.responses[KEY]['description'] = 'Operation was successful.';
+                }
+            }
+        }
+
+        if (!context.definition.produces) {
+            context.definition.produces = [
+                "application/json",
+            ];
+        }
+
+        // tags
+        if (!context.definition.tags) {
+            context.definition.tags = [];
+        }
+        if (context.definition.tags.length < 1) {
+            const PARTS = context.path
+                .split('/');
+
+            let tagName = egoose.normalizeString(
+                PARTS[3]
+            );
+            if ('' === tagName) {
+                tagName = 'default';
+            }
+
+            if (pluralize.isSingular(tagName)) {
+                tagName = pluralize.plural(tagName);
+            }
+
+            context.definition.tags.push(
+                tagName
+            );
+        }
+
+        context.definition.responses['401'] = {
+            "description": "Wrong API key.",
+        };
+
+        context.definition.responses['500'] = {
+            "description": "Server error.",
+        };
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -87,7 +143,9 @@ export abstract class APIv2ControllerBase extends ControllerBase {
                 try {
                     await this.__app.withDatabase(async db => {
                         const TEAM_DOC = await db.Teams
-                            .findOne(X_API_KEY);
+                            .findOne({
+                                'api_key': X_API_KEY,
+                            });
 
                         if (TEAM_DOC) {
                             req['team'] = await database.createTeam(TEAM_DOC, db);

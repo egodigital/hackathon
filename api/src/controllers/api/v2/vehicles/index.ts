@@ -17,12 +17,12 @@
 
 import * as egoose from '@egodigital/egoose';
 import { GET, Swagger } from '@egodigital/express-controllers';
-import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from './_share';
+import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../_share';
 
 
 
 /**
- * Controller for /api/v2 endpoints.
+ * Controller for /api/v2/vehicles endpoints.
  */
 export class Controller extends APIv2ControllerBase {
     /**
@@ -30,34 +30,34 @@ export class Controller extends APIv2ControllerBase {
      */
     @GET()
     @Swagger({
-        "summary": "Returns general information.",
-        "parameters": [
-            {
-                "in": "header",
-                "name": "X-Api-Key",
-                "description": "The API key.",
-                "required": true,
-                "schema": {
-                    "$ref": "#/definitions/PostBooking"
-                }
-            }
-        ],
+        "summary": "Returns a list of all vehicles.",
         "responses": {
             "200": {
                 "schema": {
-                    "$ref": "#/definitions/RootResponse"
+                    "$ref": "#/definitions/VehicleListResponse"
                 }
             },
         },
     })
-    public async index(req: ApiV2Request, res: ApiV2Response) {
-        return {
-            'me': {
-                'ip': req.socket.remoteAddress,
-                'port': req.socket.remotePort,
-            },
-            'now': egoose.utc()
-                .toISOString(),
-        };
+    public index(req: ApiV2Request, res: ApiV2Response) {
+        return this.__app.withDatabase(async db => {
+            const VEHICLE_DOCS = await db.Vehicles
+                .find({ 'team_id': req.team.id });
+
+            return egoose.from(VEHICLE_DOCS).select(v => {
+                return {
+                    country: egoose.isEmptyString(v.country) ?
+                        'D' : egoose.toStringSafe(v.country).toUpperCase().trim(),
+                    id: v.id,
+                    license_plate: egoose.toStringSafe(v.license_plate)
+                        .toUpperCase()
+                        .trim(),
+                    manufacturer: egoose.toStringSafe(v.manufacturer)
+                        .trim(),
+                    model: egoose.toStringSafe(v.model_name)
+                        .trim(),
+                };
+            });
+        });
     }
 }
