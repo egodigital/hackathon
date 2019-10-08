@@ -15,10 +15,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as egoose from '@egodigital/egoose';
+import * as database from '../../../../database';
 import { GET, Swagger } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../_share';
-
 
 
 /**
@@ -45,20 +44,14 @@ export class Controller extends APIv2ControllerBase {
                 .find({ 'team_id': req.team.id })
                 .exec();
 
-            return egoose.from(VEHICLE_DOCS).select(v => {
-                return {
-                    country: egoose.isEmptyString(v.country) ?
-                        'D' : egoose.toStringSafe(v.country).toUpperCase().trim(),
-                    id: v.id,
-                    license_plate: egoose.toStringSafe(v.license_plate)
-                        .toUpperCase()
-                        .trim(),
-                    manufacturer: egoose.toStringSafe(v.manufacturer)
-                        .trim(),
-                    model: egoose.toStringSafe(v.model_name)
-                        .trim(),
-                };
-            });
+            const RESULT: any[] = [];
+            for (const V of VEHICLE_DOCS) {
+                RESULT.push(
+                    await database.vehicleToJSON(V, db)
+                );
+            }
+
+            return RESULT;
         });
     }
 }

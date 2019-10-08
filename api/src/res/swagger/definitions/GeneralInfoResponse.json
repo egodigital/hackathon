@@ -35,6 +35,10 @@
                     "description": "The server's timestamp, in UTC.",
                     "type": "string",
                     "example": "1979-09-05T23:09:19.790Z"
+                },
+                "team": {
+                    "description": "The current team.",
+                    "$ref": "#/definitions/GeneralInfoResponse"
                 }
             }
         }

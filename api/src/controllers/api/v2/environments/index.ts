@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as egoose from '@egodigital/egoose';
+import * as database from '../../../../database';
 import { GET, Swagger } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../_share';
 
@@ -45,13 +45,14 @@ export class Controller extends APIv2ControllerBase {
                 .find({ 'team_id': req.team.id })
                 .exec();
 
-            return egoose.from(ENVIRONMENT_DOCS).select(e => {
-                return {
-                    id: e.id,
-                    name: egoose.toStringSafe(e.name)
-                        .trim(),
-                };
-            });
+            const RESULT: any[] = [];
+            for (const E of ENVIRONMENT_DOCS) {
+                RESULT.push(
+                    await database.environmentToJSON(E, db)
+                );
+            }
+
+            return RESULT;
         });
     }
 }

@@ -16,6 +16,7 @@
  */
 
 import * as egoose from '@egodigital/egoose';
+import * as moment from 'moment';
 import * as mongoose from 'mongoose';
 import * as path from 'path';
 import { Team } from './contracts';
@@ -85,6 +86,10 @@ export interface VehicleBookingsDocument extends mongoose.Document {
      */
     event: string;
     /**
+     * The start time (UTC).
+     */
+    from: Date;
+    /**
      * The status.
      */
     status: string;
@@ -92,6 +97,10 @@ export interface VehicleBookingsDocument extends mongoose.Document {
      * The timestamp (UTC).
      */
     time: Date;
+    /**
+     * The until time (UTC).
+     */
+    until: Date;
     /**
      * The ID of the underlying vehicle.
      */
@@ -209,6 +218,28 @@ export async function createTeam(doc: TeamsDocument, db: Database): Promise<Team
 }
 
 /**
+ * Converts an environment document to a JSON object.
+ *
+ * @param {EnvironmentsDocument} doc The document.
+ * @param {Database} db The underlying database connection.
+ * 
+ * @return {Promise<any>} The promise with the JSON object.
+ */
+export async function environmentToJSON(
+    doc: EnvironmentsDocument, db: Database
+): Promise<any> {
+    if (!doc) {
+        return doc as any;
+    }
+
+    return {
+        id: doc.id,
+        name: egoose.toStringSafe(doc.name)
+            .trim(),
+    };
+}
+
+/**
  * Initializes the database schema.
  */
 export async function initDatabaseSchema() {
@@ -265,6 +296,81 @@ export async function initDatabaseSchema() {
             }
         }
     }
+}
+
+/**
+ * Converts a team to a JSON object.
+ *
+ * @param {TeamsDocument} doc The document.
+ * @param {Database} db The underlying database connection.
+ * 
+ * @return {Promise<any>} The promise with the JSON object.
+ */
+export async function teamToJSON(
+    doc: TeamsDocument, db: Database
+): Promise<any> {
+    if (!doc) {
+        return doc as any;
+    }
+
+    return {
+        id: doc.id,
+        name: egoose.toStringSafe(doc.name)
+            .trim(),
+    };
+}
+
+/**
+ * Converts a vehicle booking document to a JSON object.
+ *
+ * @param {VehicleBookingsDocument} doc The document.
+ * @param {Database} db The underlying database connection.
+ * 
+ * @return {Promise<any>} The promise with the JSON object.
+ */
+export async function vehicleBookingToJSON(
+    doc: VehicleBookingsDocument, db: Database
+): Promise<any> {
+    if (!doc) {
+        return doc as any;
+    }
+
+    return {
+        event: egoose.normalizeString(doc.event),
+        id: doc.id,
+        status: egoose.normalizeString(doc.status),
+        time: moment.utc(doc.time)
+            .toISOString(),
+    };
+}
+
+/**
+ * Converts a vehicle document to a JSON object.
+ *
+ * @param {VehiclesDocument} doc The document.
+ * @param {Database} db The underlying database connection.
+ * 
+ * @return {Promise<any>} The promise with the JSON object.
+ */
+export async function vehicleToJSON(
+    doc: VehiclesDocument, db: Database
+): Promise<any> {
+    if (!doc) {
+        return doc as any;
+    }
+
+    return {
+        country: egoose.isEmptyString(doc.country) ?
+            'D' : egoose.toStringSafe(doc.country).toUpperCase().trim(),
+        id: doc.id,
+        license_plate: egoose.toStringSafe(doc.license_plate)
+            .toUpperCase()
+            .trim(),
+        manufacturer: egoose.toStringSafe(doc.manufacturer)
+            .trim(),
+        model: egoose.toStringSafe(doc.model_name)
+            .trim(),
+    };
 }
 
 /**

@@ -25,6 +25,9 @@ export const SCHEMA: mongoose.SchemaDefinition = {
         trim: true,
         type: String,
     },
+    from: {
+        type: Date,
+    },
     status: {
         lowercase: true,
         trim: true,
@@ -33,6 +36,9 @@ export const SCHEMA: mongoose.SchemaDefinition = {
     time: {
         default: () => egoose.utc()
             .toDate(),
+        type: Date,
+    },
+    until: {
         type: Date,
     },
     vehicle_id: {

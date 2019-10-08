@@ -1,0 +1,19 @@
+{
+    "type": "object",
+    "required": [
+        "from",
+        "until"
+    ],
+    "properties": {
+        "from": {
+            "description": "The start date.",
+            "type": "string",
+            "example": "5d9c5d82734cb701240245d8"
+        },
+        "until": {
+            "description": "The end date.",
+            "type": "string",
+            "example": "e.GO Campus-Boulevard 30, Aachen, Germany"
+        }
+    }
+}
