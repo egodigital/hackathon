@@ -163,6 +163,30 @@ export abstract class APIv2ControllerBase extends ControllerBase {
             );
         }
 
+        if ('GET' !== context.method) {
+            if (context.doesValidate) {
+                if (!context.definition.responses['400']) {
+                    context.definition.responses['400'] = {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    };
+                }
+            }
+        }
+
+        if (context.definition.responses['400']) {
+            if (egoose.isEmptyString(context.definition.responses['400'].description)) {
+                context.definition.responses['400'].description = 'Bad request.';
+            }
+
+            if (!context.definition.responses['400'].schema) {
+                context.definition.responses['400'].schema = {
+                    "$ref": "#/definitions/ErrorResponse"
+                };
+            }
+        }
+
         context.definition.responses['401'] = {
             "description": "Wrong API key.",
         };

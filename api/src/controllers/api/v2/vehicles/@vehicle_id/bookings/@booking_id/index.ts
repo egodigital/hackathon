@@ -31,7 +31,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
      */
     @GET('/')
     @Swagger({
-        "summary": "Returns a list of all bookings of a vehicle.",
+        "summary": "Return a specific booking of a vehicle.",
         "parameters": [{
             "in": "query",
             "name": "from",
@@ -87,7 +87,12 @@ export class Controller extends APIv2VehicleBookingControllerBase {
                 }
             }
 
-            return HttpResult.NotFound();
+            return HttpResult.NotFound((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
+                return res.json({
+                    success: false,
+                    data: `Vehicle '${VEHICLE_ID}' not found!`,
+                });
+            });
         });
     }
 
@@ -143,7 +148,12 @@ export class Controller extends APIv2VehicleBookingControllerBase {
                 }
             }
 
-            return HttpResult.NotFound();
+            return HttpResult.NotFound((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
+                return res.json({
+                    success: false,
+                    data: `Vehicle '${VEHICLE_ID}' not found!`,
+                });
+            });
         });
     }
 }

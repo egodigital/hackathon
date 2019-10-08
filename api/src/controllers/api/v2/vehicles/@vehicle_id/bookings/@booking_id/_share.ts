@@ -15,6 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as _ from 'lodash';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { APIv2VehicleControllerBase, ApiV2VehicleRequest, ApiV2VehicleResponse } from '../../_share';
 
@@ -51,6 +52,9 @@ export abstract class APIv2VehicleBookingControllerBase extends APIv2VehicleCont
 
         context.definition.responses['404'] = {
             "description": "Vehicle or booking not found.",
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            }
         };
     }
 }

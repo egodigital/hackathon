@@ -51,6 +51,9 @@ export abstract class APIv2EnvironmentControllerBase extends APIv2ControllerBase
 
         context.definition.responses['404'] = {
             "description": "Environment not found.",
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            }
         };
     }
 }

@@ -1,0 +1,14 @@
+{
+    "ego.power-tools": {
+        "events": [
+            {
+                "type": "file.saved",
+                "files": [ "/api/package.json" ],
+                "action": {
+                    "script": "events/package_json_saved.js",
+                    "type": "script"
+                }
+            }
+        ]
+    }
+}

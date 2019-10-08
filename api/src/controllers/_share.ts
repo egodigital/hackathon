@@ -50,6 +50,10 @@ export class HttpResult {
 
     /**
      * Creates an instance for '400 Bad Request' result.
+     * 
+     * @param {any} [data] Optional data to send.
+     * 
+     * @return {HttpResult} The new instance.
      */
     public static BadRequest(data?: any): HttpResult {
         return new HttpResult(400, data);
@@ -57,16 +61,33 @@ export class HttpResult {
 
     /**
      * Creates an instance for '404 Conflict' result.
+     * 
+     * @param {any} [data] Optional data to send.
+     * 
+     * @return {HttpResult} The new instance.
      */
-    public static Conflict(): HttpResult {
-        return new HttpResult(409);
+    public static Conflict(data?: any): HttpResult {
+        return new HttpResult(409, data);
+    }
+
+    /**
+     * Creates an instance for '204 No Content' result.
+     * 
+     * @return {HttpResult} The new instance.
+     */
+    public static NoContent(): HttpResult {
+        return new HttpResult(204);
     }
 
     /**
      * Creates an instance for '404 Not Found' result.
+     * 
+     * @param {any} [data] Optional data to send.
+     * 
+     * @return {HttpResult} The new instance.
      */
-    public static NotFound(): HttpResult {
-        return new HttpResult(404);
+    public static NotFound(data?: any): HttpResult {
+        return new HttpResult(404, data);
     }
 }
 

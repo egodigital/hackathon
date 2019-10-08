@@ -67,7 +67,12 @@ export class Controller extends APIv2EnvironmentControllerBase {
                 return RESULT;
             }
 
-            return HttpResult.NotFound();
+            return HttpResult.NotFound((req: ApiV2EnvironmentRequest, res: ApiV2EnvironmentResponse) => {
+                return res.json({
+                    success: false,
+                    data: `Environment '${ENVIROMENT_ID}' not found!`,
+                });
+            });
         });
     }
 }

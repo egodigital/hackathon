@@ -1,0 +1,18 @@
+{
+    "type": "object",
+    "required": [
+        "success"
+    ],
+    "properties": {
+        "success": {
+            "description": "Indicates that operation was not successul.",
+            "type": "boolean",
+            "example": false
+        },
+        "data": {
+            "description": "The data, if successful.",
+            "type": "string",
+            "example": "The request was invalid."
+        }
+    }
+}

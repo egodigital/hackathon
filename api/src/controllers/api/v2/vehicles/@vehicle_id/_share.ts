@@ -15,6 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as _ from 'lodash';
+import * as database from '../../../../../database';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../_share';
 
@@ -51,6 +53,37 @@ export abstract class APIv2VehicleControllerBase extends APIv2ControllerBase {
 
         context.definition.responses['404'] = {
             "description": "Vehicle not found.",
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            }
         };
+    }
+
+    /**
+     * Logs a behicle booking.
+     *
+     * @param {database.Database} db The database connection.
+     * @param {ApiV2VehicleRequest} req The underlying request context.
+     * @param {database.VehicleBookingsDocument} id The booking document.
+     * @param {any} message Custom message data.
+     */
+    protected async _logBooking(
+        db: database.Database, req: ApiV2VehicleRequest,
+        booking: database.VehicleBookingsDocument, message?: any,
+    ) {
+        const NEW_DATA: any = {
+            'booking_id': booking.id,
+            'event': booking.event,
+            'status': booking.status,
+            'team_id': req.team.id,
+        };
+
+        if (!_.isNil(message)) {
+            NEW_DATA['message'] = message;
+        }
+
+        await db.VehicleBookings.insertMany([
+            NEW_DATA,
+        ]);
     }
 }

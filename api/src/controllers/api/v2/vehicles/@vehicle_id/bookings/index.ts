@@ -57,6 +57,11 @@ export class Controller extends APIv2VehicleControllerBase {
                     "$ref": "#/definitions/VehicleBookingListResponse"
                 }
             },
+            "400": {
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                }
+            },
         },
     })
     public get_vehicle_bookings(req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) {
@@ -126,6 +131,10 @@ export class Controller extends APIv2VehicleControllerBase {
 
                 const BOOKING_DOCS = await db.VehicleBookings
                     .find(BOOKINGS_FILTER)
+                    .sort({
+                        'time': 1,
+                        '_id': 1,
+                    })
                     .exec();
 
                 const RESULT: any[] = [];
@@ -138,7 +147,12 @@ export class Controller extends APIv2VehicleControllerBase {
                 return RESULT;
             }
 
-            return HttpResult.NotFound();
+            return HttpResult.NotFound((req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
+                return res.json({
+                    success: false,
+                    data: `Vehicle '${VEHICLE_ID}' not found!`,
+                });
+            });
         });
     }
 
@@ -190,10 +204,19 @@ export class Controller extends APIv2VehicleControllerBase {
                     'vehicle_id': VEHICLE_DOC.id,
                 }]))[0];
 
+                await this._logBooking(
+                    db, req, NEW_DOC,
+                );
+
                 return await database.vehicleBookingToJSON(NEW_DOC, db);
             }
 
-            return HttpResult.NotFound();
+            return HttpResult.NotFound((req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
+                return res.json({
+                    success: false,
+                    data: `Vehicle '${VEHICLE_ID}' not found!`,
+                });
+            });
         });
     }
 }

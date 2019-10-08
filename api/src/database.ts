@@ -78,6 +78,36 @@ export interface TeamsDocument extends mongoose.Document {
 }
 
 /**
+ * A document from 'vehiclebookinglogs' collection.
+ */
+export interface VehicleBookingLogsDocument extends mongoose.Document {
+    /**
+     * The ID of the underlying booking.
+     */
+    booking_id: string;
+    /**
+     * The 'event' value, when the logging entry was created.
+     */
+    event: string;
+    /**
+     * The message data.
+     */
+    message?: any;
+    /**
+     * The 'status' value, when the logging entry was created.
+     */
+    status: string;
+    /**
+     * The ID of the underlying team.
+     */
+    team_id: string;
+    /**
+     * The timestamp (UTC).
+     */
+    time: Date;
+}
+
+/**
  * A document from 'vehiclebookings' collection.
  */
 export interface VehicleBookingsDocument extends mongoose.Document {
@@ -179,6 +209,13 @@ export class Database extends egoose.MongoDatabase {
      */
     public get Teams(): mongoose.Model<TeamsDocument> {
         return this.model('Teams');
+    }
+
+    /**
+     * Gets the 'vehiclebookinglogs' collection.
+     */
+    public get VehicleBookingLogs(): mongoose.Model<VehicleBookingLogsDocument> {
+        return this.model('VehicleBookingLogs');
     }
 
     /**
@@ -296,6 +333,93 @@ export async function initDatabaseSchema() {
             }
         }
     }
+}
+
+/**
+ * Resets the data of a team.
+ *
+ * @param {string} id The ID of the team.
+ * @param {Database} db The underlying database connection.
+ */
+export async function resetTeam(id: string, db: Database) {
+    const TEAM_DOC = await db.Teams
+        .findById(id)
+        .exec();
+    if (!TEAM_DOC) {
+        return;
+    }
+
+    // environments
+    const OLD_ENVIRONMENTS = await db.Environments
+        .find({ 'team_id': TEAM_DOC.id })
+        .exec();
+    for (const E of OLD_ENVIRONMENTS) {
+        await db.Environments.remove({
+            '_id': E._id,
+        });
+    }
+
+    // vehicles
+    const OLD_VEHICLES = await db.Vehicles
+        .find({ 'team_id': TEAM_DOC.id })
+        .exec();
+    for (const V of OLD_VEHICLES) {
+        await db.Vehicles.remove({
+            '_id': V._id,
+        });
+
+        // bookings
+        const OLD_BOOKINGS = await db.VehicleBookings
+            .find({ 'vehicle_id': V.id })
+            .exec();
+        for (const B of OLD_BOOKINGS) {
+            await db.VehicleBookings.remove({
+                '_id': B._id,
+            });
+        }
+    }
+
+    const NEW_ENVIRONMENT = (await db.Environments.insertMany([{
+        'name': 'e.GO Campus-Boulevard 30, Aachen, Germany',
+        'team_id': TEAM_DOC.id,
+    }]))[0];
+
+    await db.Vehicles.insertMany([{
+        'country': 'D',
+        'environment_id': NEW_ENVIRONMENT.id,
+        'license_plate': 'AC-EGO 123',
+        'manufacturer': 'e.GO',
+        'model_name': 'Life 20',
+        'team_id': TEAM_DOC.id,
+    }, {
+        'country': 'D',
+        'environment_id': NEW_ENVIRONMENT.id,
+        'license_plate': 'AC-EGO 456',
+        'manufacturer': 'e.GO',
+        'model_name': 'Life 40',
+        'team_id': TEAM_DOC.id,
+    }, {
+        'country': 'D',
+        'environment_id': NEW_ENVIRONMENT.id,
+        'license_plate': 'AC-EGO 789',
+        'manufacturer': 'e.GO',
+        'model_name': 'Life 60',
+        'team_id': TEAM_DOC.id,
+    }, {
+        'country': 'D',
+        'environment_id': NEW_ENVIRONMENT.id,
+        'license_plate': 'AC-EGO 1011',
+        'manufacturer': 'e.GO',
+        'model_name': 'Life CS',
+        'team_id': TEAM_DOC.id,
+    }, {
+        'country': 'D',
+        'environment_id': NEW_ENVIRONMENT.id,
+        'license_plate': 'AC-EGO 1213',
+        'manufacturer': 'e.GO',
+        'model_name': 'Life CS',
+        'team_id': TEAM_DOC.id,
+    }]);
 }
 
 /**

@@ -17,7 +17,7 @@
 
 import * as database from '../../../database';
 import * as egoose from '@egodigital/egoose';
-import { GET, Swagger } from '@egodigital/express-controllers';
+import { DELETE, GET, Swagger } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from './_share';
 import { HttpResult } from '../../_share';
 
@@ -29,7 +29,7 @@ export class Controller extends APIv2ControllerBase {
     /**
      * [GET]  /
      */
-    @GET()
+    @GET('/')
     @Swagger({
         "summary": "Returns general information.",
         "responses": {
@@ -40,14 +40,19 @@ export class Controller extends APIv2ControllerBase {
             },
         },
     })
-    public async index(req: ApiV2Request, res: ApiV2Response) {
+    public async get_general_info(req: ApiV2Request, res: ApiV2Response) {
         return this.__app.withDatabase(async db => {
             const TEAM_DOC = await db.Teams
                 .findById(req.team.id)
                 .exec();
 
             if (!TEAM_DOC) {
-                return HttpResult.NotFound();
+                return HttpResult.NotFound((req: ApiV2Request, res: ApiV2Response) => {
+                    return res.json({
+                        success: false,
+                        data: `Team '${req.team.id}' not found!`,
+                    });
+                });
             }
 
             return {
@@ -60,5 +65,37 @@ export class Controller extends APIv2ControllerBase {
                 'team': await database.teamToJSON(TEAM_DOC, db),
             };
         });
+    }
+
+    /**
+     * [DELETE]  /
+     */
+    @DELETE('/')
+    @Swagger({
+        "summary": "Resets the data of the current team.",
+        "responses": {
+            "204": {
+            },
+        },
+    })
+    public async reset_team_data(req: ApiV2Request, res: ApiV2Response) {
+        return this.__app.withDatabase(async db => {
+            const TEAM_DOC = await db.Teams
+                .findById(req.team.id)
+                .exec();
+
+            if (!TEAM_DOC) {
+                return HttpResult.NotFound((req: ApiV2Request, res: ApiV2Response) => {
+                    return res.json({
+                        success: false,
+                        data: `Team '${req.team.id}' not found!`,
+                    });
+                });
+            }
+
+            await database.resetTeam(TEAM_DOC.id, db);
+
+            return HttpResult.NoContent();
+        }, true);
     }
 }

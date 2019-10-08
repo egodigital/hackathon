@@ -15,6 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as database from './database';
 import * as egoose from '@egodigital/egoose';
 import { AppContext } from './contracts';
 
@@ -60,61 +61,11 @@ async function initDatabase(app: AppContext) {
                     T.api_key
                     }'  🏳️🏳️🏳️`);
 
-                const NEW_ENVIRONMENT = (await db.Environments.insertMany([{
-                    'name': 'e.GO Campus-Boulevard 30, Aachen, Germany',
-                    'team_id': T.id,
-                }]))[0];
+                await database.resetTeam(T.id, db);
 
-                console.log(`🏠🏠🏠  Created environment '${
-                    NEW_ENVIRONMENT.name
-                    }' (${NEW_ENVIRONMENT.id}) for team '${
-                    T.id
-                    }'  🏠🏠🏠`);
-
-                const NEW_VEHICLES = await db.Vehicles.insertMany([{
-                    'country': 'D',
-                    'environment_id': NEW_ENVIRONMENT.id,
-                    'license_plate': 'AC-EGO 123',
-                    'manufacturer': 'e.GO',
-                    'model_name': 'Life 20',
-                    'team_id': T.id,
-                }, {
-                    'country': 'D',
-                    'environment_id': NEW_ENVIRONMENT.id,
-                    'license_plate': 'AC-EGO 456',
-                    'manufacturer': 'e.GO',
-                    'model_name': 'Life 40',
-                    'team_id': T.id,
-                }, {
-                    'country': 'D',
-                    'environment_id': NEW_ENVIRONMENT.id,
-                    'license_plate': 'AC-EGO 789',
-                    'manufacturer': 'e.GO',
-                    'model_name': 'Life 60',
-                    'team_id': T.id,
-                }, {
-                    'country': 'D',
-                    'environment_id': NEW_ENVIRONMENT.id,
-                    'license_plate': 'AC-EGO 1011',
-                    'manufacturer': 'e.GO',
-                    'model_name': 'Life CS',
-                    'team_id': T.id,
-                }, {
-                    'country': 'D',
-                    'environment_id': NEW_ENVIRONMENT.id,
-                    'license_plate': 'AC-EGO 1213',
-                    'manufacturer': 'e.GO',
-                    'model_name': 'Life CS',
-                    'team_id': T.id,
-                }]);
-
-                for (const V of NEW_VEHICLES) {
-                    console.log(`🚗🚗🚗  Created vehicle '${
-                        V.license_plate
-                        }' (${V.id}) for team '${
-                        T.id
-                        }'  🚗🚗🚗`);
-                }
+                console.log(`🧪🧪🧪  Created initial data for team '${
+                    T.name
+                    }' (${T.id})  🧪🧪🧪`);
             }
         }
     }, true);
