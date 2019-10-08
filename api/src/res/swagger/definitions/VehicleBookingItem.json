@@ -1,0 +1,37 @@
+{
+    "type": "object",
+    "required": [
+        "event",
+        "id",
+        "status",
+        "time"
+    ],
+    "properties": {
+        "event": {
+            "description": "The event type of the vehicle booking.",
+            "type": "string",
+            "example": "created",
+            "enum": [
+                "cancelled", "created", "finished_in_time", "finished_late", "started"
+            ]
+        },
+        "id": {
+            "description": "The ID of the vehicle booking.",
+            "type": "string",
+            "example": "5d9c5d82734cb701240245d8"
+        },
+        "status": {
+            "description": "The status of the vehicle booking.",
+            "type": "string",
+            "example": "new",
+            "enum": [
+                "active", "cancelled", "finished", "new"
+            ]
+        },
+        "time": {
+            "description": "The timestamp of the vehicle booking.",
+            "type": "string",
+            "example": "1979-09-05T23:09:19.790Z"
+        }
+    }
+}

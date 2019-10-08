@@ -41,10 +41,26 @@ export class HttpResult {
      * Initializes a new instance of that class.
      *
      * @param {number} code The status code.
+     * @param {any} [data] The optional.
      */
     public constructor(
-        public readonly code: number
+        public readonly code: number,
+        public readonly data?: any,
     ) { }
+
+    /**
+     * Creates an instance for '400 Bad Request' result.
+     */
+    public static BadRequest(data?: any): HttpResult {
+        return new HttpResult(400, data);
+    }
+
+    /**
+     * Creates an instance for '404 Conflict' result.
+     */
+    public static Conflict(): HttpResult {
+        return new HttpResult(409);
+    }
 
     /**
      * Creates an instance for '404 Not Found' result.

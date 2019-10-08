@@ -53,9 +53,32 @@ export abstract class APIv2ControllerBase extends ControllerBase {
      */
     public async __serialize(ctx: ResponseSerializerContext) {
         if (ctx.result instanceof HttpResult) {
+            if (!isNaN(ctx.result.code)) {
+                ctx.response
+                    .status(ctx.result.code);
+            }
+
+            if (_.isNil(ctx.result.data)) {
+                return ctx.response
+                    .send();
+            }
+
+            if (isStream.readable(ctx.result.data)) {
+                return ctx.result
+                    .data
+                    .pipe(ctx.response);
+            }
+
+            if ('function' === typeof ctx.result.data) {
+                return Promise.resolve(
+                    ctx.result.data(
+                        ctx.request, ctx.response
+                    )
+                );
+            }
+
             return ctx.response
-                .status(ctx.result.code)
-                .send();
+                .send(ctx.result.data);
         }
 
         // buffer?

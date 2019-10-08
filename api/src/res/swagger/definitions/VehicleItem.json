@@ -1,5 +1,12 @@
 {
     "type": "object",
+    "required": [
+        "country",
+        "id",
+        "license_plate",
+        "manufacturer",
+        "model"
+    ],
     "properties": {
         "country": {
             "description": "The country.",

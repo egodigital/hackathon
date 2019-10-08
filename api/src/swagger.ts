@@ -44,13 +44,9 @@ export async function createSwaggerOptions(app: AppContext): Promise<InitControl
                 version: app.package.version,
             },
             schemes: [egoose.IS_LOCAL_DEV ? 'http' : 'https'],
-            tags: {
-                'defaults': 'Defaults',
-                'vehicles': 'Vehicles',
-            },
         },
 
-        title: 'e.GO Digital Backend',
+        title: 'e.GO Digital Vehicle Booking Backend',
     } : false;
 }
 

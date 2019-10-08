@@ -20,37 +20,37 @@ import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../_share';
 
 
 /**
- * An API v2 (environment) request context.
+ * An API v2 (vehicle) request context.
  */
-export interface ApiV2EnvironmentRequest extends ApiV2Request {
+export interface ApiV2VehicleRequest extends ApiV2Request {
 }
 
 /**
- * An API v2 (environment) response context.
+ * An API v2 (vehicle) response context.
  */
-export interface ApiV2EnvironmentResponse extends ApiV2Response {
+export interface ApiV2VehicleResponse extends ApiV2Response {
 }
 
 
 /**
- * A basic API v2 controller (environment).
+ * A basic API v2 controller (vehicle).
  */
-export abstract class APIv2EnvironmentControllerBase extends APIv2ControllerBase {
+export abstract class APIv2VehicleControllerBase extends APIv2ControllerBase {
     /** @inheritdoc */
     public async __updateSwaggerPath(context: SwaggerPathDefinitionUpdaterContext) {
         super.__updateSwaggerPath(context);
 
         context.definition.parameters.push({
             "in": "path",
-            "name": "environment_id",
-            "description": "The ID of the environment.",
+            "name": "vehicle_id",
+            "description": "The ID of the vehicle.",
             "required": true,
-            "example": "5d9c6192b00f0a01ace7cd91",
+            "example": "5d9c6192b00f0a01ace7cd90",
             "type": "string"
         });
 
         context.definition.responses['404'] = {
-            "description": "Environment not found.",
+            "description": "Vehicle not found.",
         };
     }
 }

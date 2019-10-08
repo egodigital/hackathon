@@ -77,6 +77,28 @@ export interface TeamsDocument extends mongoose.Document {
 }
 
 /**
+ * A document from 'vehiclebookings' collection.
+ */
+export interface VehicleBookingsDocument extends mongoose.Document {
+    /**
+     * The event (type).
+     */
+    event: string;
+    /**
+     * The status.
+     */
+    status: string;
+    /**
+     * The timestamp (UTC).
+     */
+    time: Date;
+    /**
+     * The ID of the underlying vehicle.
+     */
+    vehicle_id: string;
+}
+
+/**
  * A document from 'vehicles' collection.
  */
 export interface VehiclesDocument extends mongoose.Document {
@@ -148,6 +170,13 @@ export class Database extends egoose.MongoDatabase {
      */
     public get Teams(): mongoose.Model<TeamsDocument> {
         return this.model('Teams');
+    }
+
+    /**
+     * Gets the 'vehiclebookings' collection.
+     */
+    public get VehicleBookings(): mongoose.Model<VehicleBookingsDocument> {
+        return this.model('VehicleBookings');
     }
 
     /**

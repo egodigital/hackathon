@@ -16,41 +16,41 @@
  */
 
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
-import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../_share';
+import { APIv2VehicleControllerBase, ApiV2VehicleRequest, ApiV2VehicleResponse } from '../../_share';
 
 
 /**
- * An API v2 (environment) request context.
+ * An API v2 (vehicle booking) request context.
  */
-export interface ApiV2EnvironmentRequest extends ApiV2Request {
+export interface ApiV2VehicleBookingRequest extends ApiV2VehicleRequest {
 }
 
 /**
- * An API v2 (environment) response context.
+ * An API v2 (vehicle booking) response context.
  */
-export interface ApiV2EnvironmentResponse extends ApiV2Response {
+export interface ApiV2VehicleBookingResponse extends ApiV2VehicleResponse {
 }
 
 
 /**
- * A basic API v2 controller (environment).
+ * A basic API v2 controller (vehicle booking).
  */
-export abstract class APIv2EnvironmentControllerBase extends APIv2ControllerBase {
+export abstract class APIv2VehicleBookingControllerBase extends APIv2VehicleControllerBase {
     /** @inheritdoc */
     public async __updateSwaggerPath(context: SwaggerPathDefinitionUpdaterContext) {
         super.__updateSwaggerPath(context);
 
         context.definition.parameters.push({
             "in": "path",
-            "name": "environment_id",
-            "description": "The ID of the environment.",
+            "name": "booking_id",
+            "description": "The ID of the booking.",
             "required": true,
             "example": "5d9c6192b00f0a01ace7cd91",
             "type": "string"
         });
 
         context.definition.responses['404'] = {
-            "description": "Environment not found.",
+            "description": "Vehicle or booking not found.",
         };
     }
 }

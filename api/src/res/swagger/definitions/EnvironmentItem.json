@@ -1,5 +1,9 @@
 {
     "type": "object",
+    "required": [
+        "id",
+        "name"
+    ],
     "properties": {
         "id": {
             "description": "The ID of the environment.",
