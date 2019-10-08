@@ -15,7 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { GET } from '@egodigital/express-controllers';
+import * as egoose from '@egodigital/egoose';
+import { GET, Swagger } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from './_share';
 
 
@@ -28,7 +29,31 @@ export class Controller extends APIv2ControllerBase {
      * [GET]  /
      */
     @GET()
+    @Swagger({
+        "tags": [
+            "default"
+        ],
+        "summary": "Returns general information.",
+        "produces": [
+            "application/json",
+        ],
+        "responses": {
+            "200": {
+                "description": "Operation was successful.",
+                "schema": {
+                    "$ref": "#/definitions/RootResponse"
+                }
+            },
+        },
+    })
     public async index(req: ApiV2Request, res: ApiV2Response) {
-        return res.send('OK');
+        return res.json({
+            'me': {
+                'ip': req.socket.remoteAddress,
+                'port': req.socket.remotePort,
+            },
+            'now': egoose.utc()
+                .toISOString(),
+        });
     }
 }

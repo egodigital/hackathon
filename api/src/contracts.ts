@@ -59,3 +59,17 @@ export interface PackageJSON {
      */
     readonly version: string;
 }
+
+/**
+ * A team.
+ */
+export interface Team {
+    /**
+     * The ID of the team.
+     */
+    readonly id: string;
+    /**
+     * The (display) name of the team.
+     */
+    readonly name: string;
+}

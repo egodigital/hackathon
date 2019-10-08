@@ -17,10 +17,26 @@
 
 import * as egoose from '@egodigital/egoose';
 import * as mongoose from 'mongoose';
+import * as path from 'path';
+import { Team } from './contracts';
 
 
 /**
- * A document from 'logs' collections.
+ * A document from 'environments' collection.
+ */
+export interface EnvironmentsDocument extends mongoose.Document {
+    /**
+     * The name of the environment.
+     */
+    name: string;
+    /**
+     * The ID of the underlying team.
+     */
+    team_id: string;
+}
+
+/**
+ * A document from 'logs' collection.
  */
 export interface LogsDocument extends mongoose.Document {
     /**
@@ -41,6 +57,51 @@ export interface LogsDocument extends mongoose.Document {
     type: number;
 }
 
+interface MongooseSchemaModule {
+    readonly SCHEMA: mongoose.SchemaDefinition;
+    readonly setupSchema?: (schema: mongoose.Schema, name: string) => any;
+}
+
+/**
+ * A document from 'teams' collection.
+ */
+export interface TeamsDocument extends mongoose.Document {
+    /**
+     * The API key for the team.
+     */
+    api_key: string;
+    /**
+     * The (display) name of the team.
+     */
+    name: string;
+}
+
+/**
+ * A document from 'vehicles' collection.
+ */
+export interface VehiclesDocument extends mongoose.Document {
+    /**
+     * The country.
+     */
+    country?: string;
+    /**
+     * The license plate.
+     */
+    license_plate: string;
+    /**
+     * The manufacturer.
+     */
+    manufacturer: string;
+    /**
+     * The name of the model.
+     */
+    model_name: string;
+    /**
+     * The ID of the underlying team.
+     */
+    team_id: string;
+}
+
 /**
  * Describes an action for a 'AppContext#withDatabase' method.
  *
@@ -56,6 +117,13 @@ export type WithDatabaseAction<TResult extends any = any> = (db: Database, sessi
  * A database connection.
  */
 export class Database extends egoose.MongoDatabase {
+    /**
+     * Gets the 'environments' collection.
+     */
+    public get Environments(): mongoose.Model<EnvironmentsDocument> {
+        return this.model('Environments');
+    }
+
     /** @inheritdoc */
     public static fromEnvironment(): Database {
         return new Database({
@@ -74,8 +142,42 @@ export class Database extends egoose.MongoDatabase {
     public get Logs(): mongoose.Model<LogsDocument> {
         return this.model('Logs');
     }
+
+    /**
+     * Gets the 'teams' collection.
+     */
+    public get Teams(): mongoose.Model<TeamsDocument> {
+        return this.model('Teams');
+    }
+
+    /**
+     * Gets the 'vehicles' collection.
+     */
+    public get Vehicles(): mongoose.Model<VehiclesDocument> {
+        return this.model('Vehicles');
+    }
 }
 
+
+/**
+ * Creates a new team object from a database document.
+ *
+ * @param {TeamsDocument} doc The document.
+ * @param {Database} db The database connection.
+ * 
+ * @return {Promise<Team>} The promise with the new object.
+ */
+export async function createTeam(doc: TeamsDocument, db: Database): Promise<Team> {
+    if (!doc) {
+        return doc as any;
+    }
+
+    return {
+        id: doc.id,
+        name: egoose.toStringSafe(doc.name)
+            .trim(),
+    };
+}
 
 /**
  * Initializes the database schema.
@@ -87,29 +189,53 @@ export async function initDatabaseSchema() {
 
     mongoose.set('useCreateIndex', true);
 
-    egoose.MONGO_SCHEMAS['Logs'] = new mongoose.Schema({
-        message: {
-            type: mongoose.Schema.Types.Mixed,
-            required: false,
-        },
-        tag: {
-            lowercase: true,
-            required: false,
-            trim: true,
-            type: String,
-        },
-        time: {
-            type: Date,
-        },
-        type: {
-            required: false,
-            type: Number,
-        },
-    });
-    egoose.MONGO_SCHEMAS['Logs']
-        .index({ tag: 1 });
-    egoose.MONGO_SCHEMAS['Logs']
-        .index({ type: 1 });
+    // load from database/schemas
+    {
+        const SCHEMA_MODULE_FILES = egoose.from(
+            await egoose.glob(
+                '*' + path.extname(__filename),
+                {
+                    absolute: true,
+                    cwd: path.resolve(
+                        path.join(__dirname, './database/schemas')
+                    ),
+                    onlyFiles: true,
+                    nocase: true,
+                    unique: true,
+                }
+            ) as string[]
+        ).orderBy(f => egoose.normalizeString(path.dirname(f)))
+            .thenBy(f => egoose.normalizeString(path.basename(f)));
+
+        for (const SF of SCHEMA_MODULE_FILES) {
+            const SCHEMA_NAME = path.basename(
+                SF, path.extname(SF)
+            ).trim();
+
+            if (SCHEMA_NAME.startsWith('_')) {
+                continue;
+            }
+
+            const SCHEMA_MODULE: MongooseSchemaModule = require(
+                './database/schemas/' + SCHEMA_NAME
+            );
+
+            const NEW_SCHEMA = new mongoose.Schema(SCHEMA_MODULE.SCHEMA);
+            if (SCHEMA_MODULE.setupSchema) {
+                await Promise.resolve(
+                    SCHEMA_MODULE.setupSchema(NEW_SCHEMA, SCHEMA_NAME)
+                );
+            }
+
+            egoose.MONGO_SCHEMAS[SCHEMA_NAME] = NEW_SCHEMA;
+
+            if (egoose.IS_LOCAL_DEV) {
+                console.log(`🦆🦆🦆  Loaded Mongoose schema '${SCHEMA_NAME}' from '${
+                    SF
+                    }'  🦆🦆🦆`);
+            }
+        }
+    }
 }
 
 /**

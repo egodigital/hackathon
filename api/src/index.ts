@@ -19,6 +19,7 @@ import * as egoose from '@egodigital/egoose';
 import * as express from 'express';
 import { createApp } from './app';
 import { initDatabaseSchema } from './database';
+import { initDevEnvironment } from './dev';
 import { initLogger } from './diagnostics';
 import { initHost } from './host';
 
@@ -32,6 +33,10 @@ import { initHost } from './host';
 
     await initLogger(APP);
     await initHost(APP);
+
+    if (egoose.IS_LOCAL_DEV) {
+        await initDevEnvironment(APP);
+    }
 
     let appPort = parseInt(
         egoose.toStringSafe(process.env.APP_PORT)
