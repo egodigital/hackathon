@@ -138,6 +138,36 @@ export interface VehicleBookingsDocument extends mongoose.Document {
 }
 
 /**
+ * A document from 'vehicleevents' collections.
+ */
+export interface VehicleEventsDocument extends mongoose.Document {
+    /**
+     * The creation time.
+     */
+    creation_time: Date;
+    /**
+     * The data.
+     */
+    data?: any;
+    /**
+     * Is handled or not.
+     */
+    is_handled: boolean;
+    /**
+     * The last update time.
+     */
+    last_update?: Date;
+    /**
+     * The name.
+     */
+    name: string;
+    /**
+     * The ID of the vehicle.
+     */
+    vehicle_id: string;
+}
+
+/**
  * A document from 'vehicles' collection.
  */
 export interface VehiclesDocument extends mongoose.Document {
@@ -145,6 +175,18 @@ export interface VehiclesDocument extends mongoose.Document {
      * The country.
      */
     country?: string;
+    /**
+     * The current image of the infotainment screen.
+     */
+    infotainment?: Buffer;
+    /**
+     * The mime type of the infotainment screen.
+     */
+    infotainment_mime?: string;
+    /**
+     * The last update time.
+     */
+    last_update?: Date;
     /**
      * The license plate.
      */
@@ -158,9 +200,77 @@ export interface VehiclesDocument extends mongoose.Document {
      */
     model_name: string;
     /**
+     * A custom display name.
+     */
+    name?: string;
+    /**
+     * A state value.
+     */
+    state?: any;
+    /**
      * The ID of the underlying team.
      */
     team_id: string;
+    /**
+     * The UUID of the vehicle.
+     */
+    uuid: string;
+}
+
+/**
+ * A document from 'vehiclesignallogs' collections.
+ */
+export interface VehicleSignalLogsDocument extends mongoose.Document {
+    /**
+     * The creation time.
+     */
+    creation_time: Date;
+    /**
+     * The name of signal.
+     */
+    name: string;
+    /**
+     * The new data.
+     */
+    new_data?: any;
+    /**
+     * The old data.
+     */
+    old_data?: any;
+    /**
+     * The ID of the signal.
+     */
+    signal_id: string;
+    /**
+     * The ID of the vehicle.
+     */
+    vehicle_id: string;
+}
+
+/**
+ * A document from 'vehiclesignals' collections.
+ */
+export interface VehicleSignalsDocument extends mongoose.Document {
+    /**
+     * The creation time.
+     */
+    creation_time: Date;
+    /**
+     * The data.
+     */
+    data?: any;
+    /**
+     * The last update time.
+     */
+    last_update?: Date;
+    /**
+     * The name.
+     */
+    name: string;
+    /**
+     * The ID of the vehicle.
+     */
+    vehicle_id: string;
 }
 
 /**
@@ -226,10 +336,31 @@ export class Database extends egoose.MongoDatabase {
     }
 
     /**
+     * Gets the 'vehicleevents' collection.
+     */
+    public get VehicleEvents(): mongoose.Model<VehicleEventsDocument> {
+        return this.model('VehicleEvents');
+    }
+
+    /**
      * Gets the 'vehicles' collection.
      */
     public get Vehicles(): mongoose.Model<VehiclesDocument> {
         return this.model('Vehicles');
+    }
+
+    /**
+     * Gets the 'vehiclesignallogs' collection.
+     */
+    public get VehicleSignalLogs(): mongoose.Model<VehicleSignalLogsDocument> {
+        return this.model('VehicleSignalLogs');
+    }
+
+    /**
+     * Gets the 'vehicles' collection.
+     */
+    public get VehicleSignals(): mongoose.Model<VehicleSignalsDocument> {
+        return this.model('VehicleSignals');
     }
 }
 
@@ -349,7 +480,7 @@ export async function resetTeam(id: string, db: Database) {
         return;
     }
 
-    // environments
+    // old environments
     const OLD_ENVIRONMENTS = await db.Environments
         .find({ 'team_id': TEAM_DOC.id })
         .exec();
@@ -359,7 +490,7 @@ export async function resetTeam(id: string, db: Database) {
         });
     }
 
-    // vehicles
+    // old vehicles
     const OLD_VEHICLES = await db.Vehicles
         .find({ 'team_id': TEAM_DOC.id })
         .exec();
@@ -379,11 +510,13 @@ export async function resetTeam(id: string, db: Database) {
         }
     }
 
+    // new environment
     const NEW_ENVIRONMENT = (await db.Environments.insertMany([{
         'name': 'e.GO Campus-Boulevard 30, Aachen, Germany',
         'team_id': TEAM_DOC.id,
     }]))[0];
 
+    // new vehicles
     await db.Vehicles.insertMany([{
         'country': 'D',
         'environment_id': NEW_ENVIRONMENT.id,

@@ -22,6 +22,7 @@ export const SCHEMA: mongoose.SchemaDefinition = {
     api_key: {
         trim: true,
         type: String,
+        unique: true,
     },
     name: {
         trim: true,
@@ -29,6 +30,7 @@ export const SCHEMA: mongoose.SchemaDefinition = {
     },
 };
 
+/*
 export function setupSchema(schema: mongoose.Schema, name: string) {
-    schema.index({ api_key: 1 }, { unique: true });
 }
+*/

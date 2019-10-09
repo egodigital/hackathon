@@ -20,72 +20,33 @@ import * as mongoose from 'mongoose';
 
 
 export const SCHEMA: mongoose.SchemaDefinition = {
-    country: {
-        trim: true,
-        required: false,
-        type: String,
-        uppercase: true,
-    },
-    environment_id: {
-        lowercase: true,
-        required: false,
-        trim: true,
-        type: String,
-    },
-    infotainment: {
-        required: false,
-        type: Buffer,
-    },
-    infotainment_mime: {
-        lowercase: true,
-        required: false,
-        trim: true,
-        type: String,
-    },
-    last_update: {
-        required: false,
+    creation_time: {
+        default: () => egoose.utc().toDate(),
         type: Date,
     },
-    license_plate: {
-        trim: true,
-        type: String,
-        uppercase: true,
-    },
-    manufacturer: {
-        trim: true,
-        type: String,
-    },
-    model_name: {
-        trim: true,
-        type: String,
-    },
     name: {
-        required: false,
+        lowercase: true,
         trim: true,
         type: String,
     },
-    state: {
+    new_data: {
         required: false,
         type: mongoose.Schema.Types.Mixed,
     },
-    team_id: {
-        lowercase: true,
-        trim: true,
+    old_data: {
+        required: false,
+        type: mongoose.Schema.Types.Mixed,
+    },
+    signal_id: {
         type: String,
     },
-    uuid: {
-        default: () => egoose.uuid(),
+    vehicle_id: {
         type: String,
-        unique: true,
     },
 };
 
 export function setupSchema(schema: mongoose.Schema, name: string) {
-    schema.index({ country: 1 });
-    schema.index({ environment_id: 1 });
-    schema.index({ license_plate: 1 });
-    schema.index({ manufacturer: 1 });
-    schema.index({ manufacturer: 1, model_name: 1 });
-    schema.index({ team_id: 1 });
-    schema.index({ team_id: 1, license_plate: 1 }, { unique: true });
+    schema.index({ name: 1 });
+    schema.index({ signal_id: 1 });
+    schema.index({ vehicle_id: 1 });
 }
