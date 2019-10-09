@@ -52,7 +52,36 @@ export class Controller extends APIv2VehicleControllerBase {
      */
     @GET('/')
     @Swagger({
-        "summary": "Returns a list of all bookings of a vehicle.",
+        "summary": "Returns a list of bookings of a vehicle, with optional filters.",
+        "parameters": [{
+            "in": "query",
+            "name": "from",
+            "description": "The filter for start date (UTC).",
+            "required": false,
+            "example": "2019-09-05T23:09:19.790Z",
+            "type": "string"
+        }, {
+            "in": "status",
+            "name": "from",
+            "description": "The filter for the status.",
+            "required": false,
+            "example": "finished",
+            "type": "string"
+        }, {
+            "in": "query",
+            "name": "until",
+            "description": "The filter for end date (UTC).",
+            "required": false,
+            "example": "2019-09-23T05:09:19.790Z",
+            "type": "string"
+        }, {
+            "in": "query",
+            "name": "vehicle",
+            "description": "The filter for the ID of the vehicle.",
+            "required": false,
+            "example": "5d9c5d82734cb701240245d8",
+            "type": "string"
+        }],
         "responses": {
             "200": {
                 "schema": {
@@ -114,6 +143,13 @@ export class Controller extends APIv2VehicleControllerBase {
                 });
             }
 
+            let vehicle = egoose.normalizeString(req.query['vehicle']);
+            if ('' !== vehicle) {
+                BOOKINGS_FILTER['$and'].push({
+                    'vehicle_id': vehicle,
+                });
+            }
+
             let status = egoose.normalizeString(req.query['status'])
                 .trim();
             if ('' !== status) {
@@ -164,34 +200,70 @@ export class Controller extends APIv2VehicleControllerBase {
                     "$ref": "#/definitions/VehicleBookingListResponse"
                 }
             },
+            "409": {
+                "description": "There is still an active booking.",
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                }
+            },
         },
     })
     public create_vehicle_booking(req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) {
         return this.__app.withDatabase(async db => {
             const NEW_BOOKING: NewVehicleBooking = req.body;
 
-            const NEW_DOC = (await db.VehicleBookings.insertMany([{
-                'event': 'created',
-                'from': moment.utc(NEW_BOOKING.from)
-                    .toDate(),
-                'status': 'new',
-                'until': moment.utc(NEW_BOOKING.until)
-                    .toDate(),
-                'vehicle_id': req.vehicle.id,
-            }]))[0];
+            const CREATE_BOOKING = async () => {
+                const NEW_DOC = (await db.VehicleBookings.insertMany([{
+                    'event': 'created',
+                    'from': moment.utc(NEW_BOOKING.from)
+                        .toDate(),
+                    'status': 'new',
+                    'until': moment.utc(NEW_BOOKING.until)
+                        .toDate(),
+                    'vehicle_id': req.vehicle.id,
+                }]))[0];
 
-            const BOOKING: VehicleBooking = {
-                event: NEW_DOC.event,
-                id: NEW_DOC.id,
-                status: NEW_DOC.status,
-                vehicle: req.vehicle,
+                const BOOKING: VehicleBooking = {
+                    event: NEW_DOC.event,
+                    id: NEW_DOC.id,
+                    status: NEW_DOC.status,
+                    vehicle: req.vehicle,
+                };
+
+                await logBooking(
+                    db, req, BOOKING
+                );
+
+                return await database.vehicleBookingToJSON(NEW_DOC, db);
             };
 
-            await logBooking(
-                db, req, BOOKING
-            );
+            let latestBooking = await db.VehicleBookings
+                .findOne({
+                    'vehicle_id': req.vehicle.id,
+                })
+                .sort({
+                    'time': -1,
+                    '_id': -1,
+                })
+                .exec();
+            if (!latestBooking) {
+                return CREATE_BOOKING();
+            }
 
-            return await database.vehicleBookingToJSON(NEW_DOC, db);
-        });
+            if (['active'].indexOf(egoose.normalizeString(latestBooking.status)) < 0) {
+                return CREATE_BOOKING();
+            }
+
+            return HttpResult.Conflict((req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
+                return res.json({
+                    success: false,
+                    data: `There is already a booking (${
+                        latestBooking.id
+                        }) with status '${
+                        egoose.normalizeString(latestBooking.status)
+                        }'!`,
+                });
+            });
+        }, true);
     }
 }

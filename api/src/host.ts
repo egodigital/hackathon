@@ -17,7 +17,7 @@
 
 import * as egoose from '@egodigital/egoose';
 import * as nocache from 'nocache';
-import { initControllers } from '@egodigital/express-controllers';
+import { initControllers, ObjectValidationFailedHandlerContext, setObjectValidationFailedHandler, serializeForJSON } from '@egodigital/express-controllers';
 import { AppContext } from './contracts';
 import { createSwaggerOptions } from './swagger';
 
@@ -47,6 +47,18 @@ export async function initHost(app: AppContext) {
         }
 
         return next();
+    });
+
+    setObjectValidationFailedHandler(async (ctx: ObjectValidationFailedHandlerContext) => {
+        return ctx.response.status(400).json(
+            await serializeForJSON({
+                success: false,
+                data: {
+                    details: ctx.details,
+                    reason: ctx.reason,
+                }
+            })
+        );
     });
 
     initControllers({
