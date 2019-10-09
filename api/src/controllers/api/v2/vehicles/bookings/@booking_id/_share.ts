@@ -22,6 +22,7 @@ import { NextFunction, RequestHandler } from 'express';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../../_share';
 import { VehicleBooking } from '../../../../../../contracts';
+import { VehicleSignalManager, VehicleCache } from '../../../../../../vehicles';
 
 
 /**
@@ -98,9 +99,17 @@ export abstract class APIv2VehicleBookingControllerBase extends APIv2ControllerB
                                             status: egoose.normalizeString(BOOKING_DOC.status),
                                             time: moment.utc(BOOKING_DOC.time),
                                             vehicle: {
+                                                cache: new VehicleCache(VEHICLE_DOC),
                                                 id: VEHICLE_DOC.id,
+                                                infotainment: {
+                                                    data: !Buffer.isBuffer(VEHICLE_DOC.infotainment) ?
+                                                        undefined : VEHICLE_DOC.infotainment,
+                                                    mime: egoose.isEmptyString(VEHICLE_DOC.infotainment_mime) ?
+                                                        undefined : egoose.normalizeString(VEHICLE_DOC.infotainment_mime),
+                                                },
                                                 name: egoose.isEmptyString(VEHICLE_DOC.name) ?
                                                     undefined : egoose.toStringSafe(VEHICLE_DOC.name).trim(),
+                                                signals: new VehicleSignalManager(VEHICLE_DOC),
                                             },
                                         };
                                     }

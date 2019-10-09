@@ -19,6 +19,7 @@ import * as egoose from '@egodigital/egoose';
 import * as moment from 'moment';
 import { Express } from 'express';
 import { WithDatabaseAction } from './database';
+import { VehicleSignalManager, VehicleCache } from './vehicles';
 
 
 /**
@@ -42,6 +43,15 @@ export interface AppContext {
      */
     readonly withDatabase: <TResult extends any = any>(action: WithDatabaseAction<TResult>, inTransaction?: boolean) => Promise<TResult>;
 }
+
+/**
+ * A decorator function.
+ *
+ * @param {any} target The target.
+ * @param {string} propertyName The (property) name.
+ * @param {PropertyDescriptor} propertyInfo The property information.
+ */
+export type DecoratorFunction = (target: any, propertyName: string, propertyInfo: PropertyDescriptor) => void;
 
 /**
  * An environment.
@@ -90,13 +100,34 @@ export interface Team {
  */
 export interface Vehicle {
     /**
+     * A cache for the vehicle.
+     */
+    readonly cache: VehicleCache;
+    /**
      * The ID of the vehicle.
      */
     readonly id: string;
     /**
+     * The status of the infotainment.
+     */
+    readonly infotainment: {
+        /**
+         * The data.
+         */
+        data?: Buffer;
+        /**
+         * The MIME type.
+         */
+        mime?: string;
+    };
+    /**
      * The (display) name of the vehicle.
      */
     readonly name: string;
+    /**
+     * Signal manager.
+     */
+    readonly signals: VehicleSignalManager;
 }
 
 /**
@@ -124,3 +155,13 @@ export interface VehicleBooking {
      */
     readonly vehicle: Vehicle;
 }
+
+/**
+ * The (storage) key for storing all (vehicle) signals.
+ */
+export const KEY_SIGNALS = 'signals';
+
+/**
+ * A symbol, which indicates if something has not been found.
+ */
+export const NOT_FOUND = Symbol('NOT_FOUND');

@@ -20,7 +20,8 @@ import * as egoose from '@egodigital/egoose';
 import { NextFunction, RequestHandler } from 'express';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../_share';
-import { Vehicle } from '../../../../../contracts';
+import { KEY_SIGNALS, NOT_FOUND, Vehicle } from '../../../../../contracts';
+import { VehicleSignalManager, VehicleCache } from '../../../../../vehicles';
 
 
 /**
@@ -86,9 +87,17 @@ export abstract class APIv2VehicleControllerBase extends APIv2ControllerBase {
 
                     if (VEHICLE_DOC) {
                         req['vehicle'] = {
+                            cache: new VehicleCache(VEHICLE_DOC),
                             id: VEHICLE_DOC.id,
+                            infotainment: {
+                                data: !Buffer.isBuffer(VEHICLE_DOC.infotainment) ?
+                                    undefined : VEHICLE_DOC.infotainment,
+                                mime: egoose.isEmptyString(VEHICLE_DOC.infotainment_mime) ?
+                                    undefined : egoose.normalizeString(VEHICLE_DOC.infotainment_mime),
+                            },
                             name: egoose.isEmptyString(VEHICLE_DOC.name) ?
                                 undefined : egoose.toStringSafe(VEHICLE_DOC.name).trim(),
+                            signals: new VehicleSignalManager(VEHICLE_DOC),
                         };
 
                         return next();
@@ -101,5 +110,31 @@ export abstract class APIv2VehicleControllerBase extends APIv2ControllerBase {
                 });
             }
         ]);
+    }
+
+
+    /**
+     * Returns a vehicle signal.
+     *
+     * @param {ApiRequest} req The API request.
+     * @param {string} name The name of the signal.
+     *
+     * @return {Promise<TValue>} The promise with the value.
+     */
+    protected async _getVehicleSignal<TValue = any>(req: ApiV2VehicleRequest, name: string): Promise<TValue> {
+        name = egoose.normalizeString(name);
+
+        const ALL_SIGNALS: any = await req.vehicle
+            .cache
+            .get(KEY_SIGNALS, NOT_FOUND);
+        if (_.isSymbol(ALL_SIGNALS)) {
+            // not in cache
+
+            return await req.vehicle
+                .signals
+                ._get(name);
+        }
+
+        return ALL_SIGNALS[name];
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "vehicle-booking-api",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "API for vehicle booking.",
   "main": "dist/index.js",
   "scripts": {
@@ -43,6 +43,7 @@
     "file-type": "^12.3.0",
     "fs-extra": "^8.1.0",
     "is-stream": "^2.0.0",
+    "jimp": "^0.8.4",
     "lodash": "^4.17.15",
     "nocache": "^2.1.0",
     "pluralize": "^8.0.0"
