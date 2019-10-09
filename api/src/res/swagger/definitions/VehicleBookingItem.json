@@ -4,7 +4,8 @@
         "event",
         "id",
         "status",
-        "time"
+        "time",
+        "vehicle"
     ],
     "properties": {
         "event": {
@@ -32,6 +33,10 @@
             "description": "The timestamp of the vehicle booking.",
             "type": "string",
             "example": "1979-09-05T23:09:19.790Z"
+        },
+        "vehicle": {
+            "description": "The underlying vehicle.",
+            "$ref": "#/definitions/VehicleItem"
         }
     }
 }

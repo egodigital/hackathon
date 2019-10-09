@@ -13,6 +13,10 @@
             "type": "string",
             "example": "D"
         },
+        "environment": {
+            "description": "The underlying environment.",
+            "$ref": "#/definitions/EnvironmentItem"
+        },
         "id": {
             "description": "The ID of the vehicle.",
             "type": "string",
@@ -32,6 +36,10 @@
             "description": "The name of the model.",
             "type": "string",
             "example": "Life 60"
+        },
+        "team": {
+            "description": "The underlying team.",
+            "$ref": "#/definitions/TeamItem"
         }
     }
 }

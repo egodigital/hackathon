@@ -38,7 +38,7 @@
                 },
                 "team": {
                     "description": "The current team.",
-                    "$ref": "#/definitions/GeneralInfoResponse"
+                    "$ref": "#/definitions/TeamItem"
                 }
             }
         }

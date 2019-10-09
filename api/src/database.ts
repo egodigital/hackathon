@@ -176,6 +176,10 @@ export interface VehiclesDocument extends mongoose.Document {
      */
     country?: string;
     /**
+     * The ID of the underlying environment.
+     */
+    environment_id?: string;
+    /**
      * The current image of the infotainment screen.
      */
     infotainment?: Buffer;
@@ -400,10 +404,20 @@ export async function environmentToJSON(
         return doc as any;
     }
 
+    let teamDoc: TeamsDocument;
+
+    const TEAM_ID = egoose.normalizeString(doc.team_id);
+    if ('' !== TEAM_ID) {
+        teamDoc = await db.Teams
+            .findById(TEAM_ID)
+            .exec();
+    }
+
     return {
         id: doc.id,
         name: egoose.toStringSafe(doc.name)
             .trim(),
+        team: await teamToJSON(teamDoc, db),
     };
 }
 
@@ -592,12 +606,22 @@ export async function vehicleBookingToJSON(
         return doc as any;
     }
 
+    let vehicleDoc: VehiclesDocument;
+
+    const VEHICLE_ID = egoose.normalizeString(doc.vehicle_id);
+    if ('' !== VEHICLE_ID) {
+        vehicleDoc = await db.Vehicles
+            .findById(VEHICLE_ID)
+            .exec();
+    }
+
     return {
         event: egoose.normalizeString(doc.event),
         id: doc.id,
         status: egoose.normalizeString(doc.status),
         time: moment.utc(doc.time)
             .toISOString(),
+        vehicle: await vehicleToJSON(vehicleDoc, db),
     };
 }
 
@@ -616,9 +640,27 @@ export async function vehicleToJSON(
         return doc as any;
     }
 
+    let environmentDoc: EnvironmentsDocument;
+    let teamDoc: TeamsDocument;
+
+    const ENVIRONMENT_ID = egoose.normalizeString(doc.environment_id);
+    if ('' !== ENVIRONMENT_ID) {
+        environmentDoc = await db.Environments
+            .findById(ENVIRONMENT_ID)
+            .exec();
+    }
+
+    const TEAM_ID = egoose.normalizeString(doc.team_id);
+    if ('' !== TEAM_ID) {
+        teamDoc = await db.Teams
+            .findById(TEAM_ID)
+            .exec();
+    }
+
     return {
         country: egoose.isEmptyString(doc.country) ?
             'D' : egoose.toStringSafe(doc.country).toUpperCase().trim(),
+        environment: await environmentToJSON(environmentDoc, db),
         id: doc.id,
         license_plate: egoose.toStringSafe(doc.license_plate)
             .toUpperCase()
@@ -627,6 +669,7 @@ export async function vehicleToJSON(
             .trim(),
         model: egoose.toStringSafe(doc.model_name)
             .trim(),
+        team: await teamToJSON(teamDoc, db),
     };
 }
 
