@@ -48,11 +48,12 @@ export class Controller extends APIv2VehicleBookingControllerBase {
     })
     public cancel_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
         return this.__app.withDatabase(async db => {
-            if ('active' === egoose.normalizeString(req.booking.status)) {
+            if ('new' === egoose.normalizeString(req.booking.status)) {
                 await db.VehicleBookings
                     .updateOne({
                         '_id': req.booking.id,
                     }, {
+                        'event': 'started',
                         'status': 'active',
                     })
                     .exec();
@@ -60,6 +61,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
                 await logBooking(
                     db, req, req.booking,
                     {
+                        'event': 'started',
                         'status': 'active',
                     }
                 );

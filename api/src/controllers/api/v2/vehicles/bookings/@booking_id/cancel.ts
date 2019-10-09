@@ -53,6 +53,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
                     .updateOne({
                         '_id': req.booking.id,
                     }, {
+                        'event': 'cancelled',
                         'status': 'cancelled',
                     })
                     .exec();
@@ -60,6 +61,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
                 await logBooking(
                     db, req, req.booking,
                     {
+                        'event': 'cancelled',
                         'status': 'cancelled',
                     }
                 );

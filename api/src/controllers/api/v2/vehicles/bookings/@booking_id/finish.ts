@@ -48,11 +48,21 @@ export class Controller extends APIv2VehicleBookingControllerBase {
     })
     public cancel_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
         return this.__app.withDatabase(async db => {
+            const NOW = egoose.utc();
+
             if ('active' === egoose.normalizeString(req.booking.status)) {
+                let newEvent: string;
+                if (NOW.isSameOrBefore(req.booking.time)) {
+                    newEvent = 'finished_in_time';
+                } else {
+                    newEvent = 'finished_late';
+                }
+
                 await db.VehicleBookings
                     .updateOne({
                         '_id': req.booking.id,
                     }, {
+                        'event': newEvent,
                         'status': 'finished',
                     })
                     .exec();
@@ -60,6 +70,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
                 await logBooking(
                     db, req, req.booking,
                     {
+                        'event': newEvent,
                         'status': 'finished',
                     }
                 );

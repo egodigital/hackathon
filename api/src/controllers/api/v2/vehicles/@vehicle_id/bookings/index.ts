@@ -227,6 +227,7 @@ export class Controller extends APIv2VehicleControllerBase {
                     event: NEW_DOC.event,
                     id: NEW_DOC.id,
                     status: NEW_DOC.status,
+                    time: moment.utc(NEW_DOC.time),
                     vehicle: req.vehicle,
                 };
 

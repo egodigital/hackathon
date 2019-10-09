@@ -51,23 +51,25 @@ export class HttpResult {
     /**
      * Creates an instance for '400 Bad Request' result.
      * 
-     * @param {any} [data] Optional data to send.
+     * @param {any} [dataOrFunc] Optional data to send or a function to invoke.
      * 
      * @return {HttpResult} The new instance.
      */
-    public static BadRequest(data?: any): HttpResult {
-        return new HttpResult(400, data);
+    public static BadRequest(func: RequestHandler): HttpResult;
+    public static BadRequest(dataOrFunc?: any): HttpResult {
+        return new HttpResult(400, dataOrFunc);
     }
 
     /**
      * Creates an instance for '404 Conflict' result.
      * 
-     * @param {any} [data] Optional data to send.
+     * @param {any} [dataOrFunc] Optional data to send or a function to invoke.
      * 
      * @return {HttpResult} The new instance.
      */
-    public static Conflict(data?: any): HttpResult {
-        return new HttpResult(409, data);
+    public static Conflict(func: RequestHandler): HttpResult;
+    public static Conflict(dataOrFunc?: any): HttpResult {
+        return new HttpResult(409, dataOrFunc);
     }
 
     /**
@@ -82,12 +84,13 @@ export class HttpResult {
     /**
      * Creates an instance for '404 Not Found' result.
      * 
-     * @param {any} [data] Optional data to send.
+     * @param {any} [dataOrFunc] Optional data to send or a function to invoke.
      * 
      * @return {HttpResult} The new instance.
      */
-    public static NotFound(data?: any): HttpResult {
-        return new HttpResult(404, data);
+    public static NotFound(func: RequestHandler): HttpResult;
+    public static NotFound(dataOrFunc?: any): HttpResult {
+        return new HttpResult(404, dataOrFunc);
     }
 }
 

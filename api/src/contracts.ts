@@ -16,6 +16,7 @@
  */
 
 import * as egoose from '@egodigital/egoose';
+import * as moment from 'moment';
 import { Express } from 'express';
 import { WithDatabaseAction } from './database';
 
@@ -114,6 +115,10 @@ export interface VehicleBooking {
      * The status.
      */
     readonly status: string;
+    /**
+     * The timestamp.
+     */
+    readonly time: moment.Moment;
     /**
      * The underlying vehicle.
      */

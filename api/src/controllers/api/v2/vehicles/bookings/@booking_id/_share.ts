@@ -17,6 +17,7 @@
 
 import * as _ from 'lodash';
 import * as egoose from '@egodigital/egoose';
+import * as moment from 'moment';
 import { NextFunction, RequestHandler } from 'express';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../../_share';
@@ -95,6 +96,7 @@ export abstract class APIv2VehicleBookingControllerBase extends APIv2ControllerB
                                             event: egoose.normalizeString(BOOKING_DOC.event),
                                             id: BOOKING_DOC.id,
                                             status: egoose.normalizeString(BOOKING_DOC.status),
+                                            time: moment.utc(BOOKING_DOC.time),
                                             vehicle: {
                                                 id: VEHICLE_DOC.id,
                                                 name: egoose.isEmptyString(VEHICLE_DOC.name) ?
