@@ -32,7 +32,7 @@
         "time": {
             "description": "The timestamp of the vehicle booking.",
             "type": "string",
-            "example": "1979-09-05T23:09:19.790Z"
+            "example": "2019-09-05T23:09:19.790Z"
         },
         "vehicle": {
             "description": "The underlying vehicle.",

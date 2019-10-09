@@ -15,10 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as _ from 'lodash';
 import * as egoose from '@egodigital/egoose';
 import * as moment from 'moment';
 import * as mongoose from 'mongoose';
 import * as path from 'path';
+import { serializeForJSON } from '@egodigital/express-controllers';
 import { Team } from './contracts';
 
 
@@ -626,6 +628,43 @@ export async function vehicleBookingToJSON(
 }
 
 /**
+ * Converts a vehicle event document to a JSON object.
+ *
+ * @param {VehicleEventsDocument} doc The document.
+ * @param {Database} db The underlying database connection.
+ * 
+ * @return {Promise<any>} The promise with the JSON object.
+ */
+export async function vehicleEventToJSON(
+    doc: VehicleEventsDocument, db: Database
+): Promise<any> {
+    if (!doc) {
+        return doc as any;
+    }
+
+    let vehicleDoc: VehiclesDocument;
+
+    const VEHICLE_ID = egoose.normalizeString(doc.vehicle_id);
+    if ('' !== VEHICLE_ID) {
+        vehicleDoc = await db.Vehicles
+            .findById(VEHICLE_ID)
+            .exec();
+    }
+
+    return {
+        creationTime: moment.utc(doc.creation_time)
+            .toISOString(),
+        data: await serializeForJSON(doc.data),
+        id: doc.id,
+        isHandled: !!doc.is_handled,
+        lastUpdate: _.isDate(doc.last_update) ?
+            moment.utc(doc.last_update).toISOString() : undefined,
+        name: egoose.normalizeString(doc.name),
+        vehicle: await vehicleToJSON(vehicleDoc, db),
+    };
+}
+
+/**
  * Converts a vehicle document to a JSON object.
  *
  * @param {VehiclesDocument} doc The document.
@@ -662,7 +701,7 @@ export async function vehicleToJSON(
             'D' : egoose.toStringSafe(doc.country).toUpperCase().trim(),
         environment: await environmentToJSON(environmentDoc, db),
         id: doc.id,
-        license_plate: egoose.toStringSafe(doc.license_plate)
+        licensePlate: egoose.toStringSafe(doc.license_plate)
             .toUpperCase()
             .trim(),
         manufacturer: egoose.toStringSafe(doc.manufacturer)

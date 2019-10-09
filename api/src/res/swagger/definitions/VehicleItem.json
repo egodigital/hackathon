@@ -3,7 +3,7 @@
     "required": [
         "country",
         "id",
-        "license_plate",
+        "licensePlate",
         "manufacturer",
         "model"
     ],
@@ -22,7 +22,7 @@
             "type": "string",
             "example": "5d9c5d82734cb701240245d8"
         },
-        "license_plate": {
+        "licensePlate": {
             "description": "The license plate.",
             "type": "string",
             "example": "AC-EGO 123"
