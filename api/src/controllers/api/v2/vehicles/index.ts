@@ -95,7 +95,7 @@ export class Controller extends APIv2ControllerBase {
      */
     @POST('/', SCHEMA_NEW_VEHICLE)
     @Swagger({
-        "summary": "Returns a list of all vehicles.",
+        "summary": "Creates a new vehicle.",
         "parameters": [
             {
                 "in": "body",
