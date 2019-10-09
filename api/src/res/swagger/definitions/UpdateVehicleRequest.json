@@ -1,0 +1,10 @@
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "The new name.",
+            "type": "string",
+            "example": "My e.GO Life"
+        }
+    }
+}

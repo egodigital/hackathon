@@ -98,6 +98,7 @@ export abstract class APIv2VehicleControllerBase extends APIv2ControllerBase {
                             name: egoose.isEmptyString(VEHICLE_DOC.name) ?
                                 undefined : egoose.toStringSafe(VEHICLE_DOC.name).trim(),
                             signals: new VehicleSignalManager(VEHICLE_DOC),
+                            state: VEHICLE_DOC.state,
                         };
 
                         return next();

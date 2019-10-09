@@ -104,6 +104,18 @@ export class HttpResult {
     public static NotFound(dataOrFunc?: any): HttpResult {
         return new HttpResult(404, dataOrFunc);
     }
+
+    /**
+     * Creates an instance for '200 OK' result.
+     * 
+     * @param {any} [dataOrFunc] Optional data to send or a function to invoke.
+     * 
+     * @return {HttpResult} The new instance.
+     */
+    public static OK(func: RequestHandler): HttpResult;
+    public static OK(dataOrFunc?: any): HttpResult {
+        return new HttpResult(200, dataOrFunc);
+    }
 }
 
 

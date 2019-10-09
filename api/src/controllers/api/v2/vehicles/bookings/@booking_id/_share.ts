@@ -110,6 +110,7 @@ export abstract class APIv2VehicleBookingControllerBase extends APIv2ControllerB
                                                 name: egoose.isEmptyString(VEHICLE_DOC.name) ?
                                                     undefined : egoose.toStringSafe(VEHICLE_DOC.name).trim(),
                                                 signals: new VehicleSignalManager(VEHICLE_DOC),
+                                                state: VEHICLE_DOC.state,
                                             },
                                         };
                                     }

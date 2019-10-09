@@ -128,6 +128,10 @@ export interface Vehicle {
      * Signal manager.
      */
     readonly signals: VehicleSignalManager;
+    /**
+     * State value.
+     */
+    readonly state: any;
 }
 
 /**
