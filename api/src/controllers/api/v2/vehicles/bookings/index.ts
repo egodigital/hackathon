@@ -18,7 +18,7 @@
 import * as database from '../../../../../database';
 import * as egoose from '@egodigital/egoose';
 import * as moment from 'moment';
-import { DELETE, GET, Swagger } from '@egodigital/express-controllers';
+import { GET, Swagger } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../_share';
 import { HttpResult } from '../../../../_share';
 
@@ -131,86 +131,6 @@ export class Controller extends APIv2ControllerBase {
             return egoose.from(RESULT)
                 .orderBy(x => x.time)
                 .thenBy(x => x.id);
-        });
-    }
-
-    /**
-     * [DELETE]  /
-     */
-    @DELETE('/:booking_id')
-    @Swagger({
-        "summary": "Deletes a vehicle booking.",
-        "parameters": [{
-            "in": "path",
-            "name": "booking_id",
-            "description": "The ID of the booking.",
-            "required": true,
-            "example": "5d9c5d82734cb701240245d8",
-            "type": "string"
-        }],
-        "responses": {
-            "200": {
-                "schema": {
-                    "$ref": "#/definitions/VehicleBookingItem"
-                }
-            },
-            "404": {
-                "schema": {
-                    "$ref": "#/definitions/ErrorResponse"
-                }
-            },
-        },
-    })
-    public delete_vehicle_booking(req: ApiV2Request, res: ApiV2Response) {
-        return this.__app.withDatabase(async db => {
-            const BOOKING_ID = egoose.normalizeString(req.query['booking_id']);
-
-            const NOT_FOUND = () => {
-                return HttpResult.BadRequest((req: ApiV2Request, res: ApiV2Response) => {
-                    return res.json({
-                        success: false,
-                        data: `Booking '${BOOKING_ID}' not found!`,
-                    });
-                });
-            };
-
-            if ('' !== BOOKING_ID) {
-                const BOOKING_DOC = await db.VehicleBookings
-                    .findById(BOOKING_ID)
-                    .exec();
-
-                if (BOOKING_DOC) {
-                    const VEHICLE_ID = egoose.normalizeString(BOOKING_DOC.vehicle_id);
-                    if ('' !== VEHICLE_ID) {
-                        const VEHICLE_DOC = await db.Vehicles
-                            .findById(VEHICLE_ID)
-                            .exec();
-
-                        if (VEHICLE_DOC) {
-                            if (egoose.normalizeString(VEHICLE_DOC.team_id) === req.team.id) {
-                                await db.VehicleBookings
-                                    .remove({
-                                        '_id': BOOKING_DOC._id,
-                                    })
-                                    .exec();
-
-                                return await database.vehicleBookingToJSON(BOOKING_DOC, db);
-                            }
-
-                            return NOT_FOUND();
-                        }
-                    }
-
-                    return HttpResult.BadRequest((req: ApiV2Request, res: ApiV2Response) => {
-                        return res.json({
-                            success: false,
-                            data: `Vehicle '${BOOKING_ID}' not found!`,
-                        });
-                    });
-                }
-            }
-
-            return NOT_FOUND();
         });
     }
 }
