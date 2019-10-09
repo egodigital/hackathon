@@ -1,0 +1,37 @@
+{
+    "type": "object",
+    "required": [
+        "creationTime",
+        "id",
+        "vehicle"
+    ],
+    "properties": {
+        "creationTime": {
+            "description": "The creation time.",
+            "type": "string",
+            "example": "2019-09-05T23:09:19.790Z"
+        },
+        "data": {
+            "description": "The signal data."
+        },
+        "id": {
+            "description": "The ID of the signal.",
+            "type": "string",
+            "example": "5d9c5d82734cb701240245d8"
+        },
+        "lastUpdate": {
+            "description": "The last update timestamp.",
+            "type": "string",
+            "example": "2019-09-23T05:09:19.790Z"
+        },
+        "name": {
+            "description": "The name of the signal.",
+            "type": "string",
+            "example": "battery_charging"
+        },
+        "vehicle": {
+            "description": "The underlying vehicle.",
+            "$ref": "#/definitions/VehicleItem"
+        }
+    }
+}

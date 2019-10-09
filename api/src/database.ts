@@ -665,6 +665,84 @@ export async function vehicleEventToJSON(
 }
 
 /**
+ * Converts a vehicle signal log document to a JSON object.
+ *
+ * @param {VehicleSignalLogsDocument} doc The document.
+ * @param {Database} db The underlying database connection.
+ * 
+ * @return {Promise<any>} The promise with the JSON object.
+ */
+export async function vehicleSignalLogToJSON(
+    doc: VehicleSignalLogsDocument, db: Database
+): Promise<any> {
+    if (!doc) {
+        return doc as any;
+    }
+
+    let vehicleDoc: VehiclesDocument;
+    let signalDoc: VehicleSignalsDocument;
+
+    const VEHICLE_ID = egoose.normalizeString(doc.vehicle_id);
+    if ('' !== VEHICLE_ID) {
+        vehicleDoc = await db.Vehicles
+            .findById(VEHICLE_ID)
+            .exec();
+    }
+
+    const SIGNAL_ID = egoose.normalizeString(doc.signal_id);
+    if ('' !== SIGNAL_ID) {
+        signalDoc = await db.VehicleSignals
+            .findById(SIGNAL_ID)
+            .exec();
+    }
+
+    return {
+        creationTime: moment.utc(doc.creation_time)
+            .toISOString(),
+        name: egoose.normalizeString(doc.name),
+        newData: await serializeForJSON(doc.new_data),
+        oldData: await serializeForJSON(doc.old_data),
+        signal: await vehicleSignalToJSON(signalDoc, db),
+        vehicle: await vehicleToJSON(vehicleDoc, db),
+    };
+}
+
+/**
+ * Converts a vehicle signal document to a JSON object.
+ *
+ * @param {VehicleSignalsDocument} doc The document.
+ * @param {Database} db The underlying database connection.
+ * 
+ * @return {Promise<any>} The promise with the JSON object.
+ */
+export async function vehicleSignalToJSON(
+    doc: VehicleSignalsDocument, db: Database
+): Promise<any> {
+    if (!doc) {
+        return doc as any;
+    }
+
+    let vehicleDoc: VehiclesDocument;
+
+    const VEHICLE_ID = egoose.normalizeString(doc.vehicle_id);
+    if ('' !== VEHICLE_ID) {
+        vehicleDoc = await db.Vehicles
+            .findById(VEHICLE_ID)
+            .exec();
+    }
+
+    return {
+        creationTime: moment.utc(doc.creation_time)
+            .toISOString(),
+        data: await serializeForJSON(doc.data),
+        lastUpdate: _.isDate(doc.last_update) ?
+            moment.utc(doc.last_update).toISOString() : undefined,
+        name: egoose.normalizeString(doc.name),
+        vehicle: await vehicleToJSON(vehicleDoc, db),
+    };
+}
+
+/**
  * Converts a vehicle document to a JSON object.
  *
  * @param {VehiclesDocument} doc The document.

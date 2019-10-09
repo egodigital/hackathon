@@ -1,0 +1,37 @@
+{
+    "type": "object",
+    "required": [
+        "id",
+        "name",
+        "signal",
+        "vehicle"
+    ],
+    "properties": {
+        "id": {
+            "description": "The ID of the signal.",
+            "type": "string",
+            "example": "5d9c5d82734cb701240245d8"
+        },
+        "name": {
+            "description": "The name of the signal.",
+            "type": "string",
+            "example": "battery_charging"
+        },
+        "newData": {
+            "description": "The new data.",
+            "example": "on"
+        },
+        "oldData": {
+            "description": "The new data.",
+            "example": "off"
+        },
+        "signal": {
+            "description": "The underlying signal.",
+            "$ref": "#/definitions/VehicleSignalItem"
+        },
+        "vehicle": {
+            "description": "The underlying vehicle.",
+            "$ref": "#/definitions/VehicleItem"
+        }
+    }
+}
