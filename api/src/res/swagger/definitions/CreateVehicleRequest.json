@@ -1,0 +1,35 @@
+{
+    "type": "object",
+    "required": [
+        "licensePlate",
+        "manufacturer",
+        "model"
+    ],
+    "properties": {
+        "country": {
+            "description": "The country (code).",
+            "type": "string",
+            "example": "D"
+        },
+        "licensePlate": {
+            "description": "The license plate.",
+            "type": "string",
+            "example": "AC-EGO 123"
+        },
+        "manufacturer": {
+            "description": "The manufacturer.",
+            "type": "string",
+            "example": "e.GO"
+        },
+        "model": {
+            "description": "The model.",
+            "type": "string",
+            "example": "Life 20"
+        },
+        "name": {
+            "description": "The name.",
+            "type": "string",
+            "example": "My e.GO Life"
+        }
+    }
+}

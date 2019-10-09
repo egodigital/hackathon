@@ -16,8 +16,43 @@
  */
 
 import * as database from '../../../../database';
-import { GET, Swagger } from '@egodigital/express-controllers';
+import * as egoose from '@egodigital/egoose';
+import * as joi from 'joi';
+import { GET, POST, Swagger } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../_share';
+
+
+interface NewVehicle {
+    country?: string;
+    licensePlate: string;
+    manufacturer: string;
+    model: string;
+    name?: string;
+}
+
+const SCHEMA_NEW_VEHICLE = joi.object({
+    country: joi.string()
+        .trim()
+        .uppercase()
+        .allow(null, '')
+        .optional(),
+    licensePlate: joi.string()
+        .trim()
+        .uppercase()
+        .min(1)
+        .required(),
+    manufacturer: joi.string()
+        .trim()
+        .min(1)
+        .required(),
+    model: joi.string()
+        .trim()
+        .min(1)
+        .required(),
+    name: joi.string()
+        .trim()
+        .optional(),
+});
 
 
 /**
@@ -27,7 +62,7 @@ export class Controller extends APIv2ControllerBase {
     /**
      * [GET]  /
      */
-    @GET()
+    @GET('/')
     @Swagger({
         "summary": "Returns a list of all vehicles.",
         "responses": {
@@ -38,7 +73,7 @@ export class Controller extends APIv2ControllerBase {
             },
         },
     })
-    public index(req: ApiV2Request, res: ApiV2Response) {
+    public get_all_vehicles(req: ApiV2Request, res: ApiV2Response) {
         return this.__app.withDatabase(async db => {
             const VEHICLE_DOCS = await db.Vehicles
                 .find({ 'team_id': req.team.id })
@@ -52,6 +87,58 @@ export class Controller extends APIv2ControllerBase {
             }
 
             return RESULT;
+        });
+    }
+
+    /**
+     * [POST]  /
+     */
+    @POST('/', SCHEMA_NEW_VEHICLE)
+    @Swagger({
+        "summary": "Returns a list of all vehicles.",
+        "parameters": [
+            {
+                "in": "body",
+                "name": "body",
+                "description": "Options for a request.",
+                "required": true,
+                "schema": {
+                    "$ref": "#/definitions/CreateVehicleRequest"
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "schema": {
+                    "$ref": "#/definitions/VehicleItem"
+                }
+            },
+        },
+    })
+    public create_new_vehicle(req: ApiV2Request, res: ApiV2Response) {
+        return this.__app.withDatabase(async db => {
+            const NEW_VEHICLE: NewVehicle = req.body;
+
+            const NEW_DATA: any = {
+                'license_plate': NEW_VEHICLE.licensePlate,
+                'manufacturer': NEW_VEHICLE.manufacturer,
+                'model': NEW_VEHICLE.model,
+                'team_id': req.team.id,
+            };
+
+            if (!egoose.isEmptyString(NEW_VEHICLE.country)) {
+                NEW_DATA['country'] = NEW_VEHICLE.country;
+            }
+
+            if (!egoose.isEmptyString(NEW_VEHICLE.name)) {
+                NEW_DATA['name'] = NEW_VEHICLE.name;
+            }
+
+            const NEW_DOC = (await db.Vehicles.insertMany([
+                NEW_DATA
+            ]))[0];
+
+            return await database.vehicleToJSON(NEW_DOC, db);
         });
     }
 }
