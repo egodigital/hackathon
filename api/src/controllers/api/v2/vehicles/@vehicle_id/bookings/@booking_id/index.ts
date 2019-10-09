@@ -15,11 +15,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as database from '../../../../../../../database';
-import * as egoose from '@egodigital/egoose';
 import { DELETE, GET, Swagger } from '@egodigital/express-controllers';
 import { APIv2VehicleBookingControllerBase, ApiV2VehicleBookingRequest, ApiV2VehicleBookingResponse } from './_share';
-import { HttpResult } from '../../../../../../_share';
 
 
 /**
@@ -56,44 +53,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
         },
     })
     public get_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
-        return this.__app.withDatabase(async db => {
-            const VEHICLE_ID = egoose.normalizeString(req.params['vehicle_id']);
-
-            const VEHICLE_DOC = await db.Vehicles
-                .findOne({
-                    '_id': VEHICLE_ID,
-                    'team_id': req.team.id,
-                }).exec();
-
-            if (VEHICLE_DOC) {
-                const BOOKING_ID = egoose.normalizeString(req.params['booking_id']);
-
-                const BOOKING_FILTER: any = {
-                    '$and': [{
-                        'id': BOOKING_ID,
-                    }, {
-                        'vehicle_id': VEHICLE_DOC.id,
-                    }],
-                };
-
-                const BOOKING_DOC = await db.VehicleBookings
-                    .findOne(BOOKING_FILTER)
-                    .exec();
-
-                if (BOOKING_DOC) {
-                    return await database.vehicleBookingToJSON(
-                        BOOKING_DOC, db
-                    );
-                }
-            }
-
-            return HttpResult.NotFound((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
-                return res.json({
-                    success: false,
-                    data: `Vehicle '${VEHICLE_ID}' not found!`,
-                });
-            });
-        });
+        return req.booking;
     }
 
     /**
@@ -112,48 +72,13 @@ export class Controller extends APIv2VehicleBookingControllerBase {
     })
     public delete_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
         return this.__app.withDatabase(async db => {
-            const VEHICLE_ID = egoose.normalizeString(req.params['vehicle_id']);
+            await db.VehicleBookings
+                .remove({
+                    '_id': req.booking.id,
+                })
+                .exec();
 
-            const VEHICLE_DOC = await db.Vehicles
-                .findOne({
-                    '_id': VEHICLE_ID,
-                    'team_id': req.team.id,
-                }).exec();
-
-            if (VEHICLE_DOC) {
-                const BOOKING_ID = egoose.normalizeString(req.params['booking_id']);
-
-                const BOOKING_FILTER: any = {
-                    '$and': [{
-                        'id': BOOKING_ID,
-                    }, {
-                        'vehicle_id': VEHICLE_DOC.id,
-                    }],
-                };
-
-                const BOOKING_DOC = await db.VehicleBookings
-                    .findOne(BOOKING_FILTER)
-                    .exec();
-
-                if (BOOKING_DOC) {
-                    await db.VehicleBookings
-                        .remove({
-                            '_id': BOOKING_DOC.id,
-                        })
-                        .exec();
-
-                    return await database.vehicleBookingToJSON(
-                        BOOKING_DOC, db
-                    );
-                }
-            }
-
-            return HttpResult.NotFound((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
-                return res.json({
-                    success: false,
-                    data: `Vehicle '${VEHICLE_ID}' not found!`,
-                });
-            });
+            return req.booking;
         });
     }
 }

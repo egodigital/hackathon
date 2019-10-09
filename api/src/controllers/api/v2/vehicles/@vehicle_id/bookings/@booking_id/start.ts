@@ -47,68 +47,35 @@ export class Controller extends APIv2VehicleBookingControllerBase {
     })
     public start_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
         return this.__app.withDatabase(async db => {
-            const VEHICLE_ID = egoose.normalizeString(req.params['vehicle_id']);
-
-            const VEHICLE_DOC = await db.Vehicles
-                .findOne({
-                    '_id': VEHICLE_ID,
-                    'team_id': req.team.id,
-                }).exec();
-
-            if (VEHICLE_DOC) {
-                const BOOKING_ID = egoose.normalizeString(req.params['booking_id']);
-
-                const BOOKING_FILTER: any = {
-                    '$and': [{
-                        'id': BOOKING_ID,
+            if ('new' === egoose.normalizeString(req.booking.status)) {
+                await db.VehicleBookings
+                    .updateOne({
+                        '_id': req.booking.id,
                     }, {
-                        'vehicle_id': VEHICLE_DOC.id,
-                    }],
-                };
-
-                let bookingDoc = await db.VehicleBookings
-                    .findOne(BOOKING_FILTER)
+                        'status': 'cancelled',
+                    })
                     .exec();
 
-                if (bookingDoc) {
-                    if ('new' === egoose.normalizeString(bookingDoc.status)) {
-                        await db.VehicleBookings
-                            .updateOne({
-                                '_id': bookingDoc._id,
-                            }, {
-                                'status': 'active',
-                            })
-                            .exec();
-
-                        await this._logBooking(
-                            db, req, bookingDoc,
-                            {
-                                'status': 'active',
-                            }
-                        );
-
-                        bookingDoc = await db.VehicleBookings
-                            .findOne(BOOKING_FILTER)
-                            .exec();
-
-                        return await database.vehicleBookingToJSON(
-                            bookingDoc, db
-                        );
+                await this._logBooking(
+                    db, req, req.booking,
+                    {
+                        'status': 'active',
                     }
+                );
 
-                    return HttpResult.BadRequest((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
-                        return res.json({
-                            success: false,
-                            data: `Booking status is '${bookingDoc.status}' and must be one of the following values: 'new'`,
-                        });
-                    });
-                }
+                const BOOKING_DOC = await db.VehicleBookings
+                    .findById(req.booking.id)
+                    .exec();
+
+                return await database.vehicleBookingToJSON(
+                    BOOKING_DOC, db
+                );
             }
 
-            return HttpResult.NotFound((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
+            return HttpResult.BadRequest((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
                 return res.json({
                     success: false,
-                    data: `Vehicle '${VEHICLE_ID}' not found!`,
+                    data: `Booking status is '${req.booking.status}' and must be one of the following values: 'new'`,
                 });
             });
         });

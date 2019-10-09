@@ -16,10 +16,8 @@
  */
 
 import * as database from '../../../../../../database';
-import * as egoose from '@egodigital/egoose';
 import { GET, Swagger } from '@egodigital/express-controllers';
 import { APIv2EnvironmentControllerBase, ApiV2EnvironmentRequest, ApiV2EnvironmentResponse } from '../_share';
-import { HttpResult } from '../../../../../_share';
 
 
 /**
@@ -42,37 +40,20 @@ export class Controller extends APIv2EnvironmentControllerBase {
     })
     public index(req: ApiV2EnvironmentRequest, res: ApiV2EnvironmentResponse) {
         return this.__app.withDatabase(async db => {
-            const ENVIROMENT_ID = egoose.normalizeString(req.params['environment_id']);
-
-            const ENV_DOC = await db.Environments
-                .findOne({
-                    '_id': ENVIROMENT_ID,
+            const VEHICLE_DOCS = await db.Vehicles
+                .find({
+                    'environment_id': req.environment.id,
                     'team_id': req.team.id,
                 }).exec();
 
-            if (ENV_DOC) {
-                const VEHICLE_DOCS = await db.Vehicles
-                    .find({
-                        'environment_id': ENV_DOC.id,
-                        'team_id': req.team.id,
-                    }).exec();
-
-                const RESULT: any[] = [];
-                for (const V of VEHICLE_DOCS) {
-                    RESULT.push(
-                        await database.vehicleToJSON(V, db)
-                    );
-                }
-
-                return RESULT;
+            const RESULT: any[] = [];
+            for (const V of VEHICLE_DOCS) {
+                RESULT.push(
+                    await database.vehicleToJSON(V, db)
+                );
             }
 
-            return HttpResult.NotFound((req: ApiV2EnvironmentRequest, res: ApiV2EnvironmentResponse) => {
-                return res.json({
-                    success: false,
-                    data: `Environment '${ENVIROMENT_ID}' not found!`,
-                });
-            });
+            return RESULT;
         });
     }
 }

@@ -17,14 +17,21 @@
 
 import * as _ from 'lodash';
 import * as database from '../../../../../database';
+import * as egoose from '@egodigital/egoose';
+import { NextFunction, RequestHandler } from 'express';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../_share';
+import { Vehicle, VehicleBooking } from '../../../../../contracts';
 
 
 /**
  * An API v2 (vehicle) request context.
  */
 export interface ApiV2VehicleRequest extends ApiV2Request {
+    /**
+     * The current vehicle.
+     */
+    vehicle: Vehicle;
 }
 
 /**
@@ -60,16 +67,55 @@ export abstract class APIv2VehicleControllerBase extends APIv2ControllerBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public get __use(): RequestHandler[] {
+        return super.__use.concat([
+            async (req: ApiV2VehicleRequest, res: ApiV2VehicleResponse, next: NextFunction) => {
+                if (req['vehicle']) {
+                    return next();
+                }
+
+                const VEHICLE_ID = egoose.normalizeString(req.params['vehicle_id']);
+                if ('' !== VEHICLE_ID) {
+                    const VEHICLE_DOC = await this.__app.withDatabase(db => {
+                        return db.Vehicles.findOne({
+                            '_id': VEHICLE_ID,
+                            'team_id': req.team.id,
+                        }).exec();
+                    });
+
+                    if (VEHICLE_DOC) {
+                        req['vehicle'] = {
+                            id: VEHICLE_DOC.id,
+                            name: egoose.isEmptyString(VEHICLE_DOC.name) ?
+                                undefined : egoose.toStringSafe(VEHICLE_DOC.name).trim(),
+                        };
+
+                        return next();
+                    }
+                }
+
+                return res.status(404).json({
+                    success: false,
+                    data: `Vehicle '${VEHICLE_ID}' not found!`,
+                });
+            }
+        ]);
+    }
+
+
+    /**
      * Logs a behicle booking.
      *
      * @param {database.Database} db The database connection.
      * @param {ApiV2VehicleRequest} req The underlying request context.
-     * @param {database.VehicleBookingsDocument} id The booking document.
+     * @param {VehicleBooking} id The booking document.
      * @param {any} message Custom message data.
      */
     protected async _logBooking(
         db: database.Database, req: ApiV2VehicleRequest,
-        booking: database.VehicleBookingsDocument, message?: any,
+        booking: VehicleBooking, message?: any,
     ) {
         const NEW_DATA: any = {
             'booking_id': booking.id,

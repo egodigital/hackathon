@@ -22,6 +22,7 @@ import * as moment from 'moment';
 import { GET, POST, Swagger } from '@egodigital/express-controllers';
 import { APIv2VehicleControllerBase, ApiV2VehicleRequest, ApiV2VehicleResponse } from '../_share';
 import { HttpResult } from '../../../../../_share';
+import { VehicleBooking } from '../../../../../../contracts';
 
 
 interface NewVehicleBooking {
@@ -66,93 +67,76 @@ export class Controller extends APIv2VehicleControllerBase {
     })
     public get_vehicle_bookings(req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) {
         return this.__app.withDatabase(async db => {
-            const VEHICLE_ID = egoose.normalizeString(req.params['vehicle_id']);
+            const BOOKINGS_FILTER: any = {
+                '$and': [{
+                    'vehicle_id': req.vehicle.id,
+                }]
+            };
 
-            const VEHICLE_DOC = await db.Vehicles
-                .findOne({
-                    '_id': VEHICLE_ID,
-                    'team_id': req.team.id,
-                }).exec();
-
-            if (VEHICLE_DOC) {
-                const BOOKINGS_FILTER: any = {
-                    '$and': [{
-                        'vehicle_id': VEHICLE_DOC.id,
-                    }]
-                };
-
-                let from: string | moment.Moment = egoose.toStringSafe(req.query['from'])
-                    .trim();
-                if ('' !== from) {
-                    from = moment.utc(from);
-                    if (!from.isValid()) {
-                        return HttpResult.BadRequest((_: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
-                            return res.json({
-                                success: false,
-                                data: `Invalid 'from' date!`,
-                            });
+            let from: string | moment.Moment = egoose.toStringSafe(req.query['from'])
+                .trim();
+            if ('' !== from) {
+                from = moment.utc(from);
+                if (!from.isValid()) {
+                    return HttpResult.BadRequest((_: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
+                        return res.json({
+                            success: false,
+                            data: `Invalid 'from' date!`,
                         });
+                    });
+                }
+
+                BOOKINGS_FILTER['$and'].push({
+                    'from': {
+                        '$gte': from.toDate(),
                     }
-
-                    BOOKINGS_FILTER['$and'].push({
-                        'from': {
-                            '$gte': from.toDate(),
-                        }
-                    });
-                }
-
-                let until: string | moment.Moment = egoose.toStringSafe(req.query['until'])
-                    .trim();
-                if ('' !== until) {
-                    until = moment.utc(until);
-                    if (!until.isValid()) {
-                        return HttpResult.BadRequest((_: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
-                            return res.json({
-                                success: false,
-                                data: `Invalid 'until' date!`,
-                            });
-                        });
-                    }
-
-                    BOOKINGS_FILTER['$and'].push({
-                        'until': {
-                            '$lte': until.toDate(),
-                        }
-                    });
-                }
-
-                let status = egoose.normalizeString(req.query['status'])
-                    .trim();
-                if ('' !== status) {
-                    BOOKINGS_FILTER['$and'].push({
-                        'status': status,
-                    });
-                }
-
-                const BOOKING_DOCS = await db.VehicleBookings
-                    .find(BOOKINGS_FILTER)
-                    .sort({
-                        'time': 1,
-                        '_id': 1,
-                    })
-                    .exec();
-
-                const RESULT: any[] = [];
-                for (const B of BOOKING_DOCS) {
-                    RESULT.push(
-                        await database.vehicleBookingToJSON(B, db)
-                    );
-                }
-
-                return RESULT;
+                });
             }
 
-            return HttpResult.NotFound((req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
-                return res.json({
-                    success: false,
-                    data: `Vehicle '${VEHICLE_ID}' not found!`,
+            let until: string | moment.Moment = egoose.toStringSafe(req.query['until'])
+                .trim();
+            if ('' !== until) {
+                until = moment.utc(until);
+                if (!until.isValid()) {
+                    return HttpResult.BadRequest((_: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
+                        return res.json({
+                            success: false,
+                            data: `Invalid 'until' date!`,
+                        });
+                    });
+                }
+
+                BOOKINGS_FILTER['$and'].push({
+                    'until': {
+                        '$lte': until.toDate(),
+                    }
                 });
-            });
+            }
+
+            let status = egoose.normalizeString(req.query['status'])
+                .trim();
+            if ('' !== status) {
+                BOOKINGS_FILTER['$and'].push({
+                    'status': status,
+                });
+            }
+
+            const BOOKING_DOCS = await db.VehicleBookings
+                .find(BOOKINGS_FILTER)
+                .sort({
+                    'time': 1,
+                    '_id': 1,
+                })
+                .exec();
+
+            const RESULT: any[] = [];
+            for (const B of BOOKING_DOCS) {
+                RESULT.push(
+                    await database.vehicleBookingToJSON(B, db)
+                );
+            }
+
+            return RESULT;
         });
     }
 
@@ -185,38 +169,28 @@ export class Controller extends APIv2VehicleControllerBase {
         return this.__app.withDatabase(async db => {
             const NEW_BOOKING: NewVehicleBooking = req.body;
 
-            const VEHICLE_ID = egoose.normalizeString(req.params['vehicle_id']);
+            const NEW_DOC = (await db.VehicleBookings.insertMany([{
+                'event': 'created',
+                'from': moment.utc(NEW_BOOKING.from)
+                    .toDate(),
+                'status': 'new',
+                'until': moment.utc(NEW_BOOKING.until)
+                    .toDate(),
+                'vehicle_id': req.vehicle.id,
+            }]))[0];
 
-            const VEHICLE_DOC = await db.Vehicles
-                .findOne({
-                    '_id': VEHICLE_ID,
-                    'team_id': req.team.id,
-                }).exec();
+            const BOOKING: VehicleBooking = {
+                event: NEW_DOC.event,
+                id: NEW_DOC.id,
+                status: NEW_DOC.status,
+                vehicle: req.vehicle,
+            };
 
-            if (VEHICLE_DOC) {
-                const NEW_DOC = (await db.VehicleBookings.insertMany([{
-                    'event': 'created',
-                    'from': moment.utc(NEW_BOOKING.from)
-                        .toDate(),
-                    'status': 'new',
-                    'until': moment.utc(NEW_BOOKING.until)
-                        .toDate(),
-                    'vehicle_id': VEHICLE_DOC.id,
-                }]))[0];
+            await this._logBooking(
+                db, req, BOOKING
+            );
 
-                await this._logBooking(
-                    db, req, NEW_DOC,
-                );
-
-                return await database.vehicleBookingToJSON(NEW_DOC, db);
-            }
-
-            return HttpResult.NotFound((req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
-                return res.json({
-                    success: false,
-                    data: `Vehicle '${VEHICLE_ID}' not found!`,
-                });
-            });
+            return await database.vehicleBookingToJSON(NEW_DOC, db);
         });
     }
 }

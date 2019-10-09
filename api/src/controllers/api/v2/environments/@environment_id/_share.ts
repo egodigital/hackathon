@@ -15,14 +15,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as egoose from '@egodigital/egoose';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
+import { NextFunction, RequestHandler } from 'express';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../_share';
+import { Environment } from '../../../../../contracts';
 
 
 /**
  * An API v2 (environment) request context.
  */
 export interface ApiV2EnvironmentRequest extends ApiV2Request {
+    /**
+     * The environment.
+     */
+    environment: Environment;
 }
 
 /**
@@ -55,5 +62,41 @@ export abstract class APIv2EnvironmentControllerBase extends APIv2ControllerBase
                 "$ref": "#/definitions/ErrorResponse"
             }
         };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public get __use(): RequestHandler[] {
+        return super.__use.concat([
+            async (req: ApiV2EnvironmentRequest, res: ApiV2EnvironmentResponse, next: NextFunction) => {
+                if (req['environment']) {
+                    return next();
+                }
+
+                const ENVIRONMENT_ID = egoose.normalizeString(req.params['environment_id']);
+                if ('' !== ENVIRONMENT_ID) {
+                    const ENVIRONMENT_DOC = await this.__app.withDatabase(db => {
+                        return db.Environments.findOne({
+                            '_id': ENVIRONMENT_ID,
+                            'team_id': req.team.id,
+                        }).exec();
+                    });
+
+                    if (ENVIRONMENT_DOC) {
+                        req['environment'] = {
+                            id: ENVIRONMENT_DOC.id,
+                        };
+
+                        return next();
+                    }
+                }
+
+                return res.status(404).json({
+                    success: false,
+                    data: `Environment '${ENVIRONMENT_ID}' not found!`,
+                });
+            }
+        ]);
     }
 }

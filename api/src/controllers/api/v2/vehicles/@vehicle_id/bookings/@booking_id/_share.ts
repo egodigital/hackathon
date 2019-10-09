@@ -16,14 +16,21 @@
  */
 
 import * as _ from 'lodash';
+import * as egoose from '@egodigital/egoose';
+import { NextFunction, RequestHandler } from 'express';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { APIv2VehicleControllerBase, ApiV2VehicleRequest, ApiV2VehicleResponse } from '../../_share';
+import { VehicleBooking } from '../../../../../../../contracts';
 
 
 /**
  * An API v2 (vehicle booking) request context.
  */
 export interface ApiV2VehicleBookingRequest extends ApiV2VehicleRequest {
+    /**
+     * The vehicle booking
+     */
+    booking: VehicleBooking;
 }
 
 /**
@@ -56,5 +63,44 @@ export abstract class APIv2VehicleBookingControllerBase extends APIv2VehicleCont
                 "$ref": "#/definitions/ErrorResponse"
             }
         };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public get __use(): RequestHandler[] {
+        return super.__use.concat([
+            async (req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse, next: NextFunction) => {
+                if (req['booking']) {
+                    return next();
+                }
+
+                const BOOKING_ID = egoose.normalizeString(req.params['booking_id']);
+                if ('' !== BOOKING_ID) {
+                    const BOOKING_DOC = await this.__app.withDatabase(db => {
+                        return db.VehicleBookings.findOne({
+                            '_id': BOOKING_ID,
+                            'vehicle_id': req.vehicle.id,
+                        }).exec();
+                    });
+
+                    if (BOOKING_DOC) {
+                        req['booking'] = {
+                            event: egoose.normalizeString(BOOKING_DOC.event),
+                            id: BOOKING_DOC.id,
+                            status: egoose.normalizeString(BOOKING_DOC.status),
+                            vehicle: req.vehicle,
+                        };
+
+                        return next();
+                    }
+                }
+
+                return res.status(404).json({
+                    success: false,
+                    data: `Vehicle booking '${BOOKING_ID}' not found!`,
+                });
+            }
+        ]);
     }
 }

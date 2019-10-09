@@ -43,6 +43,16 @@ export interface AppContext {
 }
 
 /**
+ * An environment.
+ */
+export interface Environment {
+    /**
+     * The ID of the environment.
+     */
+    readonly id: string;
+}
+
+/**
  * Describes a package.json file.
  */
 export interface PackageJSON {
@@ -72,4 +82,40 @@ export interface Team {
      * The (display) name of the team.
      */
     readonly name: string;
+}
+
+/**
+ * A vehicle.
+ */
+export interface Vehicle {
+    /**
+     * The ID of the vehicle.
+     */
+    readonly id: string;
+    /**
+     * The (display) name of the vehicle.
+     */
+    readonly name: string;
+}
+
+/**
+ * A vehicle booking.
+ */
+export interface VehicleBooking {
+    /**
+     * The event (type).
+     */
+    readonly event: string;
+    /**
+     * The ID of the vehicle.
+     */
+    readonly id: string;
+    /**
+     * The status.
+     */
+    readonly status: string;
+    /**
+     * The underlying vehicle.
+     */
+    readonly vehicle: Vehicle;
 }

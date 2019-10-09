@@ -1,7 +1,7 @@
 {
     "name": "vehicle-booking-webapp",
     "description": "Web app for vehicle booking API.",
-    "version": "0.0.7",
+    "version": "0.0.9",
     "scripts": {
         "dev": "vue-cli-service serve",
         "build": "vue-cli-service build"
@@ -14,7 +14,7 @@
         "roboto-fontface": "*",
         "vue": "^2.6.10",
         "vue-router": "^3.0.3",
-        "vuetify": "^2.0.0",
+        "vuetify": "^2.1.2",
         "vuetify-datetime-picker": "^2.1.0",
         "vuex": "^3.0.1"
     },
