@@ -15,15 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as database from '../../../../../../../database';
+import * as database from '../../../../../../database';
 import * as egoose from '@egodigital/egoose';
 import { PATCH, Swagger } from '@egodigital/express-controllers';
 import { APIv2VehicleBookingControllerBase, ApiV2VehicleBookingRequest, ApiV2VehicleBookingResponse } from './_share';
-import { HttpResult } from '../../../../../../_share';
+import { logBooking } from '../../_share';
+import { HttpResult } from '../../../../../_share';
 
 
 /**
- * Controller for /api/v2/vehicles/:vehicle_id/bookings/:booking_id/finish endpoints.
+ * Controller for /api/v2/vehicles/bookings/:booking_id/cancel endpoints.
  */
 export class Controller extends APIv2VehicleBookingControllerBase {
     /**
@@ -31,7 +32,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
      */
     @PATCH('/')
     @Swagger({
-        "summary": "Finishes a booking.",
+        "summary": "Cancels a booking.",
         "responses": {
             "200": {
                 "schema": {
@@ -45,7 +46,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
             },
         },
     })
-    public finish_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
+    public cancel_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
         return this.__app.withDatabase(async db => {
             if ('active' === egoose.normalizeString(req.booking.status)) {
                 await db.VehicleBookings
@@ -56,10 +57,10 @@ export class Controller extends APIv2VehicleBookingControllerBase {
                     })
                     .exec();
 
-                await this._logBooking(
+                await logBooking(
                     db, req, req.booking,
                     {
-                        'status': 'finished',
+                        'status': 'cancelled',
                     }
                 );
 

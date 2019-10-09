@@ -15,15 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as database from '../../../../../../../database';
+import * as database from '../../../../../../database';
 import * as egoose from '@egodigital/egoose';
 import { PATCH, Swagger } from '@egodigital/express-controllers';
 import { APIv2VehicleBookingControllerBase, ApiV2VehicleBookingRequest, ApiV2VehicleBookingResponse } from './_share';
-import { HttpResult } from '../../../../../../_share';
+import { logBooking } from '../../_share';
+import { HttpResult } from '../../../../../_share';
 
 
 /**
- * Controller for /api/v2/vehicles/:vehicle_id/bookings/:booking_id/cancel endpoints.
+ * Controller for /api/v2/vehicles/bookings/:booking_id/start endpoints.
  */
 export class Controller extends APIv2VehicleBookingControllerBase {
     /**
@@ -31,7 +32,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
      */
     @PATCH('/')
     @Swagger({
-        "summary": "Cancels a booking.",
+        "summary": "Starts a booking.",
         "responses": {
             "200": {
                 "schema": {
@@ -52,14 +53,14 @@ export class Controller extends APIv2VehicleBookingControllerBase {
                     .updateOne({
                         '_id': req.booking.id,
                     }, {
-                        'status': 'cancelled',
+                        'status': 'active',
                     })
                     .exec();
 
-                await this._logBooking(
+                await logBooking(
                     db, req, req.booking,
                     {
-                        'status': 'cancelled',
+                        'status': 'active',
                     }
                 );
 
@@ -75,7 +76,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
             return HttpResult.BadRequest((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
                 return res.json({
                     success: false,
-                    data: `Booking status is '${req.booking.status}' and must be one of the following values: 'active'`,
+                    data: `Booking status is '${req.booking.status}' and must be one of the following values: 'new'`,
                 });
             });
         });

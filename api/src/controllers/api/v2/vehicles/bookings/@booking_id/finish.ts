@@ -15,15 +15,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as database from '../../../../../../../database';
+import * as database from '../../../../../../database';
 import * as egoose from '@egodigital/egoose';
 import { PATCH, Swagger } from '@egodigital/express-controllers';
 import { APIv2VehicleBookingControllerBase, ApiV2VehicleBookingRequest, ApiV2VehicleBookingResponse } from './_share';
-import { HttpResult } from '../../../../../../_share';
+import { logBooking } from '../../_share';
+import { HttpResult } from '../../../../../_share';
 
 
 /**
- * Controller for /api/v2/vehicles/:vehicle_id/bookings/:booking_id/start endpoints.
+ * Controller for /api/v2/vehicles/bookings/:booking_id/finish endpoints.
  */
 export class Controller extends APIv2VehicleBookingControllerBase {
     /**
@@ -31,7 +32,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
      */
     @PATCH('/')
     @Swagger({
-        "summary": "Starts a booking.",
+        "summary": "Finishes a booking.",
         "responses": {
             "200": {
                 "schema": {
@@ -45,21 +46,21 @@ export class Controller extends APIv2VehicleBookingControllerBase {
             },
         },
     })
-    public start_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
+    public cancel_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
         return this.__app.withDatabase(async db => {
-            if ('new' === egoose.normalizeString(req.booking.status)) {
+            if ('active' === egoose.normalizeString(req.booking.status)) {
                 await db.VehicleBookings
                     .updateOne({
                         '_id': req.booking.id,
                     }, {
-                        'status': 'cancelled',
+                        'status': 'finished',
                     })
                     .exec();
 
-                await this._logBooking(
+                await logBooking(
                     db, req, req.booking,
                     {
-                        'status': 'active',
+                        'status': 'finished',
                     }
                 );
 
@@ -75,7 +76,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
             return HttpResult.BadRequest((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
                 return res.json({
                     success: false,
-                    data: `Booking status is '${req.booking.status}' and must be one of the following values: 'new'`,
+                    data: `Booking status is '${req.booking.status}' and must be one of the following values: 'active'`,
                 });
             });
         });

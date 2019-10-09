@@ -22,6 +22,7 @@ import * as moment from 'moment';
 import { GET, POST, Swagger } from '@egodigital/express-controllers';
 import { APIv2VehicleControllerBase, ApiV2VehicleRequest, ApiV2VehicleResponse } from '../_share';
 import { HttpResult } from '../../../../../_share';
+import { logBooking } from '../../_share';
 import { VehicleBooking } from '../../../../../../contracts';
 
 
@@ -186,7 +187,7 @@ export class Controller extends APIv2VehicleControllerBase {
                 vehicle: req.vehicle,
             };
 
-            await this._logBooking(
+            await logBooking(
                 db, req, BOOKING
             );
 

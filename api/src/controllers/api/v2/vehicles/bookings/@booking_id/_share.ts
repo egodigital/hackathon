@@ -19,14 +19,14 @@ import * as _ from 'lodash';
 import * as egoose from '@egodigital/egoose';
 import { NextFunction, RequestHandler } from 'express';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
-import { APIv2VehicleControllerBase, ApiV2VehicleRequest, ApiV2VehicleResponse } from '../../_share';
-import { VehicleBooking } from '../../../../../../../contracts';
+import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../../_share';
+import { VehicleBooking } from '../../../../../../contracts';
 
 
 /**
  * An API v2 (vehicle booking) request context.
  */
-export interface ApiV2VehicleBookingRequest extends ApiV2VehicleRequest {
+export interface ApiV2VehicleBookingRequest extends ApiV2Request {
     /**
      * The vehicle booking
      */
@@ -36,14 +36,14 @@ export interface ApiV2VehicleBookingRequest extends ApiV2VehicleRequest {
 /**
  * An API v2 (vehicle booking) response context.
  */
-export interface ApiV2VehicleBookingResponse extends ApiV2VehicleResponse {
+export interface ApiV2VehicleBookingResponse extends ApiV2Response {
 }
 
 
 /**
  * A basic API v2 controller (vehicle booking).
  */
-export abstract class APIv2VehicleBookingControllerBase extends APIv2VehicleControllerBase {
+export abstract class APIv2VehicleBookingControllerBase extends APIv2ControllerBase {
     /** @inheritdoc */
     public async __updateSwaggerPath(context: SwaggerPathDefinitionUpdaterContext) {
         super.__updateSwaggerPath(context);
@@ -58,7 +58,7 @@ export abstract class APIv2VehicleBookingControllerBase extends APIv2VehicleCont
         });
 
         context.definition.responses['404'] = {
-            "description": "Vehicle or booking not found.",
+            "description": "Vehicle booking not found.",
             "schema": {
                 "$ref": "#/definitions/ErrorResponse"
             }
@@ -77,23 +77,37 @@ export abstract class APIv2VehicleBookingControllerBase extends APIv2VehicleCont
 
                 const BOOKING_ID = egoose.normalizeString(req.params['booking_id']);
                 if ('' !== BOOKING_ID) {
-                    const BOOKING_DOC = await this.__app.withDatabase(db => {
-                        return db.VehicleBookings.findOne({
+                    return this.__app.withDatabase(async db => {
+                        const BOOKING_DOC = await db.VehicleBookings.findOne({
                             '_id': BOOKING_ID,
-                            'vehicle_id': req.vehicle.id,
                         }).exec();
+
+                        if (BOOKING_DOC) {
+                            const VEHICLE_ID = egoose.normalizeString(BOOKING_DOC.vehicle_id);
+                            if ('' !== VEHICLE_ID) {
+                                const VEHICLE_DOC = await db.Vehicles.findOne({
+                                    '_id': VEHICLE_ID,
+                                }).exec();
+
+                                if (VEHICLE_DOC) {
+                                    if (egoose.normalizeString(VEHICLE_DOC.team_id) === req.team.id) {
+                                        req['booking'] = {
+                                            event: egoose.normalizeString(BOOKING_DOC.event),
+                                            id: BOOKING_DOC.id,
+                                            status: egoose.normalizeString(BOOKING_DOC.status),
+                                            vehicle: {
+                                                id: VEHICLE_DOC.id,
+                                                name: egoose.isEmptyString(VEHICLE_DOC.name) ?
+                                                    undefined : egoose.toStringSafe(VEHICLE_DOC.name).trim(),
+                                            },
+                                        };
+                                    }
+                                }
+                            }
+
+                            return next();
+                        }
                     });
-
-                    if (BOOKING_DOC) {
-                        req['booking'] = {
-                            event: egoose.normalizeString(BOOKING_DOC.event),
-                            id: BOOKING_DOC.id,
-                            status: egoose.normalizeString(BOOKING_DOC.status),
-                            vehicle: req.vehicle,
-                        };
-
-                        return next();
-                    }
                 }
 
                 return res.status(404).json({
