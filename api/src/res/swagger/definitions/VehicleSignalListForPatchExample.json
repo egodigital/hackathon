@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "location": {
+            "type": "string",
+            "example": "51,7"
+        },
+        "turn_signal_left": {
+            "type": "string",
+            "example": "on"
+        },
+        "turn_signal_right": {
+            "type": "string",
+            "example": "on"
+        }
+    }
+}

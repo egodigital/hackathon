@@ -82,6 +82,18 @@ export class HttpResult {
     }
 
     /**
+     * Creates an instance for '406 Not Acceptable' result.
+     * 
+     * @param {any} [dataOrFunc] Optional data to send or a function to invoke.
+     * 
+     * @return {HttpResult} The new instance.
+     */
+    public static NotAcceptable(func: RequestHandler): HttpResult;
+    public static NotAcceptable(dataOrFunc?: any): HttpResult {
+        return new HttpResult(406, dataOrFunc);
+    }
+
+    /**
      * Creates an instance for '404 Not Found' result.
      * 
      * @param {any} [dataOrFunc] Optional data to send or a function to invoke.
