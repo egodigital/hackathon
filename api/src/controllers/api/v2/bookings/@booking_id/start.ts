@@ -15,12 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as database from '../../../../../../database';
+import * as database from '../../../../../database';
 import * as egoose from '@egodigital/egoose';
 import { PATCH, Swagger } from '@egodigital/express-controllers';
 import { APIv2VehicleBookingControllerBase, ApiV2VehicleBookingRequest, ApiV2VehicleBookingResponse } from './_share';
 import { logBooking } from '../../_share';
-import { HttpResult } from '../../../../../_share';
+import { HttpResult } from '../../../../_share';
 
 
 /**

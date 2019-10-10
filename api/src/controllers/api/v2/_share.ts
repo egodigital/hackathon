@@ -24,7 +24,7 @@ import * as pluralize from 'pluralize';
 import { ResponseSerializerContext, serializeForJSON, SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
 import { NextFunction, RequestHandler } from 'express';
 import { ControllerBase, HttpResult, Request, Response } from '../../_share';
-import { Team } from '../../../contracts';
+import { Team, VehicleBooking } from '../../../contracts';
 
 
 /**
@@ -231,6 +231,34 @@ export abstract class APIv2ControllerBase extends ControllerBase {
     }
 }
 
+
+/**
+ * Logs a vehicle booking.
+ *
+ * @param {database.Database} db The database connection.
+ * @param {ApiV2Request} req The underlying request context.
+ * @param {VehicleBooking} id The booking document.
+ * @param {any} message Custom message data.
+ */
+export async function logBooking(
+    db: database.Database, req: ApiV2Request,
+    booking: VehicleBooking, message?: any,
+) {
+    const NEW_DATA: any = {
+        'booking_id': booking.id,
+        'event': booking.event,
+        'status': booking.status,
+        'team_id': req.team.id,
+    };
+
+    if (!_.isNil(message)) {
+        NEW_DATA['message'] = message;
+    }
+
+    await db.VehicleBookings.insertMany([
+        NEW_DATA,
+    ]);
+}
 
 function mimeFromFileType(
     provider: () => fileType.FileTypeResult,

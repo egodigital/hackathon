@@ -20,9 +20,9 @@ import * as egoose from '@egodigital/egoose';
 import * as moment from 'moment';
 import { NextFunction, RequestHandler } from 'express';
 import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
-import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../../_share';
-import { VehicleBooking } from '../../../../../../contracts';
-import { VehicleSignalManager, VehicleCache } from '../../../../../../vehicles';
+import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../../_share';
+import { VehicleBooking } from '../../../../../contracts';
+import { VehicleSignalManager, VehicleCache } from '../../../../../vehicles';
 
 
 /**
