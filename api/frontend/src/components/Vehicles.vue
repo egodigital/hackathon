@@ -6,20 +6,27 @@
         <template v-slot:default>
           <thead>
             <tr>
-              <th>ID</th>
-              <th class="text-left">Name</th>
-              <th class="text-left">Location</th>
+              <th class="text-left">License plate</th>
+              <th class="text-left">Model</th>
               <th class="text-left">Status</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in vehicles" :key="item.name">
-              <td>{{ item.id }}</td>
-              <td>{{ item.name }}</td>
-              <td>{{ item.environment.name }}</td>
-              <td v-if="item.status === 'available'" class="success--text">{{ item.status }}</td>
-              <td v-if="item.status === 'charging'" class="grey--text">{{ item.status }}</td>
-              <td v-if="item.status === 'blocked'" class="error--text">{{ item.status }}</td>
+              <td>{{ item.licensePlate }}</td>
+              <td>{{ item.model }}</td>
+              <td
+                v-if="vehicleStatus(item) === 'available'"
+                class="success--text"
+              >{{ vehicleStatus(item) }}</td>
+              <td
+                v-if="vehicleStatus(item) === 'charging'"
+                class="grey--text"
+              >{{ vehicleStatus(item) }}</td>
+              <td
+                v-if="vehicleStatus(item) === 'blocked'"
+                class="error--text"
+              >{{ vehicleStatus(item) }}</td>
             </tr>
           </tbody>
         </template>
@@ -37,6 +44,12 @@ export default {
     return {
       //
     };
+  },
+  methods: {
+    vehicleStatus(item) {
+      // TODO
+      return "available";
+    }
   },
   computed: {
     ...mapState(["vehicles"])

@@ -6,7 +6,7 @@
         label="Vehicle"
         :items="vehicles"
         return-object
-        item-text="name"
+        item-text="licensePlate"
         v-model="vehicle"
         hide-details
       ></v-select>
@@ -43,8 +43,21 @@ export default {
   },
   methods: {
     addBooking() {
-      let bookings = this.bookings;
-      this.setBookings(bookings);
+      this.axios
+        .post(
+          `vehicles/${this.vehicle.id}/bookings`,
+          {
+            from: this.dateFrom.toISOString(),
+            until: this.dateUntil.toISOString()
+          },
+          this.$root.axiosOptions
+        )
+        .then(response => {
+          this.$root.loadBookings();
+        })
+        .catch(err => {
+          //
+        });
     },
     ...mapActions(["setBookings"])
   },

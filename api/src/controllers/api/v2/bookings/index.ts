@@ -130,7 +130,8 @@ export class Controller extends APIv2ControllerBase {
 
             return egoose.from(RESULT)
                 .orderBy(x => x.time)
-                .thenBy(x => x.id);
+                .thenBy(x => x.id)
+                .toArray();
         });
     }
 }

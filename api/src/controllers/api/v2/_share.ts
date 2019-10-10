@@ -202,6 +202,10 @@ export abstract class APIv2ControllerBase extends ControllerBase {
     public get __use(): RequestHandler[] {
         return super.__use.concat([
             async (req: Request, res: Response, next: NextFunction) => {
+                if (req['team']) {
+                    return next();
+                }
+
                 const X_API_KEY = egoose.toStringSafe(req.headers['x-api-key'])
                     .trim();
 

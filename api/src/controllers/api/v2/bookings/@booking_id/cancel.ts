@@ -48,7 +48,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
     })
     public cancel_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
         return this.__app.withDatabase(async db => {
-            if ('active' === egoose.normalizeString(req.booking.status)) {
+            if ('new' === egoose.normalizeString(req.booking.status)) {
                 await db.VehicleBookings
                     .updateOne({
                         '_id': req.booking.id,
@@ -78,7 +78,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
             return HttpResult.BadRequest((req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) => {
                 return res.json({
                     success: false,
-                    data: `Booking status is '${req.booking.status}' and must be one of the following values: 'active'`,
+                    data: `Booking status is '${req.booking.status}' and must be one of the following values: 'new'`,
                 });
             });
         });

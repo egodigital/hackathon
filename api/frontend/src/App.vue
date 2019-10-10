@@ -27,10 +27,23 @@
     </v-content>
 
     <v-btn fab fixed right bottom color="error" @click="reset">Reset</v-btn>
+
+    <v-snackbar
+      bottom
+      right
+      v-model="snackbar.show"
+      :color="snackbar.color"
+      :timeout="snackbar.timeout"
+      :multi-line="snackbar.multiline"
+    >
+      {{ snackbar.text }}
+      <v-btn text v-on:click="closeAlert">Close</v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
+import moment from "moment";
 import { mapActions, mapState } from "vuex";
 export default {
   name: "App",
@@ -42,78 +55,38 @@ export default {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     },
     reset() {
-      //
+      this.axios
+        .delete("/", this.$root.axiosOptions)
+        .then(response => {
+          this.alertSuccess("Data reset complete");
+          this.$root.loadEnvironments();
+          this.$root.loadVehicles();
+        })
+        .catch(err => {
+          //
+        });
     },
     start() {
-      console.log("START");
+      localStorage.setItem("key", this.apiKey);
       this.setKey(this.apiKey);
+      this.$root.loadEnvironments();
+      this.$root.loadVehicles();
     },
-    ...mapActions(["setKey", "setEnvironments", "setBookings", "setVehicles"])
+    ...mapActions(["setKey", "alertSuccess", "closeAlert"])
   },
   computed: {
     isDark() {
       return this.$vuetify.theme.dark;
     },
-    ...mapState(["key", "environments", "vehicles"])
+    ...mapState(["key", "snackbar", "environments", "vehicles"])
   },
-  mounted() {
-    this.setEnvironments([
-      {
-        id: 1,
-        name: "Campus"
-      },
-      {
-        id: 2,
-        name: "Werk"
-      }
-    ]);
-    this.setVehicles([
-      {
-        id: 1,
-        name: "Car 1",
-        environment: this.environments[0],
-        status: "available"
-      },
-      {
-        id: 2,
-        name: "Car 2",
-        environment: this.environments[0],
-        status: "charging"
-      },
-      {
-        id: 2,
-        name: "Car 3",
-        environment: this.environments[0],
-        status: "blocked"
-      }
-    ]);
-    this.setBookings([
-      {
-        id: 1,
-        car: this.vehicles[1],
-        status: "new"
-      },
-      {
-        id: 2,
-        car: this.vehicles[1],
-        status: "active"
-      },
-      {
-        id: 3,
-        car: this.vehicles[0],
-        status: "finished_in_time"
-      },
-      {
-        id: 4,
-        car: this.vehicles[2],
-        status: "canceled"
-      },
-      {
-        id: 4,
-        car: this.vehicles[2],
-        status: "finished_late"
-      }
-    ]);
+  beforeMount() {
+    this.axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+
+    if (localStorage.hasOwnProperty("key")) {
+      this.apiKey = localStorage.getItem("key");
+      this.start();
+    }
   }
 };
 </script>

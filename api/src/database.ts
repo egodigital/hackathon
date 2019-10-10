@@ -619,9 +619,13 @@ export async function vehicleBookingToJSON(
 
     return {
         event: egoose.normalizeString(doc.event),
+        from: moment.utc(doc.from)
+            .toISOString(),
         id: doc.id,
         status: egoose.normalizeString(doc.status),
         time: moment.utc(doc.time)
+            .toISOString(),
+        until: moment.utc(doc.until)
             .toISOString(),
         vehicle: await vehicleToJSON(vehicleDoc, db),
     };
