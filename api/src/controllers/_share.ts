@@ -16,7 +16,7 @@
  */
 
 import { NextFunction, Request as ExpressRequest, RequestHandler, Response as ExpressResponse } from 'express';
-import { ControllerBase as ECControllerBase } from '@egodigital/express-controllers';
+import { ControllerBase as ECControllerBase, RequestErrorHandlerContext } from '@egodigital/express-controllers';
 import { AppContext } from '../contracts';
 
 
@@ -123,6 +123,13 @@ export class HttpResult {
  * A basic controller.
  */
 export abstract class ControllerBase extends ECControllerBase<AppContext> {
+    // handle exceptions
+    public async __error(context: RequestErrorHandlerContext) {
+        return context.response
+            .status(500)
+            .send('SERVER ERROR: ' + context.error);
+    }
+
     /**
      * {@inheritDoc}
      */
