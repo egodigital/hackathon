@@ -37,6 +37,16 @@
             "type": "string",
             "example": "Life 60"
         },
+        "status": {
+            "description": "The current status.",
+            "type": "string",
+            "example": "charging",
+            "enum": [
+                "available",
+                "blocked",
+                "charging"
+            ]
+        },
         "team": {
             "description": "The underlying team.",
             "$ref": "#/definitions/TeamItem"
