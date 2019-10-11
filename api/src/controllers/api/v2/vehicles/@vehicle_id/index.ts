@@ -26,6 +26,7 @@ import { HttpResult } from '../../../../_share';
 
 interface UpdateVehicleOptions {
     name?: string;
+    status?: string;
 }
 
 
@@ -34,7 +35,10 @@ const UPDATE_VEHICLE_OPTIONS_SCHEMA = joi.object({
         .min(0)
         .max(256)
         .optional()
-        .allow(null),
+        .allow(null, ''),
+    status: joi.string()
+        .optional()
+        .allow(null, '', 'available', 'blocked', 'charging'),
 });
 
 
@@ -115,6 +119,10 @@ export class Controller extends APIv2VehicleControllerBase {
 
             NEW_DATA['name'] = '' === NEW_NAME ?
                 null : NEW_NAME;
+        }
+
+        if (!egoose.normalizeString(OPTS.status)) {
+            NEW_DATA['status'] = OPTS.status;
         }
 
         return this.__app.withDatabase(async (db) => {

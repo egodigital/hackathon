@@ -214,6 +214,10 @@ export interface VehiclesDocument extends mongoose.Document {
      */
     state?: any;
     /**
+     * The status of the vehicle.
+     */
+    status?: string;
+    /**
      * The ID of the underlying team.
      */
     team_id: string;
@@ -753,12 +757,15 @@ export async function vehicleSignalToJSON(
 export async function vehicleToJSON(
     doc: VehiclesDocument, db: Database
 ): Promise<any> {
+    const NOW = egoose.utc();
+
     if (!doc) {
         return doc as any;
     }
 
     let environmentDoc: EnvironmentsDocument;
     let teamDoc: TeamsDocument;
+    let status: string;
 
     const ENVIRONMENT_ID = egoose.normalizeString(doc.environment_id);
     if ('' !== ENVIRONMENT_ID) {
@@ -774,6 +781,29 @@ export async function vehicleToJSON(
             .exec();
     }
 
+    const LATEST_BOOKING = await db.VehicleBookings
+        .findOne({ 'vehicle_id': doc.id })
+        .sort({
+            'time': -1,
+            '_id': -1,
+        })
+        .exec();
+    if (LATEST_BOOKING) {
+        if ('active' === egoose.normalizeString(LATEST_BOOKING.status)) {
+            if (_.isDate(LATEST_BOOKING.from) && _.isDate(LATEST_BOOKING.until)) {
+                if (NOW.isSameOrAfter(LATEST_BOOKING.from) && NOW.isSameOrBefore(LATEST_BOOKING.until)) {
+                    status = 'blocked';
+                }
+            }
+        }
+    }
+
+    if ('charging' === egoose.normalizeString(doc.status)) {
+        status = 'blocked';
+    }
+
+    status = egoose.normalizeString(status);
+
     return {
         country: egoose.isEmptyString(doc.country) ?
             'D' : egoose.toStringSafe(doc.country).toUpperCase().trim(),
@@ -786,6 +816,8 @@ export async function vehicleToJSON(
             .trim(),
         model: egoose.toStringSafe(doc.model_name)
             .trim(),
+        status: '' === status ?
+            'available' : status,
         team: await teamToJSON(teamDoc, db),
     };
 }

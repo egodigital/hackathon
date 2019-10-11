@@ -30,7 +30,7 @@ import { AppContext } from './contracts';
  * @return {Promise<AppContext>} The promise with the new instance.
  */
 export async function createApp(host: Express): Promise<AppContext> {
-    return {
+    const APP: AppContext = {
         host,
         log: new egoose.Logger(),
         package: JSON.parse(
@@ -41,4 +41,9 @@ export async function createApp(host: Express): Promise<AppContext> {
         ),
         withDatabase: database.withDatabase,
     };
+
+    (APP as any).withDatabase = database.withDatabase
+        .bind(APP);
+
+    return APP;
 }

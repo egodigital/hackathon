@@ -5,6 +5,16 @@
             "description": "The new name.",
             "type": "string",
             "example": "My e.GO Life"
+        },
+        "status": {
+            "description": "The new status.",
+            "type": "string",
+            "example": "charging",
+            "enum": [
+                "available",
+                "blocked",
+                "charging"
+            ]
         }
     }
 }

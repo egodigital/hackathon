@@ -68,6 +68,12 @@ export const SCHEMA: mongoose.SchemaDefinition = {
         required: false,
         type: mongoose.Schema.Types.Mixed,
     },
+    status: {
+        lowercase: true,
+        required: false,
+        trim: true,
+        type: String,
+    },
     team_id: {
         lowercase: true,
         trim: true,
@@ -86,6 +92,8 @@ export function setupSchema(schema: mongoose.Schema, name: string) {
     schema.index({ license_plate: 1 });
     schema.index({ manufacturer: 1 });
     schema.index({ manufacturer: 1, model_name: 1 });
+    schema.index({ status: 1 });
     schema.index({ team_id: 1 });
     schema.index({ team_id: 1, license_plate: 1 }, { unique: true });
+    schema.index({ team_id: 1, status: 1 });
 }
