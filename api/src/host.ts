@@ -82,6 +82,10 @@ export async function initHost(app: AppContext) {
 
 
 async function initWebSite(app: AppContext) {
+    if (egoose.IS_LOCAL_DEV) {
+        return;
+    }
+
     app.host.use(
         '/',
         express.static(path.join(__dirname, '../frontend/dist'))
