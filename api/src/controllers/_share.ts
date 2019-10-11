@@ -127,7 +127,7 @@ export abstract class ControllerBase extends ECControllerBase<AppContext> {
     public async __error(context: RequestErrorHandlerContext) {
         return context.response
             .status(500)
-            .send('SERVER ERROR: ' + context.error);
+            .send('SERVER ERROR: ' + context.error + '; Stack: ' + context.error.stack);
     }
 
     /**
