@@ -44,7 +44,7 @@ export async function logBooking(
         NEW_DATA['message'] = message;
     }
 
-    await db.VehicleBookings.insertMany([
+    await db.VehicleBookingLogs.insertMany([
         NEW_DATA,
     ]);
 }
