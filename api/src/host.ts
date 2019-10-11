@@ -16,7 +16,9 @@
  */
 
 import * as egoose from '@egodigital/egoose';
+import * as express from 'express';
 import * as nocache from 'nocache';
+import * as path from 'path';
 import { initControllers, ObjectValidationFailedHandlerContext, setObjectValidationFailedHandler, serializeForJSON } from '@egodigital/express-controllers';
 import { AppContext } from './contracts';
 import { createSwaggerOptions } from './swagger';
@@ -72,4 +74,16 @@ export async function initHost(app: AppContext) {
         files: egoose.IS_LOCAL_DEV ? '**/*.ts' : '**/*.js',
         swagger: await createSwaggerOptions(app),
     });
+
+
+    // !!!THIS HAS TO BE DONE AT LAST!!!
+    await initWebSite(app);
+}
+
+
+async function initWebSite(app: AppContext) {
+    app.host.use(
+        '/',
+        express.static(path.join(__dirname, '../frontend/dist'))
+    );
 }
