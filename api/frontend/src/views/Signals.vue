@@ -258,7 +258,7 @@
             >Your browser does not support the video tag.</video>
           </div>
 
-          <table>
+          <table v-if="signals">
             <tr :class="matchSearch('infotainment') ? 'hightlighted' : ''">
               <td>
                 <a @click="showPopover($event, 'infotainment')">{{ $t('infotainment') }}</a>
@@ -318,42 +318,24 @@ export default {
       vehicle: null,
       textSearch: null,
       signals: {
-        // battery_charging: "no",
-        // battery_charging_current: 16,
-        // battery_health: 100,
-        // battery_loading_capacity: 11,
-        // battery_state_of_charge: 100,
-        // battery_total_kwh_capacity: 17.5,
-        // brake_fluid_level: 100,
-        // calculated_remaining_distance: 150,
-        // drive_mode: "eco"
-        // heated_seats: "off"
-        // infotainment: "off"
-        // infotainment_volume: 5
-        // location: "50.782117,6.047171"
-        // mileage: 0
-        // motor_control_lamp: "off"
-        // person_count: 0
-        // power_consumption: 0
-        // pulse_sensor_steering_wheel: "NaN"
-        // rain_sensor: "no_rain"
-        // rear_running_lights: "off"
-        // side_lights: "off"
-        // speed: 0
-        // stop_lights: "off"
-        // temperature_inside: 20
-        // temperature_outside: 10
-        // tire_pressure_back_left: 3
-        // tire_pressure_back_right: 3
-        // tire_pressure_front_left: 3
-        // tire_pressure_front_right: 3
-        // trunk: "closed"
-        // turn_signal_left: "off"
-        // turn_signal_right: "off"
-        // warning_blinker: "off"
-        // weight: 1200
-        // windshield_wipers: "off"
-        // wiping_water_level: 100
+        battery_charging: "no",
+        battery_charging_current: 0,
+        battery_health: 0,
+        battery_loading_capacity: 0,
+        battery_state_of_charge: 0,
+        battery_total_kwh_capacity: 0,
+        brake_fluid_level: 0,
+        calculated_remaining_distance: 0,
+        drive_mode: "eco",
+        heated_seats: "off",
+        infotainment: "off",
+        infotainment_volume: 0,
+        person_count: 0,
+        power_consumption: 0,
+        speed: 0,
+        temperature_inside: 0,
+        temperature_outside: 0,
+        weight: 0
       },
       infotainment: null,
       infotainmentContentType: null,
@@ -462,8 +444,13 @@ export default {
         return;
       }
       this.isLoadingInfotainment = true;
-      let config = this.$root.axiosOptions;
-      config.responseType = "arraybuffer";
+      let config = {
+        headers: {
+          "X-Api-Key": this.key
+        },
+        responseType: "arraybuffer"
+      };
+
       this.axios
         .get(
           `vehicles/${this.vehicle.id}/infotainment?cache=` +
