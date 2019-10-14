@@ -63,7 +63,7 @@ export default {
           this.$root.loadVehicles();
         })
         .catch(err => {
-          //
+          this.alertError(err.response.data.data);
         });
     },
     start() {

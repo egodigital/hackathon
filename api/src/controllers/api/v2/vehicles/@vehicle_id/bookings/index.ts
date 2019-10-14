@@ -234,9 +234,11 @@ export class Controller extends APIv2VehicleControllerBase {
 
                 const BOOKING: VehicleBooking = {
                     event: NEW_DOC.event,
+                    from: moment.utc(NEW_DOC.from),
                     id: NEW_DOC.id,
                     status: NEW_DOC.status,
                     time: moment.utc(NEW_DOC.time),
+                    until: moment.utc(NEW_DOC.until),
                     vehicle: req.vehicle,
                 };
 

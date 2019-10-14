@@ -90,6 +90,7 @@ export class Controller extends APIv2ControllerBase {
 
             const VEHICLES_DOCS = await db.Vehicles
                 .find({ 'team_id': req.team.id })
+                .sort({ 'start': 1, 'end': 1 })
                 .exec();
 
             for (const V of VEHICLES_DOCS) {

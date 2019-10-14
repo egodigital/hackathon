@@ -27,6 +27,11 @@ export default {
   },
   methods: {
     addVehicle() {
+      if (!this.licensePlate || !this.model) {
+        this.alertWarning("Please fill all form fields.");
+        return;
+      }
+
       this.axios
         .post(
           "vehicles",
@@ -46,10 +51,10 @@ export default {
           }
         })
         .catch(err => {
-          //
+          this.alertError(err.response.data.data);
         });
     },
-    ...mapActions(["clearVehicles", "setVehicles"])
+    ...mapActions(["clearVehicles", "setVehicles", "alertWarning"])
   },
   computed: {
     ...mapState(["environments", "vehicles"])

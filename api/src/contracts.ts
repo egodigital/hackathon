@@ -147,6 +147,10 @@ export interface VehicleBooking {
      */
     readonly event: string;
     /**
+     * The start date.
+     */
+    readonly from: moment.Moment;
+    /**
      * The ID of the vehicle.
      */
     readonly id: string;
@@ -158,6 +162,10 @@ export interface VehicleBooking {
      * The timestamp.
      */
     readonly time: moment.Moment;
+    /**
+     * The end date.
+     */
+    readonly until: moment.Moment;
     /**
      * The underlying vehicle.
      */

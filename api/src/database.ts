@@ -761,8 +761,6 @@ export async function vehicleSignalToJSON(
 export async function vehicleToJSON(
     doc: VehiclesDocument, db: Database
 ): Promise<any> {
-    const NOW = egoose.utc();
-
     if (!doc) {
         return doc as any;
     }
@@ -785,25 +783,28 @@ export async function vehicleToJSON(
             .exec();
     }
 
-    const LATEST_BOOKING = await db.VehicleBookings
-        .findOne({ 'vehicle_id': doc.id })
+    const LATEST_ACTIVE_BOOKING = await db.VehicleBookings
+        .findOne({
+            'vehicle_id': doc.id,
+            'status': 'active'
+        })
         .sort({
             'time': -1,
             '_id': -1,
         })
         .exec();
-    if (LATEST_BOOKING) {
-        if ('active' === egoose.normalizeString(LATEST_BOOKING.status)) {
-            if (_.isDate(LATEST_BOOKING.from) && _.isDate(LATEST_BOOKING.until)) {
-                if (NOW.isSameOrAfter(LATEST_BOOKING.from) && NOW.isSameOrBefore(LATEST_BOOKING.until)) {
-                    status = 'blocked';
-                }
-            }
+    if (LATEST_ACTIVE_BOOKING) {
+        if (_.isDate(LATEST_ACTIVE_BOOKING.from) && _.isDate(LATEST_ACTIVE_BOOKING.until)) {
+            status = 'blocked';
         }
     }
 
-    if ('charging' === egoose.normalizeString(doc.status)) {
-        status = 'blocked';
+    // if ('charging' === egoose.normalizeString(doc.status)) {
+    //     status = 'blocked';
+    // }
+
+    if (egoose.isEmptyString(status)) {
+        status = doc.status;
     }
 
     status = egoose.normalizeString(status);

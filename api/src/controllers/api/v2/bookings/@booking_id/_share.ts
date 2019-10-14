@@ -95,9 +95,11 @@ export abstract class APIv2VehicleBookingControllerBase extends APIv2ControllerB
                                     if (egoose.normalizeString(VEHICLE_DOC.team_id) === req.team.id) {
                                         req['booking'] = {
                                             event: egoose.normalizeString(BOOKING_DOC.event),
+                                            from: moment.utc(BOOKING_DOC.from),
                                             id: BOOKING_DOC.id,
                                             status: egoose.normalizeString(BOOKING_DOC.status),
                                             time: moment.utc(BOOKING_DOC.time),
+                                            until: moment.utc(BOOKING_DOC.until),
                                             vehicle: {
                                                 cache: new VehicleCache(VEHICLE_DOC),
                                                 id: VEHICLE_DOC.id,
