@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueI18n from 'vue-i18n';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -13,10 +14,18 @@ import {
   mapActions
 } from 'vuex';
 import moment from "moment";
+import lang from './lang.js'
 
 Vue.use(VueAxios, axios);
+Vue.use(VueI18n);
 
 Vue.config.productionTip = false;
+
+const i18n = new VueI18n({
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: lang.messages,
+});
 
 Vue.filter('date', (value, format) => {
   if (value) {
@@ -26,6 +35,7 @@ Vue.filter('date', (value, format) => {
 })
 
 new Vue({
+  i18n,
   router,
   store,
   vuetify,

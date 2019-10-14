@@ -1,30 +1,34 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12" sm="7">
-        <NewBooking />
-        <Bookings />
-      </v-col>
-      <v-col cols="12" sm="5">
-        <Vehicles />
-        <NewVehicle />
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="py-5">
+    <v-tabs v-model="currentTab" background-color="transparent">
+      <v-tabs-slider></v-tabs-slider>
+      <v-tab v-for="(tab, index) in tabs" :key="index" :href="`#tab-${index}`">{{tab}}</v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="currentTab" style="background-color: transparent">
+      <v-tab-item value="tab-0">
+        <Booking />
+      </v-tab-item>
+
+      <v-tab-item value="tab-1">
+        <Signals />
+      </v-tab-item>
+    </v-tabs-items>
+  </div>
 </template>
 
 <script>
-import NewBooking from "../components/NewBooking";
-import Bookings from "../components/Bookings";
-import Vehicles from "../components/Vehicles";
-import NewVehicle from "../components/NewVehicle";
+import Booking from "./Booking";
+import Signals from "./Signals";
 
 export default {
   components: {
-    NewBooking,
-    Bookings,
-    Vehicles,
-    NewVehicle
-  }
+    Booking,
+    Signals
+  },
+  data: () => ({
+    currentTab: null,
+    tabs: ["booking_simulation", "vehicle_signals"]
+  })
 };
 </script>
