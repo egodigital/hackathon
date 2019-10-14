@@ -24,7 +24,7 @@ import { initLogger } from './diagnostics';
 import { initHost } from './host';
 
 
-(async () => {
+async function run() {
     await initDatabaseSchema();
 
     const HOST = express();
@@ -47,8 +47,17 @@ import { initHost } from './host';
     }
 
     APP.host.listen(appPort, () => {
-        if (egoose.IS_LOCAL_DEV) {
-            console.log(`🎉🎉🎉 Host is running on port ${appPort} 🎉🎉🎉`);
-        }
+        console.log(`🎉🎉🎉 Host is running on port ${appPort} 🎉🎉🎉`);
     });
+};
+
+
+(async () => {
+    try {
+        await run();
+    } catch (e) {
+        console.error(e);
+
+        process.exit(1);
+    }
 })();
