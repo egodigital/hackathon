@@ -116,6 +116,18 @@ export class HttpResult {
     public static OK(dataOrFunc?: any): HttpResult {
         return new HttpResult(200, dataOrFunc);
     }
+
+    /**
+     * Creates an instance for '412 Precondition Failed' result.
+     * 
+     * @param {any} [dataOrFunc] Optional data to send or a function to invoke.
+     * 
+     * @return {HttpResult} The new instance.
+     */
+    public static PreconditionFailed(func: RequestHandler): HttpResult;
+    public static PreconditionFailed(dataOrFunc?: any): HttpResult {
+        return new HttpResult(412, dataOrFunc);
+    }
 }
 
 

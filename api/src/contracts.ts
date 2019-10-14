@@ -132,6 +132,10 @@ export interface Vehicle {
      * State value.
      */
     readonly state: any;
+    /**
+     * The status.
+     */
+    readonly status: string;
 }
 
 /**

@@ -212,6 +212,15 @@ export class Controller extends APIv2VehicleControllerBase {
         return this.__app.withDatabase(async db => {
             const NEW_BOOKING: NewVehicleBooking = req.body;
 
+            if ('charging' === egoose.normalizeString(req.vehicle.status)) {
+                return HttpResult.PreconditionFailed((req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
+                    return res.json({
+                        success: false,
+                        data: `Vehicle is charging!`,
+                    });
+                });
+            }
+
             const CREATE_BOOKING = async () => {
                 const NEW_DOC = (await db.VehicleBookings.insertMany([{
                     'event': 'created',
@@ -240,7 +249,21 @@ export class Controller extends APIv2VehicleControllerBase {
 
             let latestBooking = await db.VehicleBookings
                 .findOne({
-                    'vehicle_id': req.vehicle.id,
+                    '$and': [
+                        {
+                            '$or': [
+                                {
+                                    'status': 'active',
+                                },
+                                {
+                                    'status': 'new',
+                                }
+                            ]
+                        },
+                        {
+                            'vehicle_id': req.vehicle.id,
+                        }
+                    ],
                 })
                 .sort({
                     'time': -1,
@@ -248,10 +271,8 @@ export class Controller extends APIv2VehicleControllerBase {
                 })
                 .exec();
             if (!latestBooking) {
-                return CREATE_BOOKING();
-            }
 
-            if (['active'].indexOf(egoose.normalizeString(latestBooking.status)) < 0) {
+
                 return CREATE_BOOKING();
             }
 
