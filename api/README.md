@@ -5,5 +5,5 @@
 ### Build
 
 ```bash
-docker build -t vehicle-booking-api .
+docker build -t ego-vehicle-api .
 ```

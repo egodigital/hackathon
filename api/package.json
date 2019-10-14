@@ -1,11 +1,12 @@
 {
   "name": "vehicle-booking-api",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "API for vehicle booking.",
   "main": "dist/index.js",
   "scripts": {
     "build": "(rm -r ./dist || true) && tsc && (mkdir ./dist/res) && (cp -r ./src/res/* ./dist/res)",
     "dev": "nodemon --watch 'src/**/*.ts' --watch 'src/res/**/*' --ignore 'src/**/*.spec.ts' --exec node -r ts-node/register --inspect=0.0.0.0:9229 src/index.ts",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "update:all": "ego node-install -u -a && cd frontend && ego node-install -u -a"
   },
