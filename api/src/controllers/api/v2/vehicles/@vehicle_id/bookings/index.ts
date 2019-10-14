@@ -212,7 +212,7 @@ export class Controller extends APIv2VehicleControllerBase {
         return this.__app.withDatabase(async db => {
             const NEW_BOOKING: NewVehicleBooking = req.body;
 
-            if ('charging' === egoose.normalizeString(req.vehicle.status)) {
+            if ('charging' === req.vehicle.status) {
                 return HttpResult.PreconditionFailed((req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) => {
                     return res.json({
                         success: false,

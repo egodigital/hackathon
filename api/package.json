@@ -1,6 +1,6 @@
 {
   "name": "vehicle-booking-api",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "API for vehicle booking.",
   "main": "dist/index.js",
   "scripts": {
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@egodigital/egoose": "^6.12.0",
-    "@egodigital/express-controllers": "^5.2.0",
+    "@egodigital/express-controllers": "^5.3.0",
     "file-type": "^12.3.0",
     "fs-extra": "^8.1.0",
     "is-stream": "^2.0.0",
