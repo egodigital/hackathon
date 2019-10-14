@@ -52,7 +52,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
 
             if ('active' === egoose.normalizeString(req.booking.status)) {
                 let newEvent: string;
-                if (NOW.isSameOrBefore(req.booking.time)) {
+                if (NOW.isBefore(req.booking.until)) {
                     newEvent = 'finished_in_time';
                 } else {
                     newEvent = 'finished_late';

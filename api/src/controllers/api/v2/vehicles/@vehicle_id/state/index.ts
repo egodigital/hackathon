@@ -33,9 +33,6 @@ export class Controller extends APIv2VehicleControllerBase {
     })
     @Swagger({
         "summary": "Sets a state value for the vehicle.",
-        "tags": [
-            "v1"
-        ],
         "consumes": [
             "application/json"
         ],

@@ -35,21 +35,25 @@ new Vue({
       this.axios
         .get("environments", this.$root.axiosOptions)
         .then(response => {
-          this.setEnvironments(response.data.data);
+          if (response.data.success) {
+            this.setEnvironments(response.data.data);
+          }
         })
         .catch(err => {
-          //
+          this.alertError(err.response.data.data);
         });
     },
     loadVehicles() {
       this.axios
         .get("vehicles", this.$root.axiosOptions)
         .then(response => {
-          this.setVehicles(response.data.data);
-          this.loadBookings();
+          if (response.data.success) {
+            this.setVehicles(response.data.data);
+            this.loadBookings();
+          }
         })
         .catch(err => {
-          //
+          this.alertError(err.response.data.data);
         });
     },
     loadBookings() {
@@ -70,10 +74,12 @@ new Vue({
           headers: this.$root.axiosOptions.headers
         })
         .then(response => {
-          this.setBookings(response.data.data);
+          if (response.data.success) {
+            this.setBookings(response.data.data);
+          }
         })
         .catch(err => {
-          //
+          this.alertError(err.response.data.data);
         });
     },
     ...mapActions(["setEnvironments", "setVehicles", "setBookings"])

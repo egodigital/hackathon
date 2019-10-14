@@ -121,7 +121,7 @@ export class Controller extends APIv2VehicleControllerBase {
                 null : NEW_NAME;
         }
 
-        if (!egoose.normalizeString(OPTS.status)) {
+        if (!egoose.isEmptyString(OPTS.status)) {
             NEW_DATA['status'] = OPTS.status;
         }
 

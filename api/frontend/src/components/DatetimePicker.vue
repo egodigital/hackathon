@@ -125,6 +125,14 @@ export default {
       type: Object
     }
   },
+  watch: {
+    datetime() {
+      if (!this.datetime) {
+        this.date = null;
+        this.time = null;
+      }
+    }
+  },
   data() {
     return {
       display: false,

@@ -43,6 +43,11 @@ export default {
   },
   methods: {
     addBooking() {
+      if (!this.vehicle || !this.dateFrom || !this.dateUntil) {
+        this.alertWarning("Please fill all form fields.");
+        return;
+      }
+
       this.axios
         .post(
           `vehicles/${this.vehicle.id}/bookings`,
@@ -53,13 +58,18 @@ export default {
           this.$root.axiosOptions
         )
         .then(response => {
-          this.$root.loadBookings();
+          if (response.data.success) {
+            this.vehicle = null;
+            this.dateFrom = null;
+            this.dateUntil = null;
+            this.$root.loadBookings();
+          }
         })
         .catch(err => {
-          //
+          this.alertError(err.response.data.data);
         });
     },
-    ...mapActions(["setBookings"])
+    ...mapActions(["setBookings", "alertWarning"])
   },
   computed: {
     ...mapState(["bookings", "vehicles"])

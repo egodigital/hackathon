@@ -77,6 +77,7 @@ export class Controller extends APIv2ControllerBase {
         return this.__app.withDatabase(async db => {
             const VEHICLE_DOCS = await db.Vehicles
                 .find({ 'team_id': req.team.id })
+                .sort({ 'licensePlate': -1 })
                 .exec();
 
             const RESULT: any[] = [];
@@ -122,7 +123,7 @@ export class Controller extends APIv2ControllerBase {
             const NEW_DATA: any = {
                 'license_plate': NEW_VEHICLE.licensePlate,
                 'manufacturer': NEW_VEHICLE.manufacturer,
-                'model': NEW_VEHICLE.model,
+                'model_name': NEW_VEHICLE.model,
                 'team_id': req.team.id,
             };
 
