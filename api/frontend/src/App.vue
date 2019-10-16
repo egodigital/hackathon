@@ -2,8 +2,10 @@
   <v-app>
     <v-app-bar app>
       <v-toolbar-title class="headline text-uppercase">
-        <img v-if="isDark" :src="require('./assets/ego-logo-weiß.png')" id="ego-logo" />
-        <img v-else :src="require('./assets/ego-logo-black.png')" id="ego-logo" />
+        <a href="https://github.com/egodigital/hackathon" target="_blank">
+          <img v-if="isDark" :src="require('./assets/ego-logo-weiß.png')" id="ego-logo" />
+          <img v-else :src="require('./assets/ego-logo-black.png')" id="ego-logo" />
+        </a>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-text-field
