@@ -134,18 +134,19 @@ export class Controller extends APIv2ControllerBase {
             if (!egoose.isEmptyString(NEW_VEHICLE.name)) {
                 NEW_DATA['name'] = NEW_VEHICLE.name;
             }
-            return await db.Vehicles.insertMany([NEW_DATA])
-                .then(async (res: database.VehiclesDocument[]) => {
-                    return await database.vehicleToJSON(res[0], db);
-                })
-                .catch(async err => {
-                    return HttpResult.BadRequest((req: ApiV2Request, res: ApiV2Response) => {
-                        return res.json({
-                            success: false,
-                            data: `Error on inserting Vehicle: ${NEW_VEHICLE.name}`,
-                        });
+
+            try {
+                const NEW_VEHICLE_DOC = (await db.Vehicles.insertMany([NEW_DATA]))[0];
+
+                return await database.vehicleToJSON(NEW_VEHICLE_DOC, db);
+            } catch (e) {
+                return HttpResult.BadRequest((req: ApiV2Request, res: ApiV2Response) => {
+                    return res.json({
+                        success: false,
+                        data: `Error on inserting vehicle '${NEW_VEHICLE.name}': ${e}`,
                     });
                 });
+            }
         });
     }
 }
