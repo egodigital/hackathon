@@ -11,7 +11,10 @@
         },
         "data": {
             "description": "The data, if successful.",
-            "$ref": "#/definitions/TeamItemWithApiKey"
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/TeamItemWithApiKey"
+            }
         }
     }
 }

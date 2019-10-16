@@ -17,7 +17,7 @@
 
 import * as egoose from '@egodigital/egoose';
 import * as joi from 'joi';
-import { POST, Swagger } from '@egodigital/express-controllers';
+import { GET, POST, Swagger } from '@egodigital/express-controllers';
 import { AdminControllerBase, AdminRequest, AdminResponse } from '../_share';
 
 
@@ -76,6 +76,40 @@ export class Controller extends AdminControllerBase {
                 id: NEW_TEAM_DOC.id,
                 name: NEW_TEAM_DOC.name,
             };
+        });
+    }
+
+    /**
+     * [GET]  /
+     */
+    @GET('/')
+    @Swagger({
+        "summary": "Lists all teams.",
+        "responses": {
+            "200": {
+                "schema": {
+                    "$ref": "#/definitions/ListTeamsResponse"
+                }
+            },
+        },
+    })
+    public async get_all_teams(req: AdminRequest, res: AdminResponse) {
+        return this.__app.withDatabase(async db => {
+            const TEAM_DOCS = await db.Teams
+                .find()
+                .exec();
+
+            return egoose.from(TEAM_DOCS)
+                .select(doc => {
+                    return {
+                        apiKey: doc.api_key,
+                        id: doc.id,
+                        name: doc.name,
+                    }
+                })
+                .orderBy(x => egoose.normalizeString(x.name))
+                .thenBy(x => x.id)
+                .toArray();
         });
     }
 }
