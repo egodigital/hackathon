@@ -143,7 +143,7 @@ export class Controller extends APIv2ControllerBase {
                 return HttpResult.BadRequest((req: ApiV2Request, res: ApiV2Response) => {
                     return res.json({
                         success: false,
-                        data: `Error on inserting vehicle '${NEW_VEHICLE.name}': ${e}`,
+                        data: { message: `Error on inserting vehicle '${NEW_VEHICLE.name}'`, error: e },
                     });
                 });
             }
