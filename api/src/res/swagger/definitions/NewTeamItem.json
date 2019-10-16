@@ -1,0 +1,25 @@
+{
+    "type": "object",
+    "required": [
+        "id",
+        "name",
+        "apiKey"
+    ],
+    "properties": {
+        "apiKey": {
+            "description": "The API key of the team.",
+            "type": "string",
+            "example": "19790905-0000-0000-0000-000019790923"
+        },
+        "id": {
+            "description": "The ID of the team.",
+            "type": "string",
+            "example": "5d9c5d82734cb701240245d8"
+        },
+        "name": {
+            "description": "The name of the team.",
+            "type": "string",
+            "example": "Schuh & Co."
+        }
+    }
+}

@@ -25,6 +25,7 @@ The key for accessing the API locally is `ego` by default. You can change the se
 
 | Name | Description | Example |
 |---|---|---|
+| `ADMIN_KEY` | Custom key for accessing the admin API. | `myAdminKey` |
 | `API_KEY` | Custom API key. | `myAPIKey` |
 | `APP_PORT` | The TCP port of the backend running in container. | `80` |
 | `LOCAL_DEVELOPMENT` | Indicates if backend is running in local development mode, which produces more debug output. | `true` |

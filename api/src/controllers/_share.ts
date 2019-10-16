@@ -15,8 +15,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as _ from 'lodash';
+import * as egoose from '@egodigital/egoose';
+import * as fileType from 'file-type';
+import * as isStream from 'is-stream';
 import { NextFunction, Request as ExpressRequest, RequestHandler, Response as ExpressResponse } from 'express';
-import { ControllerBase as ECControllerBase, RequestErrorHandlerContext } from '@egodigital/express-controllers';
+import { ControllerBase as ECControllerBase, RequestErrorHandlerContext, ResponseSerializer, ResponseSerializerContext, serializeForJSON } from '@egodigital/express-controllers';
 import { AppContext } from '../contracts';
 
 
@@ -148,16 +152,101 @@ export abstract class ControllerBase extends ECControllerBase<AppContext> {
     public get __use(): RequestHandler[] {
         return [
             async (req: Request, res: Response, next: NextFunction) => {
-                this.__app.log.trace({
-                    'client': {
-                        'ip': req.socket.remoteAddress,
-                        'port': req.socket.remotePort,
-                    },
-                    'headers': req.headers,
-                }, `request::${req.method}::${req.originalUrl}`);
+                if (egoose.IS_LOCAL_DEV) {
+                    this.__app.log.trace({
+                        'client': {
+                            'ip': req.socket.remoteAddress,
+                            'port': req.socket.remotePort,
+                        },
+                        'headers': req.headers,
+                    }, `request::${req.method}::${req.originalUrl}`);
+                }
 
                 next();
             }
         ];
     }
+}
+
+/**
+ * Creates a function that serializes controller responses.
+ * 
+ * @return {ResponseSerializer} The new serializer.
+ */
+export function serializeResponse(): ResponseSerializer {
+    return async (ctx: ResponseSerializerContext) => {
+        if (ctx.result instanceof HttpResult) {
+            if (!isNaN(ctx.result.code)) {
+                ctx.response
+                    .status(ctx.result.code);
+            }
+
+            if (_.isNil(ctx.result.data)) {
+                return ctx.response
+                    .send();
+            }
+
+            if (isStream.readable(ctx.result.data)) {
+                return ctx.result
+                    .data
+                    .pipe(ctx.response);
+            }
+
+            if ('function' === typeof ctx.result.data) {
+                return Promise.resolve(
+                    ctx.result.data(
+                        ctx.request, ctx.response
+                    )
+                );
+            }
+
+            return ctx.response
+                .send(ctx.result.data);
+        }
+
+        // buffer?
+        if (Buffer.isBuffer(ctx.result)) {
+            return ctx.response
+                .header('Content-type', mimeFromFileType(() => fileType(ctx.result)))
+                .send(ctx.result);
+        }
+
+        // stream?
+        if (isStream.readable(ctx.result)) {
+            const WRAPPED_STREAM = await fileType.stream(ctx.result);
+
+            ctx.response
+                .header('Content-type', mimeFromFileType(() => WRAPPED_STREAM.fileType));
+
+            return WRAPPED_STREAM.pipe(ctx.response);
+        }
+
+        return ctx.response
+            .json({
+                success: true,
+                data: await serializeForJSON(ctx.result),
+            });
+    };
+}
+
+function mimeFromFileType(
+    provider: () => fileType.FileTypeResult,
+): string {
+    let mimeType: string;
+
+    try {
+        const TYPE = provider();
+        if (!_.isNil(TYPE)) {
+            mimeType = TYPE.mime;
+        }
+    } catch (e) {
+        console.error(e);
+    }
+
+    mimeType = egoose.normalizeString(mimeType);
+    if ('' === mimeType) {
+        mimeType = 'application/octet-stream';
+    }
+
+    return mimeType;
 }

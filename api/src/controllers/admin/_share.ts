@@ -15,37 +15,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as _ from 'lodash';
-import * as database from '../../../database';
 import * as egoose from '@egodigital/egoose';
-import * as pluralize from 'pluralize';
-import { SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
-import { NextFunction, RequestHandler } from 'express';
-import { ControllerBase, Request, Response, serializeResponse } from '../../_share';
-import { Team, VehicleBooking } from '../../../contracts';
+import { NextFunction, Request as ExpressRequest, RequestHandler, Response as ExpressResponse } from 'express';
+import { ControllerBase as ECControllerBase, RequestErrorHandlerContext, SwaggerPathDefinitionUpdaterContext } from '@egodigital/express-controllers';
+import { serializeResponse } from '../_share';
+import { AppContext } from '../../contracts';
 
 
 /**
- * An API v2 request context.
+ * An extended request context (admin).
  */
-export interface ApiV2Request extends Request {
-    /**
-     * The underlying team.
-     */
-    readonly team: Team;
+export interface AdminRequest extends ExpressRequest {
 }
 
 /**
- * An API v2 response context.
+ * An extended response context (admin).
  */
-export interface ApiV2Response extends Response {
+export interface AdminResponse extends ExpressResponse {
 }
 
 
 /**
- * A basic API v2 controller.
+ * A basic Admincontroller.
  */
-export abstract class APIv2ControllerBase extends ControllerBase {
+export abstract class AdminControllerBase extends ECControllerBase<AppContext> {
+    // handle exceptions
+    public async __error(context: RequestErrorHandlerContext) {
+        return context.response
+            .status(500)
+            .send('SERVER ERROR: ' + context.error + '; Stack: ' + context.error.stack);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -72,8 +72,8 @@ export abstract class APIv2ControllerBase extends ControllerBase {
         }
         context.definition.parameters.push({
             "in": "header",
-            "name": "X-Api-Key",
-            "description": "The API key.",
+            "name": "Token",
+            "description": "The admin API key.",
             "required": true,
             "example": "19790905-0000-0000-0000-000019790923",
             "type": "string"
@@ -87,26 +87,7 @@ export abstract class APIv2ControllerBase extends ControllerBase {
 
         // tags
         if (!context.definition.tags) {
-            context.definition.tags = [];
-        }
-        if (context.definition.tags.length < 1) {
-            const PARTS = context.path
-                .split('/');
-
-            let tagName = egoose.normalizeString(
-                PARTS[3]
-            );
-            if ('' === tagName) {
-                tagName = 'default';
-            }
-
-            if (pluralize.isSingular(tagName)) {
-                tagName = pluralize.plural(tagName);
-            }
-
-            context.definition.tags.push(
-                tagName
-            );
+            context.definition.tags = ['admin'];
         }
 
         if ('GET' !== context.method) {
@@ -146,66 +127,32 @@ export abstract class APIv2ControllerBase extends ControllerBase {
      * {@inheritDoc}
      */
     public get __use(): RequestHandler[] {
-        return super.__use.concat([
-            async (req: Request, res: Response, next: NextFunction) => {
-                if (req['team']) {
-                    return next();
-                }
-
-                const X_API_KEY = egoose.toStringSafe(req.headers['x-api-key'])
-                    .trim();
+        return [
+            async (req: AdminRequest, res: AdminResponse, next: NextFunction) => {
+                this.__app.log.trace({
+                    'client': {
+                        'ip': req.socket.remoteAddress,
+                        'port': req.socket.remotePort,
+                    },
+                    'headers': req.headers,
+                }, `request::${req.method}::${req.originalUrl}`);
 
                 try {
-                    await this.__app.withDatabase(async db => {
-                        const TEAM_DOC = await db.Teams
-                            .findOne({
-                                'api_key': X_API_KEY,
-                            });
+                    const ADMIN_KEY = egoose.toStringSafe(process.env.ADMIN_KEY)
+                        .trim();
+                    const TOKEN = egoose.toStringSafe(req.headers['token'])
+                        .trim();
 
-                        if (TEAM_DOC) {
-                            req['team'] = await database.createTeam(TEAM_DOC, db);
-                        }
-                    });
+                    if (ADMIN_KEY === TOKEN) {
+                        return next();
+                    }
                 } catch (e) {
-                    console.log(e);
-                }
-
-                if (req['team']) {
-                    return next();
+                    console.error(e);
                 }
 
                 return res.status(401)
                     .send();
             }
-        ]);
+        ];
     }
-}
-
-
-/**
- * Logs a vehicle booking.
- *
- * @param {database.Database} db The database connection.
- * @param {ApiV2Request} req The underlying request context.
- * @param {VehicleBooking} id The booking document.
- * @param {any} message Custom message data.
- */
-export async function logBooking(
-    db: database.Database, req: ApiV2Request,
-    booking: VehicleBooking, message?: any,
-) {
-    const NEW_DATA: any = {
-        'booking_id': booking.id,
-        'event': booking.event,
-        'status': booking.status,
-        'team_id': req.team.id,
-    };
-
-    if (!_.isNil(message)) {
-        NEW_DATA['message'] = message;
-    }
-
-    await db.VehicleBookingLogs.insertMany([
-        NEW_DATA,
-    ]);
 }

@@ -17,6 +17,7 @@
 
 import * as database from './database';
 import * as egoose from '@egodigital/egoose';
+import { serializeForJSON } from '@egodigital/express-controllers';
 import * as util from 'util';
 import { AppContext } from './contracts';
 
@@ -85,17 +86,21 @@ async function initDatabaseLogger(app: AppContext) {
     app.log.addAction((ctx) => {
         (async () => {
             await database.withDatabase(async (db) => {
-                let tag = egoose.normalizeString(ctx.tag);
-                if ('' === tag) {
-                    tag = undefined;
-                }
+                const TAG = egoose.normalizeString(ctx.tag);
 
-                await db.Logs.insertMany([{
-                    message: ctx.message,
-                    tag: tag,
+                const NEW_DOC: any = {
+                    message: await serializeForJSON(ctx.message),
                     time: ctx.time.toDate(),
                     type: ctx.type,
-                }]);
+                };
+
+                if ('' !== TAG) {
+                    NEW_DOC['tag'] = TAG;
+                }
+
+                await db.Logs.insertMany([
+                    NEW_DOC
+                ]);
             });
         })().catch(e => {
             console.error(e);
