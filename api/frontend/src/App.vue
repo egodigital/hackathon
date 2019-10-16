@@ -16,17 +16,26 @@
         append-icon="fa-paper-plane"
         @click:append="start"
         @keydown.enter="start"
+        @blur="() => updateView()"
       ></v-text-field>
       <v-btn icon @click="toggleDarkMode">
         <v-icon>{{ isDark ? 'fa-moon' : 'fa-sun' }}</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-content>
+    <v-container v-show="!isAPIKeyValid" fluid fill-height grid-list-md text-xs-center>
+      <v-layout row wrap align-center>
+        <v-flex class="display-1" style="text-align: center;">
+          {{ $t('no_api_key') }}
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+    <v-content v-if="isAPIKeyValid">
       <router-view />
     </v-content>
 
-    <v-btn fab fixed right bottom color="error" @click="reset">Reset</v-btn>
+    <v-btn fab fixed right bottom color="error" @click="reset" v-if="isAPIKeyValid">Reset</v-btn>
 
     <v-snackbar
       bottom
@@ -45,10 +54,13 @@
 <script>
 import moment from "moment";
 import { mapActions, mapState } from "vuex";
+import utils from "./utils";
+
 export default {
   name: "App",
   data: () => ({
-    apiKey: null
+    apiKey: null,
+    isAPIKeyValid: false
   }),
   methods: {
     toggleDarkMode() {
@@ -72,6 +84,9 @@ export default {
       this.$root.loadEnvironments();
       this.$root.loadVehicles();
     },
+    updateView() {
+      this.isAPIKeyValid = "" !== utils.toStringSafe(this.apiKey).trim();
+    },
     ...mapActions(["setKey", "alertSuccess", "closeAlert"])
   },
   computed: {
@@ -87,6 +102,9 @@ export default {
       this.apiKey = localStorage.getItem("key");
       this.start();
     }
+  },
+  mounted() {
+    this.updateView();
   }
 };
 </script>

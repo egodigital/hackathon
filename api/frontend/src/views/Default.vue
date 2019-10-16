@@ -28,7 +28,10 @@ export default {
   },
   data: () => ({
     currentTab: null,
-    tabs: ["booking_simulation", "vehicle_signals"]
-  })
+    tabs: []
+  }),
+  beforeMount() {
+    this.tabs = [this.$t("booking_simulation"), this.$t("vehicle_signals")];
+  }
 };
 </script>
