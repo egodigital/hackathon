@@ -46,7 +46,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
             },
         },
     })
-    public cancel_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
+    public start_vehicle_booking(req: ApiV2VehicleBookingRequest, res: ApiV2VehicleBookingResponse) {
         return this.__app.withDatabase(async db => {
             if ('new' === egoose.normalizeString(req.booking.status)) {
                 await db.VehicleBookings
