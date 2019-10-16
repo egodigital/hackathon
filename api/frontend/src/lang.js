@@ -43,6 +43,12 @@ export default {
       central_locking_system: 'central locking system',
       central_locking_system_desc: 'Is central locking system open or closed?',
       central_locking_system_values: 'open, closed',
+      dialogs: {
+        reset: {
+          message: 'Are you sure to reset your data?',
+          title: 'Reset database?',
+        }
+      },
       distance_to_object_back: 'distance to object back',
       distance_to_object_back_desc: 'The distance to the object on the back side.',
       distance_to_object_back_values: 'decimal value, in cm (NaN, if sensor can\'t detect any object)',
@@ -100,6 +106,7 @@ export default {
       motor_control_lamp: 'motor control lamp',
       motor_control_lamp_desc: 'Is motor control lamp on/off?',
       motor_control_lamp_values: 'on, off',
+      no: 'No',
       no_api_key: 'First set your API key in the input field on the right side of the upper menu ...',
       person_count: 'person count',
       person_count_desc: 'The number of persons currently sitting in the vehicle.',
@@ -167,7 +174,8 @@ export default {
       windshield_wipers_values: 'on, off',
       wiping_water_level: 'wiping water level',
       wiping_water_level_desc: 'The wiping water level, in percentage.',
-      wiping_water_level_values: 'decimal value between 0 and 100'
+      wiping_water_level_values: 'decimal value between 0 and 100',
+      yes: 'Yes'
     }
   }
 };

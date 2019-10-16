@@ -6,6 +6,29 @@ export default {
             window.location.hostname.toLowerCase().trim()
         ) > -1;
     },
+    toBooleanSafe(val) {
+        if (_.isBoolean(val)) {
+            return val;
+        }
+
+        if (_.isNil(val)) {
+            return false;
+        }
+
+        if (_.isString(val)) {
+            if ('true' === val) {
+                return true;
+            }
+
+            if ('false' === val) {
+                return false;
+            }
+
+            return Boolean(val).valueOf();
+        }
+
+        return !!val;
+    },
     toStringSafe(val) {
         if (_.isString(val)) {
             return val;

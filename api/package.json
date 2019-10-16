@@ -1,6 +1,6 @@
 {
   "name": "vehicle-booking-api",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "API for vehicle booking.",
   "main": "dist/index.js",
   "scripts": {

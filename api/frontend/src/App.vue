@@ -33,7 +33,15 @@
       <router-view />
     </v-content>
 
-    <v-btn fab fixed right bottom color="error" @click="reset" v-if="isAPIKeyValid">Reset</v-btn>
+    <v-btn
+      fab
+      fixed
+      right
+      bottom
+      color="error"
+      @click="() => openAskBeforeResetDialog()"
+      v-if="isAPIKeyValid"
+    >Reset</v-btn>
 
     <v-snackbar
       bottom
@@ -46,6 +54,21 @@
       {{ snackbar.text }}
       <v-btn text v-on:click="closeAlert">Close</v-btn>
     </v-snackbar>
+
+    <v-dialog v-model="showAskBeforeResetDialog" persistent max-width="290">
+      <v-card>
+        <v-card-title class="headline orange darken-1">{{ $t('dialogs.reset.title') }}</v-card-title>
+        <v-card-text class="pt-4">{{ $t('dialogs.reset.message') }}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="() => { showAskBeforeResetDialog = false; }">{{ $t('no') }}</v-btn>
+          <v-btn
+            color="error"
+            @click="() => { showAskBeforeResetDialog = false; reset(); }"
+          >{{ $t('yes') }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -58,11 +81,12 @@ export default {
   name: "App",
   data: () => ({
     apiKey: null,
-    isAPIKeyValid: false
+    isAPIKeyValid: false,
+    showAskBeforeResetDialog: false
   }),
   methods: {
-    toggleDarkMode() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+    openAskBeforeResetDialog() {
+      this.showAskBeforeResetDialog = true;
     },
     reset() {
       this.axios
@@ -87,6 +111,12 @@ export default {
         this.$root.loadVehicles();
       }
     },
+    toggleDarkMode() {
+      let flag = !this.$vuetify.theme.dark;
+
+      this.$vuetify.theme.dark = flag;
+      localStorage.setItem("dark_mode", flag ? "1" : "0");
+    },
     updateView() {
       this.isAPIKeyValid = "" !== utils.toStringSafe(this.apiKey).trim();
     },
@@ -107,6 +137,8 @@ export default {
     }
   },
   mounted() {
+    this.$vuetify.theme.dark = "1" === localStorage.getItem("dark_mode");
+
     this.updateView();
   }
 };
