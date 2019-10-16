@@ -25,9 +25,7 @@
 
     <v-container v-show="!isAPIKeyValid" fluid fill-height grid-list-md text-xs-center>
       <v-layout row wrap align-center>
-        <v-flex class="display-1" style="text-align: center;">
-          {{ $t('no_api_key') }}
-        </v-flex>
+        <v-flex class="display-1" style="text-align: center;">{{ $t('no_api_key') }}</v-flex>
       </v-layout>
     </v-container>
 
@@ -79,10 +77,15 @@ export default {
         });
     },
     start() {
+      this.updateView();
+
       localStorage.setItem("key", this.apiKey);
       this.setKey(this.apiKey);
-      this.$root.loadEnvironments();
-      this.$root.loadVehicles();
+
+      if (this.isAPIKeyValid) {
+        this.$root.loadEnvironments();
+        this.$root.loadVehicles();
+      }
     },
     updateView() {
       this.isAPIKeyValid = "" !== utils.toStringSafe(this.apiKey).trim();
