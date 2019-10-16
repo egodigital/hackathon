@@ -1,7 +1,7 @@
 {
     "name": "vehicle-booking-webapp",
     "description": "Web app for vehicle booking API.",
-    "version": "0.0.26",
+    "version": "0.0.27",
     "scripts": {
         "dev": "vue-cli-service serve",
         "build": "vue-cli-service build"

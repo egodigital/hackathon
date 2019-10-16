@@ -96,7 +96,7 @@ export default {
     ...mapState(["key", "snackbar", "environments", "vehicles"])
   },
   beforeMount() {
-    this.axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+    this.axios.defaults.baseURL = utils.withBaseUrl();
 
     if (localStorage.hasOwnProperty("key")) {
       this.apiKey = localStorage.getItem("key");
