@@ -20,6 +20,7 @@ import * as egoose from '@egodigital/egoose';
 import * as joi from 'joi';
 import { GET, POST, Swagger } from '@egodigital/express-controllers';
 import { APIv2ControllerBase, ApiV2Request, ApiV2Response } from '../_share';
+import { HttpResult } from '../../../_share';
 
 
 interface NewVehicle {
@@ -119,7 +120,6 @@ export class Controller extends APIv2ControllerBase {
     public create_new_vehicle(req: ApiV2Request, res: ApiV2Response) {
         return this.__app.withDatabase(async db => {
             const NEW_VEHICLE: NewVehicle = req.body;
-
             const NEW_DATA: any = {
                 'license_plate': NEW_VEHICLE.licensePlate,
                 'manufacturer': NEW_VEHICLE.manufacturer,
@@ -134,12 +134,18 @@ export class Controller extends APIv2ControllerBase {
             if (!egoose.isEmptyString(NEW_VEHICLE.name)) {
                 NEW_DATA['name'] = NEW_VEHICLE.name;
             }
-
-            const NEW_DOC = (await db.Vehicles.insertMany([
-                NEW_DATA
-            ]))[0];
-
-            return await database.vehicleToJSON(NEW_DOC, db);
+            return await db.Vehicles.insertMany([NEW_DATA])
+                .then(async (res: database.VehiclesDocument[]) => {
+                    return await database.vehicleToJSON(res[0], db);
+                })
+                .catch(async err => {
+                    return HttpResult.BadRequest((req: ApiV2Request, res: ApiV2Response) => {
+                        return res.json({
+                            success: false,
+                            data: `Error on inserting Vehicle: ${NEW_VEHICLE.name}`,
+                        });
+                    });
+                });
         });
     }
 }
