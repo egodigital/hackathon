@@ -46,5 +46,7 @@ We provide you a public simulator app, which can be accessed here:
 
 If you would like to run the API locally, you can find the source code and a quick start [here](./api).
 
+If you have issues, you are welcome to [open a new ticket at GitHub](https://github.com/egodigital/hackathon/issues) and/or start a [pull request](https://github.com/egodigital/hackathon/pulls).
+
 <br />
 <sup>October 17th, 2019</sup>

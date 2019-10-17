@@ -17,7 +17,7 @@ from [api](./) subfolder inside the command line / terminal.
 After containers have been booted (this may take some time), you should be able ...
 
 * ... to access the Swagger documentation by opening http://localhost/swagger in your browser
-* ... to open test UI by opening http://localhost:8080/ in your browser
+* ... to open test UI by opening http://localhost:8080/
 
 The key for accessing the API locally is `ego` by default. You can change the setting in your [./.env](.env) file (changes require a restart of your docker containers).
 
