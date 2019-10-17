@@ -16,6 +16,11 @@
                 "cancelled", "created", "finished_in_time", "finished_late", "started"
             ]
         },
+        "from": {
+            "description": "The timestamp when the vehicle booking starts.",
+            "type": "string",
+            "example": "2019-09-05T23:09:19.790Z"
+        },
         "id": {
             "description": "The ID of the vehicle booking.",
             "type": "string",
@@ -33,6 +38,11 @@
             "description": "The timestamp of the vehicle booking.",
             "type": "string",
             "example": "2019-09-05T23:09:19.790Z"
+        },
+        "until": {
+            "description": "The timestamp when the vehicle booking ends.",
+            "type": "string",
+            "example": "2019-09-23T05:09:19.790Z"
         },
         "vehicle": {
             "description": "The underlying vehicle.",
