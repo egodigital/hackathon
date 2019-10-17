@@ -197,7 +197,7 @@ export class Controller extends APIv2VehicleControllerBase {
         "responses": {
             "200": {
                 "schema": {
-                    "$ref": "#/definitions/VehicleBookingListResponse"
+                    "$ref": "#/definitions/CreateVehicleBookingResponse"
                 }
             },
             "409": {

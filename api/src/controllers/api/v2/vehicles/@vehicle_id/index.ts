@@ -100,7 +100,7 @@ export class Controller extends APIv2VehicleControllerBase {
         "responses": {
             "200": {
                 "schema": {
-                    "$ref": "#/definitions/VehicleItem"
+                    "$ref": "#/definitions/UpdateVehicleResponse"
                 }
             },
         }
