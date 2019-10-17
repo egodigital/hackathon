@@ -34,7 +34,7 @@ The delivery of the project will mainly be via Github. There you can upload your
 | FleetMonitor   | @TODO   |
 | Hugs for Bugs  | @TODO   |
 | MMobzAIXperts  | @TODO   |
-| Moose          | @TODO   |
+| Moose          | [eGo_Hackathon_October_19](https://github.com/MooseGroup/eGo_Hackathon_October_19) |
 | Skimasken e.V. | @TODO   |
 
 ## API
