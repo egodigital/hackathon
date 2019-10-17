@@ -51,7 +51,7 @@ export class Controller extends APIv2ControllerBase {
         "responses": {
             "200": {
                 "schema": {
-                    "$ref": "#/definitions/VehicleBookingItem"
+                    "$ref": "#/definitions/VehicleListResponse"
                 }
             },
         },
