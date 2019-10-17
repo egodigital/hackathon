@@ -56,7 +56,7 @@ export class Controller extends APIv2VehicleControllerBase {
             "200": {
                 "description": "Operation was successful.",
                 "schema": {
-                    "$ref": "#/definitions/VehicleItem"
+                    "$ref": "#/definitions/GetVehicleResponse"
                 }
             },
         }
@@ -145,7 +145,7 @@ export class Controller extends APIv2VehicleControllerBase {
             "200": {
                 "description": "Operation was successful.",
                 "schema": {
-                    "$ref": "#/definitions/VehicleItem"
+                    "$ref": "#/definitions/DeleteVehicleResponse"
                 }
             },
         }
