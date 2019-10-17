@@ -1,41 +1,41 @@
 # Hackathon by e.GO Digital
 
-@TODO
+Dear participants,
+
+In this document you will find all summarized details from the presentation this morning. For all further questions we have coaches present at the event. In case you have a question concerning your code or the pitch, someone will be able to give you some support. Please do not hesitate to ask us – that is what we are here for! J We are delighted to have you here and wish you a great experience at this event!
 
 ## The Task
 
-@TODO
+[e.Base](https://e-base.e-go-digital.com/) is station-base carsharing - that's a kind of carsharing where start and end point are the same, in this case, your home. We need a solution that is eco-friendly, resource-saving and comfortable to handle. We don't want to have a solution where the cars are not sufficiently charged, where the vehicles are not available when users need them or where the service as such is just too costly. So the goal is to find a solution that maximizes the number of bookings while minimizing the number of late returns and reduce CO2-emissions. Use gamification as the main approach to solve this task.
 
 ## Delivery of the projects & pitching
-
-@TODO
 
 The delivery of the project will mainly be via Github. There you can upload your files. Additionally, we will need a documentation of your work. This should include:
 
 * Your names
 * The title of your project
-* A description of 
-  * What the project can do/is supposed to do
-  * Which problem it solves
+* A description of
+  * The the project can do/is supposed to do
+  * Which problem is solves
   * How you implemented this technically
   * Which data you are using
 * Also think about adding screenshots and pictures
 * Feedback sheet
+* Powerpoint presentation of your pitch
 
-**Deadline**
-@TODO 
+**Deadline** for your results is on Friday 4pm. You will have to pitch your idea in a 4-minutes-presentation. After that you will have to explain your decisions regarding your coding in 2 minutes. So 6 minutes in total. A jury will evaluate all presentations through aspects like degree of innovation, realizability, added value, your pitch and code (code rated three times). Keep that in mind and become the winner of this pitching session. There will be an e.GO Digital winner and a Community winner – so you can also rate each other with your team. You will receive an evaluation sheet before the presentations, which you can then submit to Gloria. 
 
 ## Teams
 
-| Name | Project |
-|------|---------|
-| Banh Mi | @TODO |
-| Electrica | @TODO |
-| FleetMonitor | @TODO |
-| Hugs for Bugs | @TODO |
-| MMobzAIXperts | @TODO |
-| Moose | @TODO |
-| Skimasken e.V. | @TODO |
+| Name           | Project |
+|----------------|---------|
+| Banh Mi        | @TODO   |
+| Electrica      | @TODO   |
+| FleetMonitor   | @TODO   |
+| Hugs for Bugs  | @TODO   |
+| MMobzAIXperts  | @TODO   |
+| Moose          | @TODO   |
+| Skimasken e.V. | @TODO   |
 
 ## API
 
