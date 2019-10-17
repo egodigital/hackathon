@@ -45,14 +45,14 @@ export async function createSwaggerOptions(app: AppContext): Promise<InitControl
             },
             schemes: [egoose.IS_LOCAL_DEV ? 'http' : 'https'],
         },
-
         title: 'e.GO Digital Vehicle Booking Backend',
     };
 }
 
 
+// definitions
 const DEFINITIONS: any = {};
-if (egoose.IS_LOCAL_DEV) {
+{
     const DEFINITIONS_DIR = getResourcePath(
         'swagger/definitions'
     );
