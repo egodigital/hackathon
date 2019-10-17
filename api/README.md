@@ -39,5 +39,5 @@ The key for accessing the API locally is `ego` by default. You can change the se
 
 #### Related projects
 
-* [express-controllers](https://github.com/egodigital/express-controllers)
 * [egoose](https://github.com/egodigital/egoose)
+* [express-controllers](https://github.com/egodigital/express-controllers)
