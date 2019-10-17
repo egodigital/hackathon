@@ -36,3 +36,8 @@ The key for accessing the API locally is `ego` by default. You can change the se
 | `MONGO_PORT` | TCP port of the MongoDB host. | `27017` |
 | `MONGO_USER` | User for accessing the MongoDB. |  |
 | `TEAM_NAME` | Default team name. | `e.GO Digital` |
+
+#### Related projects
+
+* [express-controllers](https://github.com/egodigital/express-controllers)
+* [egoose](https://github.com/egodigital/egoose)
