@@ -36,7 +36,7 @@ export class Controller extends APIv2VehicleBookingControllerBase {
         "responses": {
             "200": {
                 "schema": {
-                    "$ref": "#/definitions/VehicleBookingItem"
+                    "$ref": "#/definitions/CancelVehicleBookingResponse"
                 }
             },
             "400": {
