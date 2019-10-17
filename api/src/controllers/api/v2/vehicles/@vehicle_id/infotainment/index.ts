@@ -162,6 +162,7 @@ export class Controller extends APIv2VehicleControllerBase {
             }
         ],
         "responses": {
+            "200": {},
             "400": {
                 "description": "Data type must be image or video or a HTTP URL."
             },
