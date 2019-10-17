@@ -39,7 +39,12 @@ The delivery of the project will mainly be via Github. There you can upload your
 
 ## API
 
-The API of that Hackathon can be found [here](./api).
+We provide you a public simulator app, which can be accessed here:
+
+* [API Simulator](https://ego-vehicle-api.azurewebsites.net/)
+* [Swagger documentation](https://ego-vehicle-api.azurewebsites.net/swagger)
+
+If you would like to run the API locally, you can find the source code and a quick start [here](./api).
 
 <br />
 <sup>October 17th, 2019</sup>

@@ -31,7 +31,7 @@ import { getResourcePath } from './utils';
  * @return {InitControllersSwaggerOptionsValue} The promise with the options value.
  */
 export async function createSwaggerOptions(app: AppContext): Promise<InitControllersSwaggerOptionsValue> {
-    return egoose.IS_LOCAL_DEV ? {
+    return {
         definitions: DEFINITIONS,
         document: {
             host: egoose.IS_LOCAL_DEV ? 'localhost' : 'ego-vehicle-api.azurewebsites.net',
@@ -47,7 +47,7 @@ export async function createSwaggerOptions(app: AppContext): Promise<InitControl
         },
 
         title: 'e.GO Digital Vehicle Booking Backend',
-    } : false;
+    };
 }
 
 
