@@ -69,7 +69,7 @@ export default {
           this.alertError(err.response.data.data);
         });
     },
-    ...mapActions(["setBookings", "alertWarning"])
+    ...mapActions(["setBookings", "alertError", "alertWarning"])
   },
   computed: {
     ...mapState(["bookings", "vehicles"])
