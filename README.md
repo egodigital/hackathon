@@ -32,7 +32,7 @@ The delivery of the project will mainly be via Github. There you can upload your
 | Banh Mi        | @TODO   |
 | Electrica      | @TODO   |
 | FleetMonitor   | @TODO   |
-| Hugs for Bugs  | @TODO   |
+| Hugs for Bugs  | [hugs_for_bugs](https://github.com/vnaidin/hugs_for_bugs) |
 | MMobzAIXperts  | @TODO   |
 | Moose          | [eGo_Hackathon_October_19](https://github.com/MooseGroup/eGo_Hackathon_October_19) |
 | Skimasken e.V. | @TODO   |
@@ -49,4 +49,4 @@ If you would like to run the API locally, you can find the source code and a qui
 If you have issues, you are welcome to [open a new ticket at GitHub](https://github.com/egodigital/hackathon/issues) and/or start a [pull request](https://github.com/egodigital/hackathon/pulls).
 
 <br />
-<sup>October 17th, 2019</sup>
+<sup>October 18th, 2019</sup>
