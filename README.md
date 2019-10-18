@@ -29,13 +29,13 @@ The delivery of the project will mainly be via Github. There you can upload your
 
 | Name           | Project |
 |----------------|---------|
-| Banh Mi        | @TODO   |
+| Banh Mi        | [Banh-Mi](https://github.com/Tayketsu/Banh-Mi)   |
 | Electrica      | @TODO   |
 | FleetMonitor   | @TODO   |
 | Hugs for Bugs  | [hugs_for_bugs](https://github.com/vnaidin/hugs_for_bugs) |
 | MMobzAIXperts  | @TODO   |
 | Moose          | [eGo_Hackathon_October_19](https://github.com/MooseGroup/eGo_Hackathon_October_19) |
-| Skimasken e.V. | @TODO   |
+| Skimasken e.V. | [skimasken2019](https://git.rwth-aachen.de/jan.jakub.ackermann/skimasken2019)   |
 
 ## API
 
