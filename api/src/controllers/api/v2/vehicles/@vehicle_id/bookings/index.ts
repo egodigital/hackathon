@@ -206,6 +206,12 @@ export class Controller extends APIv2VehicleControllerBase {
                     "$ref": "#/definitions/ErrorResponse"
                 }
             },
+            "412": {
+                "description": "Vehicle is charging and cannot be booked.",
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                }
+            },
         },
     })
     public create_vehicle_booking(req: ApiV2VehicleRequest, res: ApiV2VehicleResponse) {
@@ -273,8 +279,6 @@ export class Controller extends APIv2VehicleControllerBase {
                 })
                 .exec();
             if (!latestBooking) {
-
-
                 return CREATE_BOOKING();
             }
 
